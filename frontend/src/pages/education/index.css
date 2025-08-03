@@ -1,0 +1,151 @@
+body {
+    font-size: 18px; 
+}
+
+.education-container {
+    font-size: 1.1em; 
+}
+
+h1, h2, h3 {
+    font-size: 1.5em; 
+}
+
+p, a {
+    font-size: 1.2em; 
+}
+.resource-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap; 
+    gap: 20px; 
+    padding: 20px;
+}
+
+.resource {
+    flex: 0 1 200px; 
+    text-align: center;
+}
+
+.book-cover {
+    width: 200px;
+    height: 300px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; 
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-cover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.book-cover p {
+    font-family: 'Roboto', sans-serif; 
+    font-size: 1.2em;
+    text-align: center;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.additional-text, .citation-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1em;
+    color: #333;
+}
+
+.additional-text a, .citation-text a {
+    color: #1e3c72;
+    text-decoration: none;
+}
+
+.additional-text a:hover, .citation-text a:hover {
+    text-decoration: underline;
+}
+
+.iframe-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.youtube-section {
+    margin-bottom: 40px;
+}
+
+.youtube-channel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.youtube-channel img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+.channel-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 20%; 
+    max-width: 20%;
+}
+
+.channel-details h3 {
+    margin: 0 0 5px;
+    font-size: 1.5em;
+}
+
+.channel-details p {
+    margin: 0;
+    color: #555;
+    font-size: 1.2em;
+}
+
+.video-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    width: 200px;
+}
+
+.video img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.video p {
+    font-size: 1.1em;
+    margin-top: 5px;
+    text-align: center;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}

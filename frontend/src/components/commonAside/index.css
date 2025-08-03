@@ -1,0 +1,40 @@
+.aside-container {
+    background-color: #00264d;
+    color: #fff;
+    height: 200vh;
+}
+
+.logo {
+    height: 64px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    line-height: 64px;
+    background-color: #005bb5;
+}
+
+.menu-group-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffffa6;
+    padding: 8px 16px;
+    text-transform: uppercase;
+}
+
+.ant-menu-item-group {
+    margin-top: 20px;
+}
+
+.ant-menu-item {
+    font-size: 16px;
+    padding-left: 24px !important;
+}
+
+.ant-menu-item .anticon {
+    margin-right: 12px;
+}
+
+.ant-menu-item-selected {
+    background-color: #005bb5 !important;
+    color: #fff !important;
+}

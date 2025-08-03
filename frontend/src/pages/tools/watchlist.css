@@ -1,0 +1,165 @@
+.watchlist-container h1 {
+    font-size: 2em; 
+    margin-bottom: 20px; 
+    align-items: center;
+}
+
+.watchlist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.watchlist-header, .watchlist-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    list-style-type: none;
+    width: 100%; 
+    max-width: 1200px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.watchlist-header {
+    font-weight: bold;
+    background-color: #e0e0e0;
+}
+
+.watchlist-header span, .watchlist-item span {.watchlist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.watchlist-header, .watchlist-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    list-style-type: none;
+    width: 180%;
+    max-width: 1000px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.watchlist-header {
+    font-weight: bold;
+    background-color: #e0e0e0;
+}
+
+.watchlist-header span, .watchlist-item span {
+    margin-right: 10px;
+    text-align: center;
+    flex: 1; 
+}
+
+.watchlist-header span.header-symbol, .watchlist-item span.symbol {
+    font-weight: bold;
+    font-size: 1.2em;
+    flex: 2; 
+}
+
+.watchlist-header span.header-price, .watchlist-item span.price {
+    flex: 1;
+}
+
+.watchlist-header span.header-return, .watchlist-item span.return {
+    flex: 1;
+}
+
+.watchlist-header span.header-actions, .watchlist-item span.actions {
+    flex: 1;
+}
+
+.watchlist-item span.return {
+    color: green;
+}
+
+.watchlist-item span.return.negative {
+    color: red;
+}
+
+.remove-button, .details-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    position: relative;
+}
+
+.remove-button:hover::after, .details-button:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    font-size: 0.8em;
+    z-index: 1;
+}
+
+.remove-button {
+    color: red;
+}
+
+.details-button {
+    color: blue;
+}
+    margin-right: 10px;
+    text-align: center;
+    flex: 1; 
+}
+.watchlist-header span.header-symbol, .watchlist-item span.symbol {
+    font-weight: bold;
+    font-size: 1.2em;
+    flex: 2;
+}
+
+.watchlist-header span.header-price, .watchlist-item span.price {
+    flex: 1;
+}
+
+.watchlist-header span.header-return, .watchlist-item span.return {
+    flex: 1;
+}
+
+.watchlist-header span.header-actions, .watchlist-item span.actions {
+    flex: 1;
+}
+
+.watchlist-item span.return {
+    color: green;
+}
+
+.watchlist-item span.return.negative {
+    color: red;
+}
+
+.remove-button, .details-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.remove-button {
+    color: red;
+}
+
+.details-button {
+    color: blue;
+}
