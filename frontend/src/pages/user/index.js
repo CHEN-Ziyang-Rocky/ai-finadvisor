@@ -5,6 +5,7 @@ import { Typography, Button, Paper, Box, Alert, Autocomplete, TextField, Chip, M
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import AllocationDonut from '../../components/research/AllocationDonut';
 import PortfolioComparison from '../../components/research/PortfolioComparison';
+import ModelGuide from '../../components/research/ModelGuide';
 import InvestorForm, { validProfile } from './InvestorForm';
 import EfficientFrontierChart from './EfficientFrontierChart';
 import api, { fetchRiskTolerance, fetchAvailableAssets } from '../../api';
@@ -51,6 +52,7 @@ export default function User() {
     const example = () => {setSelected(['AAPL','MSFT','JNJ','JPM'].map(t=>catalog.find(c=>c.ticker===t && c.eligible)).filter(Boolean));setReport(null);};
     return <div className="research-page">
         <div className="research-hero"><div><div className="eyebrow">PORTFOLIO WORKSPACE</div><h1>From profile to portfolio.</h1><p>Explore a household risk proxy, compare allocations, and test the assumptions.</p></div><Chip label={asOf ? `Historical data · ${asOf}` : 'Loading dataset…'} variant="outlined" /></div>
+        <ModelGuide />
         <details className="method-details"><summary>Data source and freshness</summary><p>Research uses completed monthly prices through {asOf || "the recorded cutoff"}. It does not use a live trading feed. Source: {dataset?.provider || "bundled snapshot"}. Price basis: {dataset?.price_adjustment || "unverified close"}. Raw or split-adjusted closes do not include reinvested dividends.</p><p>New prices are validated and published as a complete version before calculations use them. A newer quote alone does not refresh this history.</p>{dataset?.dataset_id && <p>Dataset: {dataset.dataset_id.slice(0,12)}</p>}</details>
         <div className="workflow-strip"><span>01 · Your profile</span><span>02 · Research universe</span><span>03 · Compare & simulate</span></div>
         {dataset?.freshness?.stale && <Alert severity="warning" sx={{mb:2}}>Research prices are older than the last complete month ({dataset.freshness.expected_through}). {dataset.freshness.update_status==='pending_source'?'An ongoing data source is awaiting configuration.':'The latest complete refresh is unavailable.'} These results use the displayed historical cutoff.</Alert>}

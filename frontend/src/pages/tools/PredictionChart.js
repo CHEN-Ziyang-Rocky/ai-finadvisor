@@ -38,8 +38,8 @@ export default function PredictionChart({ data, scenario }) {
     };
 
     return (
-        <Box sx={{ mt: 6, mb: 6 }}>
-            <Typography variant="h6" gutterBottom>
+        <Box sx={{ mt: 2, mb: 3 }}>
+            <Typography variant="subtitle1" gutterBottom>
                 {scenarioNames[scenario] || 'Simulation'} - Portfolio Value
             </Typography>
             <ResponsiveContainer width="100%" height={400}>
@@ -69,7 +69,7 @@ export default function PredictionChart({ data, scenario }) {
                     <Line
                         type="monotone"
                         dataKey="p5"
-                        name="5% Tile"
+                        name="5th percentile"
                         stroke={lineColors.p5}
                         strokeWidth={1.5}
                         dot={false}
@@ -77,7 +77,7 @@ export default function PredictionChart({ data, scenario }) {
                     <Line
                         type="monotone"
                         dataKey="p25"
-                        name="25% Tile"
+                        name="25th percentile"
                         stroke={lineColors.p25}
                         strokeWidth={1.5}
                         dot={false}
@@ -93,7 +93,7 @@ export default function PredictionChart({ data, scenario }) {
                     <Line
                         type="monotone"
                         dataKey="p75"
-                        name="75% Tile"
+                        name="75th percentile"
                         stroke={lineColors.p75}
                         strokeWidth={1.5}
                         dot={false}
@@ -101,7 +101,7 @@ export default function PredictionChart({ data, scenario }) {
                     <Line
                         type="monotone"
                         dataKey="p95"
-                        name="95% Tile"
+                        name="95th percentile"
                         stroke={lineColors.p95}
                         strokeWidth={1.5}
                         dot={false}
@@ -109,7 +109,7 @@ export default function PredictionChart({ data, scenario }) {
                     <Line
                         type="monotone"
                         dataKey="expected"
-                        name="Expected"
+                        name="Mean"
                         stroke={lineColors.expected}
                         strokeWidth={3}
                         strokeDasharray="5 5"

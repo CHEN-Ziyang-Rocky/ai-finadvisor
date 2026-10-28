@@ -104,3 +104,5 @@ Core tests use substitute data or services where documented. Running commands su
 ## Included and excluded
 
 The repository includes application source, dependency lockfiles, numerical and security tests, training code, architecture notes and safe environment templates. It starts with a clean publication history. Credentials, certificate/key files, databases, personal reports, notebooks with outputs, large datasets, generated models, runtime news caches and production infrastructure are excluded.
+
+- [2026-10-28 模型审查、三情景修复与数据边界](docs/MODEL-AUDIT-2026-10-28.zh-CN.md)

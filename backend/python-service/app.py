@@ -72,210 +72,65 @@ def get_risk_model():
         return load(f)
 
 def compute_performance_metrics(portfolio_returns, market_returns=None, risk_free_rate=0.04):
-    df = pd.DataFrame({'portfolio': portfolio_returns})
-    initial_capital = 10000.0
+    from performance import performance
+    result = performance(portfolio_returns, risk_free_rate=risk_free_rate)
+    result['market_correlation'] = None
+    if market_returns is not None:
+        aligned = pd.concat([portfolio_returns, market_returns], axis=1).dropna()
+        if len(aligned)>1 and (aligned.std()>1e-12).all():
+            result['market_correlation'] = float(aligned.corr().iloc[0,1])
+    if isinstance(portfolio_returns.index, pd.DatetimeIndex):
+        yearly = portfolio_returns.groupby(portfolio_returns.index.year)
+        complete = yearly.filter(lambda group: len(group)==12)
+        annual = complete.groupby(complete.index.year).apply(lambda x: (1+x).prod()-1)
+        result.update(best_year=float(annual.max())*100 if len(annual) else None,
+                      worst_year=float(annual.min())*100 if len(annual) else None)
+    return result
 
-    df['cum_growth'] = (1 + df['portfolio']).cumprod()
-    df['balance'] = initial_capital * df['cum_growth']
 
-    final_balance = df['balance'].iloc[-1]
-    N = len(portfolio_returns)
-    years = N / 12.0
-    cagr = (final_balance / initial_capital) ** (1 / years) - 1 if years > 0 else 0
-    ann_stdev = portfolio_returns.std() * math.sqrt(12)
-
-    if not isinstance(df.index, pd.DatetimeIndex):
-        df.index = pd.date_range(start='2000-01-01', periods=len(df), freq='M')
-
-    df['year'] = df.index.year
-    annual_returns = df.groupby('year')['portfolio'].apply(lambda x: (1 + x).prod() - 1)
-    best_year = annual_returns.max() if len(annual_returns) > 0 else 0
-    worst_year = annual_returns.min() if len(annual_returns) > 0 else 0
-
-    df['peak'] = df['balance'].cummax().clip(lower=initial_capital)
-    df['drawdown'] = (df['balance'] - df['peak']) / df['peak']
-    max_drawdown = df['drawdown'].min()
-
-    mean_monthly_excess = (portfolio_returns - (risk_free_rate / 12.0)).mean()
-    sharpe_ratio = 0.0
-    if portfolio_returns.std() > 1e-9:
-        sharpe_ratio = (mean_monthly_excess * 12.0) / (portfolio_returns.std() * math.sqrt(12))
-
-    negative_returns = portfolio_returns[portfolio_returns < 0]
-    down_stdev = negative_returns.std() * math.sqrt(12)
-    sortino_ratio = 0.0
-    if down_stdev > 1e-9:
-        sortino_ratio = (mean_monthly_excess * 12.0) / down_stdev
-
-    market_correlation = None
-    if market_returns is not None and len(market_returns) == len(portfolio_returns):
-        corr = np.corrcoef(portfolio_returns, market_returns)[0, 1]
-        market_correlation = corr
-
-    timeline_df = df.reset_index()
-    if timeline_df.columns[0] != 'date':
-        timeline_df.rename(columns={timeline_df.columns[0]: 'date'}, inplace=True)
-
-    if pd.api.types.is_datetime64_any_dtype(timeline_df['date']):
-        timeline_df['date'] = timeline_df['date'].dt.strftime('%Y-%m-%d')
-
-    timeline_df = timeline_df.sort_values(by='date').reset_index(drop=True)
-
-    return {
-        'final_balance': final_balance,
-        'CAGR': cagr * 100,
-        'stdev': ann_stdev * 100,
-        'best_year': best_year * 100,
-        'worst_year': worst_year * 100,
-        'max_drawdown': max_drawdown * 100,
-        'sharpe_ratio': sharpe_ratio,
-        'sortino_ratio': sortino_ratio,
-        'market_correlation': market_correlation,
-        'timeline': timeline_df[['date', 'balance']].to_dict(orient='records')
-    }
-
-def get_periods_per_year(freq):
-    mapping = {
-        "monthly": 12,
-        "quarterly": 4,
-        "semiannually": 2,
-        "annually": 1,
-        "none": 1
-    }
-    return mapping.get(freq.lower(), 1)
-
-# simulate portfolio performance with periodic withdrawals
 def compute_performance_metrics_with_withdrawals(portfolio_returns, initial_capital, withdrawal_amount, rebalancing, risk_free_rate=0.04):
-    if rebalancing.lower() == "none":
-        period_length = None
-    else:
-        periods_per_year = get_periods_per_year(rebalancing)
-        period_length = int(12 / periods_per_year)
-    
-    balance_series = []
-    balance = initial_capital
-    for i, ret in enumerate(portfolio_returns):
-        balance *= (1 + ret)
-        # Apply withdrawal at the end of each period if applicable
-        if period_length and ((i + 1) % period_length == 0):
-            balance -= withdrawal_amount
-            if balance < 0:
-                balance = 0
-        balance_series.append(balance)
-    
-    df = pd.DataFrame({'balance': balance_series}, index=portfolio_returns.index)
-    final_balance = df['balance'].iloc[-1]
-    N = len(portfolio_returns)
-    years = N / 12.0
-    cagr = (final_balance / initial_capital) ** (1 / years) - 1 if years > 0 else 0
-    ann_stdev = np.std(portfolio_returns) * math.sqrt(12)
-    
-    # Maximum drawdown
-    df['peak'] = df['balance'].cummax().clip(lower=initial_capital)
-    df['drawdown'] = (df['balance'] - df['peak']) / df['peak']
-    max_drawdown = df['drawdown'].min()
-    
-    mean_monthly_excess = (portfolio_returns - (risk_free_rate / 12.0)).mean()
-    sharpe_ratio = 0.0
-    if np.std(portfolio_returns) > 1e-9:
-        sharpe_ratio = (mean_monthly_excess * 12.0) / (np.std(portfolio_returns) * math.sqrt(12))
-    
-    negative_returns = portfolio_returns[portfolio_returns < 0]
-    down_stdev = np.std(negative_returns) * math.sqrt(12) if len(negative_returns) > 0 else 0
-    sortino_ratio = 0.0
-    if down_stdev > 1e-9:
-        sortino_ratio = (mean_monthly_excess * 12.0) / down_stdev
-    
-    timeline_df = df.reset_index()
-    if timeline_df.columns[0] != 'date':
-        timeline_df.rename(columns={timeline_df.columns[0]: 'date'}, inplace=True)
-    if pd.api.types.is_datetime64_any_dtype(timeline_df['date']):
-        timeline_df['date'] = timeline_df['date'].dt.strftime('%Y-%m-%d')
-    timeline_df = timeline_df.sort_values(by='date').reset_index(drop=True)
-    
-    return {
-        'final_balance': final_balance,
-        'CAGR': cagr * 100,
-        'stdev': ann_stdev * 100,
-        'max_drawdown': max_drawdown * 100,
-        'sharpe_ratio': sharpe_ratio,
-        'sortino_ratio': sortino_ratio,
-        'timeline': timeline_df[['date', 'balance']].to_dict(orient='records')
-    }
+    from performance import performance
+    return performance(portfolio_returns, initial_capital, withdrawal_amount, rebalancing, risk_free_rate)
 
 @app.route('/multi_portfolio_backtest', methods=['POST'])
 def multi_portfolio_backtest():
+    # Legacy route (not exposed by the core demo gateway); same monthly conventions.
+    from performance import historical_portfolio
     try:
         data = request.get_json()
-        start_year = data.get('start_year', 1972)
-        start_month = data.get('start_month', 1)
-        end_year = data.get('end_year', 2025)
-        end_month = data.get('end_month', 1)
-        initial_capital = data.get('initial_capital', 10000)
-        rebalancing = data.get('rebalancing', 'None')
-        dividend_reinvested = data.get('dividend_reinvested', True)
-        withdrawal_amount = data.get('withdrawal_amount', 0)
-        
-        portfolios_config = data.get('portfolios', [])
-        if not portfolios_config:
-            return jsonify({"error": "No portfolios provided"}), 400
-        
-        start_date = pd.Timestamp(year=start_year, month=start_month, day=1)
-        end_date = pd.Timestamp(year=end_year, month=end_month, day=1) + pd.offsets.MonthEnd(0)
-        df = assets_monthly.loc[start_date:end_date].copy()
-        if df.empty:
-            return jsonify({"error": "No data in the given date range"}), 400
-        
-        market_returns = None
-        benchmark_ticker = "^GSPC"
-        if benchmark_ticker in df.columns:
-            benchmark_prices = df[benchmark_ticker].dropna()
-            benchmark_returns = benchmark_prices.pct_change().dropna()
-            market_returns = benchmark_returns
-        
-        performance_summary = []
-        growth_series = {}
-        
-        for i, pconfig in enumerate(portfolios_config, start=1):
-            weights_dict = pconfig.get("weights", {})
-            tickers = list(weights_dict.keys())
-            weights = list(weights_dict.values())
-            
-            sub_df = df[tickers].dropna(how='any')
-            monthly_returns = sub_df.pct_change().dropna()
-            w = np.array(weights)
-            portfolio_r = monthly_returns.dot(w)
-            
-            # Compute performance metrics with withdrawal effect
-            metrics = compute_performance_metrics_with_withdrawals(
-                portfolio_r,
-                initial_capital,
-                withdrawal_amount,
-                rebalancing,
-                risk_free_rate=0.04
-            )
-            
-            row = {
-                "Portfolio": f"Portfolio {i}",
-                "Initial Balance": initial_capital,
-                "Final Balance": round(metrics['final_balance'], 0),
-                "CAGR": round(metrics['CAGR'], 2),
-                "Stdev": round(metrics['stdev'], 2),
-                "Max Drawdown": round(metrics['max_drawdown'], 2),
-                "Sharpe Ratio": round(metrics['sharpe_ratio'], 2),
-                "Sortino Ratio": round(metrics['sortino_ratio'], 2),
-                "Market Correlation": 0  # Not computed here
-            }
-            performance_summary.append(row)
-            growth_series[f"Portfolio {i}"] = metrics['timeline']
-        
-        return jsonify({
-            "performance_summary": performance_summary,
-            "growth_series": growth_series
-        })
-    except Exception as e:
-        print("Error in /multi_portfolio_backtest:", e)
-        return jsonify({"error": str(e)}), 500
+        if not isinstance(data, dict):
+            raise ValueError('Expected a JSON object')
+        portfolios = data.get('portfolios', [])
+        if not isinstance(portfolios,list) or not 1 <= len(portfolios) <= 3:
+            raise ValueError('Provide 1-3 portfolios')
+        start = pd.Timestamp(year=data.get('start_year',2000),month=data.get('start_month',1),day=1)
+        end = pd.Timestamp(year=data.get('end_year',assets_monthly.index[-1].year),month=data.get('end_month',assets_monthly.index[-1].month),day=1)+pd.offsets.MonthEnd(0)
+        if start>end or start<assets_monthly.index[0] or end>assets_monthly.index[-1]:
+            raise ValueError('Choose dates within the available completed monthly history')
+        # Include the prior month-end price so the first selected month earns a return.
+        prices = assets_monthly.loc[start-pd.offsets.MonthEnd(1):end]
+        if data.get('dividend_reinvested') is False and prices.attrs.get('price_adjustment')=='total_return':
+            raise ValueError('This total-return dataset cannot remove reinvested dividends')
+        rows, growth = [], {}
+        for i, config in enumerate(portfolios,1):
+            weights = config.get('weights', {})
+            if not isinstance(weights,dict):
+                raise ValueError('Expected a weights object')
+            result = historical_portfolio(prices,list(weights),list(weights.values()),
+                data.get('initial_capital',10000),data.get('withdrawal_amount',0),
+                data.get('rebalancing','none'),data.get('withdrawal_frequency','annually'))
+            rounded = lambda key: round(result[key],2) if result[key] is not None else None
+            rows.append({'Portfolio':f'Portfolio {i}', 'Initial Balance':data.get('initial_capital',10000),
+                'Final Balance':rounded('final_balance'),'CAGR':rounded('CAGR'),'Stdev':rounded('stdev'),
+                'Max Drawdown':rounded('max_drawdown'),'Sharpe Ratio':rounded('sharpe_ratio'),
+                'Sortino Ratio':rounded('sortino_ratio'),'Market Correlation':None,
+                'Balance Drawdown':rounded('balance_max_drawdown')})
+            growth[f'Portfolio {i}'] = result['timeline']
+        return jsonify(performance_summary=rows,growth_series=growth,
+            assumptions='CAGR and drawdown measure investment returns excluding external cash flows. Balances include month-end withdrawals. Dividends follow the dataset price basis; no synthetic reinvestment, fees or taxes.',
+            price_adjustment=prices.attrs.get('price_adjustment','unverified_close'))
+    except (ValueError,TypeError,KeyError) as error:
+        return jsonify(error=str(error)),400
 
 
 @app.route('/assets', methods=['GET'])
@@ -334,19 +189,23 @@ def get_performance():
         if not stock_tickers or not allocations or len(allocations) != len(stock_tickers):
             raise ValueError("Mismatch in allocations vs. stock_tickers")
         
-        assets_selected = assets_monthly[stock_tickers].dropna(axis=0, how='any')
-        monthly_returns = assets_selected.pct_change().dropna()
+        from market_data import consecutive_returns
+        monthly_returns = consecutive_returns(assets_monthly, stock_tickers)
+        if any(isinstance(w,bool) or not isinstance(w,(int,float)) or not np.isfinite(w) or w<0 or w>1 for w in allocations) or abs(sum(allocations)-1)>1e-6:
+            raise ValueError('Allocations must be non-negative and sum to one')
         weights = np.array(allocations).reshape(-1, 1)
-        
+
         portfolio_returns = np.dot(monthly_returns.values, weights).flatten()
         portfolio_cum_returns = (1 + portfolio_returns).cumprod() * 100
         
         perf = pd.DataFrame({
-            'index': assets_selected.index[1:],
+            'index': monthly_returns.index,
             'Portfolio Value': portfolio_cum_returns
         }).reset_index(drop=True)
         
-        return jsonify({'performance': perf.to_dict(orient='records')})
+        return jsonify({'performance': perf.to_dict(orient='records'), 'data_context':context(monthly_returns), 'assumptions':'Fixed weights rebalanced monthly; no costs or taxes. Price adjustment follows the dataset.'})
+    except (ValueError, TypeError, KeyError) as e:
+        return jsonify(error=str(e)), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

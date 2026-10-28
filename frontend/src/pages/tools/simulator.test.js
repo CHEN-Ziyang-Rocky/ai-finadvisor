@@ -21,3 +21,19 @@ test('empty saved portfolio offers a profile link instead of silently picking st
  expect(await screen.findByRole('link',{name:'Build a portfolio'})).toHaveAttribute('href','/user');
  expect(screen.queryByRole('button',{name:'Explore outcomes'})).not.toBeInTheDocument();
 });
+test('three scenario summaries remain visible while detail charts switch',async()=>{
+ api.get.mockResolvedValue({data:{portfolio:{tickers:['AAPL'],weights:[1]}}});
+ const summary={percentiles:{p5:[1],p25:[2],p50:[3],p75:[4],p95:[5]},expected:[3],
+  probability_intervals:{probability_goal_met_real:[.4,.6]},
+  performance_metrics:{median_real_final:10000,probability_goal_met_real:.5,terminal_wealth_p5:1000}};
+ api.post.mockResolvedValue({data:{scenarios:Object.fromEntries(['baseline','optimistic','pessimistic'].map(s=>[s,{portfolioResults:{portfolio_1:summary}}]))}});
+ render(<Simulator/>);
+ fireEvent.click(await screen.findByRole('button',{name:'Explore outcomes'}));
+ expect(await screen.findByRole('button',{name:'Optimistic scenario'})).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'Pessimistic scenario'})).toBeInTheDocument();
+ expect(screen.getByText('Baseline scenario · portfolios')).toBeInTheDocument();
+ fireEvent.click(screen.getByRole('tab',{name:'Pessimistic details'}));
+ expect(screen.getByText('Pessimistic scenario · portfolios')).toBeInTheDocument();
+ expect(screen.queryByText('Baseline scenario · portfolios')).not.toBeInTheDocument();
+ expect(screen.getByText(/95% simulation sampling interval/)).toHaveTextContent('40.0% – 60.0%');
+});

@@ -42,6 +42,7 @@ const SignUp = () => {
         <div className="auth-page">
             <Spin spinning={loading}>
                 <Form className="auth-container" onFinish={handleSignUp} form={form}>
+                    <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:24,fontSize:18,fontWeight:600}}><img src="/brand-icon.svg" width="40" height="40" alt=""/>Rocky Finance</div>
                     <div className="auth-title">Create Account</div>
                     <Form.Item
                         name="username"

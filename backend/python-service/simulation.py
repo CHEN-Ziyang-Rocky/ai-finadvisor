@@ -18,6 +18,17 @@ def cached_garch(values):
 FREQUENCIES = {'monthly': 1, 'quarterly': 3, 'semiannually': 6, 'annually': 12, 'none': 0}
 
 
+def probability_interval(events):
+    """95% Wilson interval: Monte Carlo sampling error, not model uncertainty."""
+    n = len(events)
+    rate = float(np.mean(events))
+    z = 1.959963984540054
+    denominator = 1 + z*z/n
+    center = (rate + z*z/(2*n)) / denominator
+    radius = z*np.sqrt(rate*(1-rate)/n + z*z/(4*n*n)) / denominator
+    return [max(0., float(center-radius)), min(1., float(center+radius))]
+
+
 def number(data, key, default, lower, upper, integer=False):
     value = data.get(key, default)
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not np.isfinite(value):
@@ -67,7 +78,8 @@ def validate(features):
         raise ValueError('inflation_adjusted must be boolean')
     p['scenarios'] = p.get('scenarios', ['baseline', 'optimistic', 'pessimistic'])
     if (not isinstance(p['scenarios'], list) or not 1 <= len(p['scenarios']) <= 3 or
-            any(s not in ['baseline', 'optimistic', 'pessimistic'] for s in p['scenarios'])):
+            any(s not in ['baseline', 'optimistic', 'pessimistic'] for s in p['scenarios']) or
+            len(set(p['scenarios'])) != len(p['scenarios'])):
         raise ValueError('Provide 1-3 valid scenarios')
     portfolios = p.get('portfolios')
     if portfolios is None and isinstance(p.get('assets'), list):
@@ -107,6 +119,9 @@ def run_paths(p, weights_dict, shared_paths):
     # For drawdown use all monthly balances, including initial capital.
     peaks = np.full(n, p['initial_amount'], dtype=float)
     drawdowns = np.zeros(n)
+    investment_index = np.ones(n)
+    investment_peak = np.ones(n)
+    investment_drawdowns = np.zeros(n)
     return_count, return_sum, return_square_sum = 0, 0., 0.
     ruined = np.zeros(n, dtype=bool)
     for month in range(1, years * 12 + 1):
@@ -115,6 +130,10 @@ def run_paths(p, weights_dict, shared_paths):
         holdings *= np.maximum(1 + returns, 0)  # Long-only, limited to capital invested.
         total = holdings.sum(axis=1)
         sampled_returns = total[before > 0] / before[before > 0] - 1
+        gross = np.divide(total, before, out=np.ones(n), where=before > 0)
+        investment_index *= gross
+        investment_peak = np.maximum(investment_peak, investment_index)
+        investment_drawdowns = np.maximum(investment_drawdowns, 1-investment_index/investment_peak)
         return_count += len(sampled_returns)
         return_sum += float(sampled_returns.sum())
         return_square_sum += float(sampled_returns @ sampled_returns)
@@ -150,6 +169,11 @@ def run_paths(p, weights_dict, shared_paths):
     annual_vol = float(np.sqrt(max(return_square_sum / max(return_count, 1) - mean**2, 0) * 12))
     real_final = final / (1 + p['inflation_rate'] / 100)**years
     return {
+        'probability_intervals': {
+            'probability_goal_met_real': probability_interval(real_final >= p['goal_amount']),
+            'probability_below_initial': probability_interval(final < p['initial_amount']),
+            'probability_depleted': probability_interval(ruined),
+        },
         'percentiles': {f'p{q}': np.percentile(values, q, axis=0).tolist() for q in [5, 25, 50, 75, 95]},
         'expected': values.mean(axis=0).tolist(), 'std_dev': values.std(axis=0).tolist(),
         'performance_metrics': {
@@ -159,6 +183,7 @@ def run_paths(p, weights_dict, shared_paths):
             'median_real_final': float(np.median(real_final)),
             'mean_final': float(final.mean()), 'median_final': float(np.median(final)),
             'std_final': float(final.std()), 'avg_max_drawdown': float(drawdowns.mean()),
+            'avg_investment_max_drawdown': float(investment_drawdowns.mean()),
             'terminal_wealth_p5': float(p5), 'lower_tail_mean_wealth': float(final[final <= p5].mean()),
             'avg_annual_return': annual_mean, 'std_annual_return': annual_vol,
             'sharpe_ratio': (annual_mean - p['base_interest_rate'] / 100) / annual_vol if annual_vol > 1e-12 else None,
@@ -181,7 +206,11 @@ def simulate(features, prices):
     r, params, garch = None, {}, []
     if needs_history:
         r = monthly_panel(prices, universe, p['lookback_months'], 60 if p['simulation_model']=='statistical' and p['time_series_model']=='garch' else 36)
-        mu, cov, details = estimate(r)
+        if p['simulation_model']=='historical':
+            mu, cov = r.mean().to_numpy()*12, np.atleast_2d(np.cov(r.to_numpy(),rowvar=False,ddof=0))*12
+            details = {'method':'Joint empirical block resampling; no mean or covariance shrinkage applied to historical draws'}
+        else:
+            mu, cov, details = estimate(r)
         monthly_mu = mu/12
         monthly_cov = cov/12
         params = {'data_context':context(r), 'estimation':details,
@@ -229,9 +258,14 @@ def simulate(features, prices):
                                 +np.array([g['alpha'] for g in garch])*residual**2
                                 +np.array([g['beta'] for g in garch])*variance)
                 elif p['simulation_model']=='statistical' and p['time_series_model']=='garch':
-                    residual = np.sqrt(variance)*multiplier*z
-                    paths[month] = monthly_mu+shift/12+residual
-                    variance = .05*np.diag(monthly_cov)+.1*(residual/multiplier)**2+.85*variance
+                    # Assumed GARCH uses the same positive-price log-return process as fitted GARCH.
+                    # Convert arithmetic moments to lognormal moments before evolving variance.
+                    if month == 0:
+                        variance = np.tile(np.log1p(np.diag(monthly_cov)/(1+monthly_mu)**2), (n,1))*multiplier**2
+                    residual = np.sqrt(variance)*z
+                    paths[month] = np.expm1(np.log1p(monthly_mu+shift/12)-variance/2+residual)
+                    long_run = np.log1p(np.diag(monthly_cov)/(1+monthly_mu)**2)*multiplier**2
+                    variance = .05*long_run+.1*residual**2+.85*variance
                 elif p['simulation_model']=='parameterized' and p['distribution_type']=='lognormal':
                     vol = np.sqrt(np.diag(monthly_cov))*multiplier
                     drift = (np.log1p(p['mu']+shift)/12 if not needs_history else np.log1p(monthly_mu+shift/12))
@@ -244,7 +278,7 @@ def simulate(features, prices):
             indices = [universe.index(t) for t in portfolio['weights']]
             results[f'portfolio_{i+1}'] = run_paths(p,portfolio['weights'],paths[:,:,indices])
         scenarios[scenario] = {'portfolioResults':results}
-    return {'scenarios':scenarios, 'calibration':params, 'assumptions':{
+    return {'scenarios':scenarios, 'initial_amount':p['initial_amount'], 'model':p['simulation_model'], 'calibration':params, 'assumptions':{
         'step':'monthly', 'seed':p['random_seed'], 'paths':n,
         'garch':('Gaussian QML fitted on monthly log returns; constant residual correlation; short samples and near-boundary fits are uncertain' if garch else 'Manual assumed alpha=.1, beta=.85') if p['time_series_model']=='garch' and p['simulation_model']=='statistical' else 'Not used',
         'costs':'Simulations exclude transaction costs and taxes; walk-forward evaluation reports trading costs separately',
@@ -252,6 +286,9 @@ def simulate(features, prices):
         'historical':f'Joint circular block bootstrap; block length {p["block_months"]} months; common calibration window across portfolios',
         'cashflows':'End of payment month; inflation increases fixed payments after each completed year',
         'metrics':'Real goal is in today dollars. Below-initial compares terminal nominal wealth to initial capital, not a cashflow-adjusted investment loss. Depletion means reaching zero at any month end.',
+        'sampling_error':'Probability ranges are 95% Wilson intervals for finite simulated paths only. They exclude parameter, data and model uncertainty; more paths do not validate a model.',
+        'drawdown':'Investment drawdown uses a time-weighted return index excluding external cash flows. Balance drawdown includes contributions and withdrawals.',
+        'normal_tail':'Simple-normal draws below -100% are floored at total loss; this changes tail moments. Lognormal and fitted GARCH preserve positive prices.',
         'scenario_shift':'Sensitivity assumptions, not probabilities: annual arithmetic mean +/-1pp, non-historical volatility x0.9/x1.1',
         'comparison':'Same joint market paths reused across portfolios. Returns/volatility pool investment-only monthly returns; drawdown includes cash flows.',
     }}

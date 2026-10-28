@@ -12,7 +12,7 @@ _CACHE = OrderedDict()
 _LOCK = RLock()
 MAX_ENTRIES = 16
 TTL_SECONDS = 180
-ENGINE_VERSION = '2026-10-26-workflow-1'
+ENGINE_VERSION = '2026-10-28-model-audit-2'
 
 
 def cached_simulate(features, prices):

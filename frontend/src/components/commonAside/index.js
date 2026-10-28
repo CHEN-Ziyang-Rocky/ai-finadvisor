@@ -74,7 +74,7 @@ const CommonAside = ({ collapsed }) => {
 
   return (
     <Sider width={224} collapsedWidth={56} collapsed={collapsed} className="aside-container">
-      <div className="logo">{collapsed ? "FA" : "Finadvisor / Lab"}</div>
+      <div className="logo" style={{display:'flex',alignItems:'center',gap:10}}><img src="/brand-icon.svg" width="28" height="28" alt=""/>{!collapsed && <span>Rocky Finance</span>}</div>
       <Menu
         selectedKeys={[location.pathname]}
         mode="inline"

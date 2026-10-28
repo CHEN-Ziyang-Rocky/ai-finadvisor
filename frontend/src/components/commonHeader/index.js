@@ -65,7 +65,7 @@ const CommonHeader = ({ collapsed }) => {
           backgroundColor: '#fff'
         }}
       />
-      <span className="header-label">RESEARCH / WORKSPACE</span>
+      <span className="header-label">ROCKY FINANCE · AI FINADVISOR</span>
       <Dropdown
         trigger={['click']}
         menu={{ items }}

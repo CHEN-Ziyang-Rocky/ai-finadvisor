@@ -16,7 +16,7 @@ export function quickPayload(portfolio, amount, years, contribution, compare, go
     return { initial_amount:values[0], investment_years:values[1], contribution_amount:values[2], goal_amount:values[3],
         cashflow_type:values[2]>0?'contribute_fixed':'none', contribution_frequency:'monthly', inflation_adjusted:false,
         simulation_model:'historical', lookback_months:portfolio.lookback_months || 60, block_months:3,
-        num_simulations:500, random_seed:42, scenarios:['baseline'], inflation_rate:2.5,
+        num_simulations:500, random_seed:42, scenarios:['baseline','optimistic','pessimistic'], inflation_rate:2.5,
         rebalancing_frequency:'annually', portfolios };
 }
 
@@ -35,7 +35,7 @@ export default function QuickSimulation({ portfolio, onPredictionComplete }) {
     };
     return <Box component="form" onSubmit={submit} className="research-card" sx={{my:3}}>
         <div className="eyebrow">QUICK START</div><Typography variant="h5" sx={{mb:1}}>Your portfolio, three simple inputs.</Typography>
-        <Typography color="text.secondary" sx={{mb:2}}>Explore a range of possible outcomes. Your saved weights are carried over automatically.</Typography>
+        <Typography color="text.secondary" sx={{mb:2}}>Compare baseline, optimistic and pessimistic scenarios. Your saved weights are carried over automatically.</Typography>
         <Box sx={{display:'flex',gap:1,flexWrap:'wrap',mb:3}}>{portfolio.tickers.map((t,i)=><Chip key={t} label={`${t} ${(portfolio.weights[i]*100).toFixed(1)}%`}/>)}</Box>
         <Box className="quick-inputs">
             <TextField label="Starting amount (USD)" type="number" value={amount} onChange={e=>setAmount(e.target.value)} inputProps={{min:1,max:1e9,step:'any'}} required/>
@@ -43,6 +43,7 @@ export default function QuickSimulation({ portfolio, onPredictionComplete }) {
             <TextField label="Monthly contribution (USD)" type="number" value={contribution} onChange={e=>setContribution(e.target.value)} inputProps={{min:0,max:1e9,step:'any'}} required/>
         </Box>
         <Typography variant="body2" color="text.secondary" sx={{mt:2}}>Historical resampling · 500 paths · annual rebalancing · 2.5% assumed inflation. No fees or taxes. These are adjustable assumptions, not a forecast.</Typography>
+        <Typography variant="body2" color="text.secondary" sx={{mt:1}}>Why this model? Resampling entire three-month blocks keeps assets moving together and retains short runs of market returns. Optimistic / pessimistic add / subtract 1 percentage point of annual arithmetic return; they are sensitivity tests with no assigned likelihood.</Typography>
         <Accordion disableGutters elevation={0} sx={{my:2}}><AccordionSummary expandIcon={<span>+</span>}>Optional goal and comparison</AccordionSummary><AccordionDetails>
             <TextField label="Target wealth (today's USD)" type="number" value={goal} onChange={e=>setGoal(e.target.value)} inputProps={{min:0,max:1e12,step:'any'}} helperText="Default: preserve $10,000 of today's purchasing power."/>
             <FormControlLabel control={<Checkbox checked={compare} onChange={e=>setCompare(e.target.checked)}/>} label="Compare equal weights in the same assets"/>

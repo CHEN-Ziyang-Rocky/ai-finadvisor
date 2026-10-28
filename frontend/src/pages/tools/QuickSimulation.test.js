@@ -4,10 +4,10 @@ import QuickSimulation,{quickPayload} from './QuickSimulation';
 import api from '../../api';
 jest.mock('../../api',()=>({post:jest.fn()}));
 const portfolio={tickers:['AAPL','MSFT'],weights:[.4,.6]};
-test('quick defaults use saved weights, one scenario and one portfolio',()=>{
+test('quick defaults use saved weights, three scenarios and one portfolio',()=>{
  const p=quickPayload(portfolio,'10000','10','200',false,'15000');
  expect(p.portfolios).toEqual([{weights:{AAPL:40,MSFT:60}}]);
- expect(p.scenarios).toEqual(['baseline']);expect(p.contribution_frequency).toBe('monthly');
+ expect(p.scenarios).toEqual(['baseline','optimistic','pessimistic']);expect(p.contribution_frequency).toBe('monthly');
  expect(p.cashflow_type).toBe('contribute_fixed');expect(p.inflation_adjusted).toBe(false);
  expect(quickPayload(portfolio,10000,10,0,true,10000).portfolios[1].weights).toEqual({AAPL:50,MSFT:50});
 });

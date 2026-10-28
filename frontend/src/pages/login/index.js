@@ -53,6 +53,7 @@ const Login = () => {
     return (
         <div className="auth-page">
             <Form className="auth-container" onFinish={handleLogin}>
+                <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:24,fontSize:18,fontWeight:600}}><img src="/brand-icon.svg" width="40" height="40" alt=""/>Rocky Finance</div>
                 <div className="auth-title">Welcome Back</div>
                 <Form.Item
                     name="username"
