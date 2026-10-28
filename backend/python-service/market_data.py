@@ -1,10 +1,20 @@
 """Shared, dated market inputs. Never fill a missing month with a stale quote."""
+import hashlib
+import json
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.covariance import LedoitWolf
 
 
 def load_market(path):
+    path = Path(path)
+    metadata_path = Path(str(path)+'.metadata.json')
+    metadata = json.loads(metadata_path.read_text()) if metadata_path.exists() else None
+    if metadata is not None:
+        if (metadata.get('complete') is not True or metadata.get('csv_sha256') != hashlib.sha256(path.read_bytes()).hexdigest()
+                or metadata.get('currency') != 'USD' or metadata.get('price_adjustment') not in ['total_return','split_adjusted','raw_close','unverified_close']):
+            raise ValueError('CSV provenance is incomplete or its checksum does not match')
     raw = pd.read_csv(path, usecols=lambda c: c == 'Price' or c.startswith('Close'), low_memory=False)
     cols = [c for c in raw if c != 'Price']
     tickers = raw.iloc[1][cols].tolist()
@@ -14,8 +24,24 @@ def load_market(path):
     values.columns = tickers
     values = values.loc[values.index.notna()].sort_index()
     values = values.where(np.isfinite(values) & (values > 0))
+    # Downloaded daily CSVs may include the current partial month. Never label that
+    # partial return as a completed month or as a future calendar month-end.
+    today = pd.Timestamp.now(tz='America/New_York').tz_localize(None).normalize()
+    cutoff = today.replace(day=1)-pd.Timedelta(days=1)
+    values = values.loc[values.index <= cutoff]
+    if values.empty:
+        raise ValueError('No completed historical months in the CSV')
     monthly = values.resample('ME').last()
-    monthly.attrs.update(provider='Bundled research snapshot', price_adjustment='unverified_close', currency='USD', frequency='monthly')
+    if metadata:
+        counts = values.resample('ME').count()
+        for ticker in monthly.columns:
+            observed = pd.Series(values.index, index=values.index).where(values[ticker].notna()).resample('ME').max()
+            recent = pd.Series(monthly.index, index=monthly.index)-observed <= pd.Timedelta(days=5)
+            monthly.loc[(counts[ticker] < 10) | ~recent,ticker] = np.nan
+    monthly.attrs.update(provider=metadata['provider'] if metadata else 'Bundled research snapshot',
+        price_adjustment=metadata['price_adjustment'] if metadata else 'unverified_close', currency='USD', frequency='monthly',
+        **({'dataset_id':metadata['csv_sha256'],'source_frequency':'daily','source_as_of':metadata.get('source_as_of',metadata['requested_through']),
+            'inactive_symbols':metadata.get('inactive_or_stale_symbols',[])} if metadata else {}))
     return monthly, industries
 
 
@@ -27,6 +53,9 @@ def validate_tickers(tickers, prices):
 
 def monthly_panel(prices, tickers, lookback=60, min_months=36):
     validate_tickers(tickers, prices)
+    unavailable = sorted(set(tickers)&set(prices.attrs.get('inactive_symbols',[])))
+    if unavailable:
+        raise ValueError('No current research history for retired or stale symbols: '+', '.join(unavailable)+'. Choose currently covered stocks; old holdings are not substituted automatically.')
     if isinstance(lookback, bool) or not isinstance(lookback, int) or not 36 <= lookback <= 120:
         raise ValueError('lookback_months must be an integer from 36 to 120')
     selected = consecutive_returns(prices, tickers, min_months).tail(lookback)

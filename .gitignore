@@ -41,3 +41,4 @@ backend/python-service/stock_data_with_sector.csv
 backend/python-service/blueprints/Data/
 backend/python-service/blueprints/AI_related/
 backups/
+backend/python-service/stock_data_with_sector.csv.metadata.json

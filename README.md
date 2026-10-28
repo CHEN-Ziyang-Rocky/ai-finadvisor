@@ -108,3 +108,5 @@ The repository includes application source, dependency lockfiles, numerical and 
 - [2026-10-28 模型审查、三情景修复与数据边界](docs/MODEL-AUDIT-2026-10-28.zh-CN.md)
 
 - [2026-10-29 线上登录接口地址修复与浏览器验收](docs/LOGIN-ROUTING-FIX-2026-10-29.zh-CN.md)
+
+- [2026-10-29 完整历史 CSV、免费来源、质量记录及每周更新](docs/FULL-HISTORY-UPDATE-2026-10-29.zh-CN.md)

@@ -1,5 +1,5 @@
-"""Monthly research refresh, invoked daily for retries. Source credentials never enter logs.
-A source must be explicitly configured by the owner in backend/data/market/source.json.
+"""Research refresh, invoked daily for retries. Source credentials never enter logs.
+Activated weekly CSVs use the public downloader; legacy exports use source.json.
 """
 import argparse
 import csv
@@ -143,7 +143,27 @@ def refresh(data_dir=DATA,activate=False):
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--activate',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--activate',action='store_true')
+    parser.add_argument('--download-history',action='store_true',help='Rebuild a full private research CSV from free public sources')
+    parser.add_argument('--through',help='Completed daily cutoff YYYY-MM-DD (default: previous Friday)')
+    parser.add_argument('--output',help='New complete CSV output path')
+    parser.add_argument('--weekly',action='store_true',help='Enable weekly rebuilding via this existing refresh entry after activation')
+    args=parser.parse_args()
+    if args.download_history:
+        from download_market_history import main as download_history
+        forwarded=[]
+        if args.through:forwarded+=['--through',args.through]
+        if args.output:forwarded+=['--output',args.output]
+        if args.activate:forwarded+=['--activate']
+        if args.weekly:forwarded+=['--weekly']
+        download_history(forwarded)
+        raise SystemExit(0)
+    if args.through or args.output or args.weekly:parser.error('--through, --output and --weekly require --download-history')
+    from download_market_history import automatic_history_enabled, refresh_automatic_history
+    if automatic_history_enabled(DATA):
+        try:print(refresh_automatic_history(activate=args.activate))
+        except Exception:raise SystemExit('Weekly history refresh failed; previous version retained. No credentials are logged.')
+        raise SystemExit(0)
     DATA.mkdir(parents=True,exist_ok=True)
     with (DATA/'refresh.lock').open('w') as lock:
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
