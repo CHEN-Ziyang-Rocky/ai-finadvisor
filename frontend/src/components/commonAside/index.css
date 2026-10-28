@@ -1,0 +1,8 @@
+.aside-container { background:#122c3a !important; color:#fff; min-height:100vh; }
+.aside-container .logo { height:72px; color:#e3f6ef; font-size:19px; font-weight:650; display:flex; align-items:center; justify-content:center; letter-spacing:-.5px; }
+.aside-container .ant-menu { background:#122c3a !important; }
+.aside-container .menu-group-title { font-size:10px; font-weight:700; letter-spacing:1.5px; color:#8fa8b5; text-transform:uppercase; }
+.aside-container .ant-menu-item-group { margin-top:22px; }
+.aside-container .ant-menu-item { font-size:12px; height:46px; padding-left:18px !important; }
+.aside-container .ant-menu-item-selected { background:#214957 !important; color:#d5fff2 !important; }
+.aside-container.ant-layout-sider-collapsed .ant-menu-item-group-title { display:none; }

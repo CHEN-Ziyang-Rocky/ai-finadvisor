@@ -1,0 +1,52 @@
+.research-shell { color: #1c3444; background: #f3f6f8; min-height: 100vh; }
+.research-shell .ant-layout { background: #f3f6f8; }
+.research-page, .simulation-page { max-width: 1280px; margin: 0 auto; padding-bottom: 40px; }
+.research-hero { display:flex; align-items:center; justify-content:space-between; gap:24px; margin:12px 0 26px; }
+.eyebrow { color:#087f80; font-size:11px; font-weight:800; letter-spacing:2px; margin-bottom:12px; }
+.research-hero h1 { font-size:clamp(26px,3vw,38px); font-weight:750; letter-spacing:-1px; line-height:1.2; margin:0 0 12px; }
+.research-hero p { font-size:14px; color:#617585; line-height:1.7; max-width:620px; }
+.workflow-strip { display:flex; gap:28px; color:#718390; font-size:12px; border-bottom:1px solid #dce5e9; padding-bottom:18px; margin-bottom:26px; }
+.research-workspace { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr); gap:24px; align-items:stretch; }
+.research-card { padding:28px; min-width:0; }
+.step-heading { display:flex; gap:14px; align-items:flex-start; margin-bottom:28px; }
+.step-heading > span { display:grid; place-items:center; flex-shrink:0; width:34px; height:34px; border-radius:10px; background:#e7f3f1; color:#087f80; font-size:12px; font-weight:750; }
+.step-heading h5 { margin-bottom:6px; }
+.profile-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px 18px; margin-bottom:22px; }
+.profile-fields > *, .policy-fields > * { min-width:0; }
+.research-shell .MuiInputLabel-root { font-size:14px; }
+.score-panel { background:linear-gradient(140deg,#edf7f5,#fff) !important; }
+.score-value { font-size:70px; font-weight:700; letter-spacing:-4px; color:#087f80; margin:22px 0 18px; line-height:1; }
+.score-value small { font-size:18px; color:#78938f; letter-spacing:0; padding-left:10px; }
+.score-divider { height:1px; background:#d1e5df; margin:24px 0; }
+.scale-labels { display:flex; justify-content:space-between; font-size:11px; color:#526e6a; }
+.method-details { margin-top:20px; font-size:13px; line-height:1.7; color:#637580; }
+.method-details summary { cursor:pointer; font-weight:600; color:#345764; }
+.method-details p { margin-top:12px; }
+.policy-fields { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; margin:28px 0 20px; }
+.section-action { display:flex; justify-content:space-between; gap:20px; align-items:center; border-top:1px solid #edf1f3; padding-top:22px; }
+.section-action > button { flex-shrink:0; }
+.metric-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:24px; }
+.research-metric { padding:20px; border:1px solid #e2e9ed; border-radius:12px; background:#f8fafb; }
+.research-metric span, .research-metric small { display:block; color:#637580; font-size:12px; line-height:1.5; }
+.research-metric strong { display:block; font-size:28px; letter-spacing:-.8px; margin:10px 0; }
+.allocation-table { overflow-x:auto; }
+.allocation-bar { display:inline-flex; width:55%; height:6px; background:#e8eff0; border-radius:6px; margin-right:14px; vertical-align:middle; }
+.allocation-bar span { background:#087f80; border-radius:6px; }
+.research-notice { max-width:1280px; margin:0 auto 20px; font-size:12px; line-height:1.6; color:#71828c; }
+.simulation-form > .MuiCard-root { padding:24px; border-radius:14px; }
+.simulation-form .MuiGrid-item { min-width:0; }
+.simulation-form .asset-row { display:grid; grid-template-columns:minmax(170px,1.5fr) repeat(3,minmax(100px,1fr)) 36px; gap:16px; align-items:start; padding:18px 0; border-top:1px solid #edf1f3; }
+.simulation-form .asset-row > * { min-width:0; }
+.simulation-form .MuiFormControl-root { min-width:0; }
+.simulation-form .totals { display:flex; flex-wrap:wrap; gap:14px; padding:16px; border-radius:10px; background:#f0f7f5; }
+@media(max-width:1100px) { .research-workspace { grid-template-columns:1fr; } .score-panel .score-value { font-size:56px; } .policy-fields { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:700px) { .research-hero { align-items:flex-start; flex-direction:column; gap:14px; } .research-card { padding:20px 16px; } .profile-fields, .policy-fields { grid-template-columns:1fr; gap:22px; } .workflow-strip { gap:14px; font-size:10px; } .section-action { align-items:stretch; flex-direction:column; } .metric-grid { grid-template-columns:1fr; gap:10px; } .research-metric { padding:16px; } .simulation-form > .MuiCard-root { padding:18px 12px; } .simulation-form .asset-row { grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; } .simulation-form .asset-row > :first-child { grid-column:1 / -1; } .simulation-form .asset-row > button { grid-column:3; justify-self:end; } }
+
+.quick-inputs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+@media(max-width:800px){.quick-inputs{grid-template-columns:1fr;}}
+
+.overview-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start;}
+.donut-layout {display:grid;grid-template-columns:minmax(240px,1fr) minmax(180px,1fr);gap:24px;align-items:center;}
+.portrait-list {margin:20px 0;} .portrait-list>div {display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid #edf1f3;} .portrait-list span {color:#637580;} .portrait-list strong {text-align:right;}
+@media(max-width:1050px){.overview-grid{grid-template-columns:1fr;}}
+@media(max-width:700px){.donut-layout{grid-template-columns:1fr;gap:0;}}

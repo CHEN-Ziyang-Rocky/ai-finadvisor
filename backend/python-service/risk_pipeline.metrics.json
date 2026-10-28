@@ -1,0 +1,16 @@
+{
+  "dataset_sha256": "0c17ec928eb61d38447129070a85b00ed6e0d54688d8953c2267f6aa142608c3",
+  "sklearn_version": "1.6.1",
+  "seed": 42,
+  "split": "GroupShuffleSplit by YY1, test_size=0.2",
+  "train_rows": 17960,
+  "test_rows": 4500,
+  "train_households": 3596,
+  "test_households": 900,
+  "household_overlap": 0,
+  "r2": 0.3174002113117462,
+  "mae": 0.19273272271579223,
+  "rmse": 0.2877573697702547,
+  "mean_baseline_mae": 0.2991304235968309,
+  "limitations": "Unweighted household holdout; proxy target is observed risky-asset share, not future returns or validated psychological risk tolerance."
+}
