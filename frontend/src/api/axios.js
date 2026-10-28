@@ -1,9 +1,9 @@
 // client/src/api/axios.js
 
 import axios from 'axios'
+import { API_BASE } from './base'
 
-//const baseUrl = '/api'
-const baseUrl = 'http://localhost:5001/api';
+const baseUrl = API_BASE;
 
 class HttpRequest {
   constructor(baseUrl) {
@@ -12,7 +12,7 @@ class HttpRequest {
 
   getInsideConfig() {
     const config = {
-      baseUrl: this.baseUrl,
+      baseURL: this.baseUrl,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
         'X-Session-Key': localStorage.getItem('publicKey') || '',

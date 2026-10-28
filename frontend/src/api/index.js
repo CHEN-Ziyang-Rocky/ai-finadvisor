@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { encryptMessage, decryptMessage, getKeyFromIndexedDB, verifySignature, storeKeyInIndexedDB } from '../utils/cryptoUtils';
-const API_BASE = process.env.REACT_APP_API_BASE_URL || '/api';
+import { API_BASE } from './base';
 const api = axios.create({ baseURL: API_BASE, timeout: 120000 });
 let serverPublicKeyBase64 = '';
 const response = await fetch('/server_PK/publicKey.pem');
