@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Typography,
@@ -26,6 +26,8 @@ const predefinedTickers = [
     { label: 'Microsoft (MSFT)', value: 'MSFT' },
     { label: 'Amazon (AMZN)', value: 'AMZN' },
     { label: 'NVIDIA (NVDA)', value: 'NVDA' },
+    { label: 'Alphabet (GOOGL)', value: 'GOOGL' },
+    { label: 'Meta (META)', value: 'META' },
     { label: 'Netflix (NFLX)', value: 'NFLX' },
     { label: 'Custom...', value: 'custom' },
 ];
@@ -45,8 +47,8 @@ const cashflowOptions = [
 
 const scenarioOptions = [
     { label: 'Baseline', value: 'baseline' },
-    { label: 'Optimistic', value: 'optimistic' },
-    { label: 'Pessimistic', value: 'pessimistic' },
+    { label: 'Mean +1 pp', value: 'optimistic' },
+    { label: 'Mean −1 pp', value: 'pessimistic' },
 ];
 
 const rebalancingOptions = [
@@ -82,11 +84,18 @@ function buildPortfolioCompositions(stocks) {
     const compositions = [[], [], []];
     stocks.forEach((stock) => {
         const ticker = stock.isCustom ? stock.customValue : stock.ticker;
-        compositions[0].push(`${ticker} ${stock.allocation1}%`);
-        compositions[1].push(`${ticker} ${stock.allocation2}%`);
-        compositions[2].push(`${ticker} ${stock.allocation3}%`);
+        compositions[0].push(`${ticker} ${Number(stock.allocation1).toFixed(2)}%`);
+        compositions[1].push(`${ticker} ${Number(stock.allocation2).toFixed(2)}%`);
+        compositions[2].push(`${ticker} ${Number(stock.allocation3).toFixed(2)}%`);
     });
     return compositions.map((arr) => arr.join(', '));
+}
+
+function WeightField({value,onChange,...props}) {
+    const [editing,setEditing]=useState(false),[draft,setDraft]=useState('');
+    useEffect(()=>{if(!editing)setDraft(Number(value).toFixed(2));},[value,editing]);
+    return <TextField {...props} value={draft} onFocus={()=>{setEditing(true);setDraft(String(value));}}
+        onBlur={()=>setEditing(false)} onChange={e=>{setDraft(e.target.value);onChange(e);}}/>;
 }
 
 export default function InvestorForm({ onPredictionComplete, initialPortfolio }) {
@@ -99,7 +108,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
         investment_years: 10,
         inflation_rate: 2.5,
         base_interest_rate: 3.0,
-        simulation_model: initialPortfolio ? 'statistical' : 'historical',
+        simulation_model: 'historical',
         cashflow_type: 'none',
         // For withdraw_fixed:
         withdrawal_amount: 100,
@@ -111,7 +120,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
         cashflow_amount: 0,
         inflation_adjusted: true,
         selectedScenarios: ['baseline', 'optimistic', 'pessimistic'],
-        rebalancing_frequency: 'none',
+        rebalancing_frequency: 'annually',
         // New field for Statistical Returns
         time_series_model: 'normal',
         // New fields for Parameterized Returns: Expected Return and Volatility
@@ -219,7 +228,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
                 num_simulations: Number(formData.num_simulations),
                 random_seed: Number(formData.random_seed),
                 lookback_months: Number(formData.lookback_months),
-                calibration: formData.simulation_model === 'statistical' ? 'historical' : 'manual',
+                calibration: formData.simulation_model === 'parameterized' ? 'manual' : 'historical',
                 investment_years: Number(formData.investment_years),
                 inflation_rate: Number(formData.inflation_rate),
                 base_interest_rate: Number(formData.base_interest_rate),
@@ -271,6 +280,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
 
     return (
         <Box component="form" className="simulation-form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <Alert severity="info" sx={{mb:2}}>This is a new configuration. Existing results keep their original settings until you run another simulation. Displayed weights use two decimals; untouched values retain full precision.</Alert>
             <Accordion sx={{mb:3}}>
                 <AccordionSummary expandIcon={<span>+</span>}>How the simulation models differ</AccordionSummary>
                 <AccordionDetails><Typography variant="body2">Historical resamples joint blocks of past monthly returns. Statistical estimates asset-specific means, volatilities and correlations; GARCH additionally models changing volatility. Parameterized uses your assumed mean and volatility with independent assets. Outcomes are conditional scenarios, not forecasts.</Typography></AccordionDetails>
@@ -584,7 +594,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
                                 inputProps={{ pattern: '^[A-Z0-9][A-Z0-9.\\-]{0,9}$' }}
                             />
                         )}
-                        <TextField
+                        <WeightField
                             label="Portfolio 1 (%)"
                             type="number"
                             value={stock.allocation1}
@@ -592,7 +602,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
                             sx={{ flex: 1 }}
                             inputProps={{ ...allocationLimits }}
                         />
-                        <TextField
+                        <WeightField
                             label="Portfolio 2 (%)"
                             type="number"
                             value={stock.allocation2}
@@ -600,7 +610,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
                             sx={{ flex: 1 }}
                             inputProps={{ ...allocationLimits }}
                         />
-                        <TextField
+                        <WeightField
                             label="Portfolio 3 (%)"
                             type="number"
                             value={stock.allocation3}

@@ -13,7 +13,7 @@ test('precise optimizer weights remain browser-valid and are submitted without r
     const inputs = screen.getAllByRole('spinbutton', { name: 'Portfolio 1 (%)', exact: true });
     inputs.forEach((input, i) => {
         expect(input.checkValidity()).toBe(true);
-        expect(Number(input.value)).toBeCloseTo(weights[i] * 100, 12);
+        expect(input.value).toBe((weights[i] * 100).toFixed(2));
     });
     fireEvent.click(screen.getByRole('button', { name: 'Run Simulation' }));
     await waitFor(() => expect(completed).toHaveBeenCalled());

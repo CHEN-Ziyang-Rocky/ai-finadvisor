@@ -1,6 +1,7 @@
 """Constrained mean-variance allocation with explicit diagnostics and honest backtests."""
 import numpy as np
 from scipy.optimize import minimize
+from research_audit import receipt, block_indices
 from market_data import estimate, monthly_panel, consecutive_returns, context
 
 
@@ -117,6 +118,7 @@ def walk_forward(prices, tickers, score, cap, lookback=60, cost_bps=10, test_mon
     histories = {k: [] for k in drift}
     turnover = {k: [] for k in drift}
     rows, periods = [], []
+    gross_histories = {k: [] for k in drift}
     for i in range(start, len(all_returns)):
         train = all_returns.iloc[i-lookback:i]  # EXCLUDES the evaluated month.
         mu, cov, _ = estimate(train)
@@ -130,6 +132,7 @@ def walk_forward(prices, tickers, score, cap, lookback=60, cost_bps=10, test_mon
             gross = float(target@realized)
             net = (1-traded*cost_bps/10000)*(1+gross)-1
             histories[name].append(net)
+            gross_histories[name].append(gross)
             turnover[name].append(traded)
             drift[name] = target*(1+realized)/(1+gross)
         periods.append({'train_end': str(train.index[-1].date()), 'test_month': str(all_returns.index[i].date()),
@@ -137,6 +140,9 @@ def walk_forward(prices, tickers, score, cap, lookback=60, cost_bps=10, test_mon
         rows.append({'date': str(all_returns.index[i].date()), **{k: float(100*np.prod(1+np.array(v))) for k,v in histories.items()}})
     return {'available': True, 'test_months':test_months, 'lookback_months':lookback, 'cost_bps':cost_bps,
             'cost_convention':'Basis points per gross dollar traded (buys + sells), including initial entry; no terminal liquidation',
+            'cost_sensitivity': [{'cost_bps': cost, 'metrics': {name: metrics(
+                (1-np.array(turnover[name])*cost/10000)*(1+np.array(gross_histories[name]))-1, turnover[name])
+                for name in histories}} for cost in sorted({0,10,25,50,cost_bps})],
             'series':rows, 'periods':periods, 'metrics':{k:metrics(histories[k],turnover[k]) for k in histories},
             'limitations':['Fixed user-selected universe and fixed current risk score; not a point-in-time stock-selection backtest',
                            'Survivorship/selection bias and unverified price adjustment remain; no market-impact model']}
@@ -198,9 +204,67 @@ def allocation_report(prices, industries, data):
     if len(tickers) == 1: warnings.append('A single stock has no cross-asset diversification.')
     elif np.isclose(len(tickers)*cap, 1, rtol=0, atol=1e-10):
         warnings.append('The number of stocks and holding cap force equal weights; the return preference cannot change this allocation.')
-    return {'allocations':w.tolist(), 'stock_tickers':tickers, 'data_context':context(r),
+    result = {'allocations':w.tolist(), 'stock_tickers':tickers, 'data_context':context(r),
             'policy':{'method':method,'max_weight':cap,'lookback_months':lookback,'cost_bps':data.get('cost_bps',10),'risk_score':score,**estimation},
             'diagnostics':{'estimated_annual_return':float(mu@w),'estimated_annual_volatility':float(np.sqrt(max(w@cov@w,0))),
                            'risk_contributions': contributions, 'effective_holdings':float(1/(w@w)), 'correlation_matrix':corr.tolist(), 'industry_weights':exposure,'warnings':warnings},
             'frontier':frontier(mu,cov,cap), 'comparison':comparisons, 'objective':objective_info,
             'validation':walk_forward(prices,tickers,score,cap,lookback,data.get('cost_bps',10),method=method,reference=reference)}
+
+    result['robustness'] = allocation_robustness(prices, tickers, r, w, score, cap, method, lookback)
+    result['calculation'] = receipt('allocation', {
+        'stock_tickers': tickers, 'risk_tolerance': score, 'method': method,
+        'max_weight': cap, 'lookback_months': lookback, 'cost_bps': data.get('cost_bps',10),
+        'reference_weights': supplied,
+    }, {'data_context': context(r), 'annual_means': mu.tolist(), 'annual_covariance': cov.tolist(),
+        'estimation': estimation, 'ticker_order': tickers}, r)
+    return result
+
+
+def allocation_robustness(prices, tickers, r, weights, score, cap, method, lookback):
+    """Predeclared diagnostics, never used to select a winning strategy or replace weights."""
+    preference = 0 if method == 'minimum_variance' else score
+    seed, samples = 20261029, 128
+    rng = np.random.default_rng(seed)
+    fitted, failures = [], 0
+    for indices in block_indices(rng, len(r), samples):
+        try:
+            mu, cov, _ = estimate(r.to_numpy()[indices])
+            fitted.append(optimize_weights(mu, cov, preference, cap))
+        except ValueError:
+            failures += 1
+    stability = {'samples_requested': samples, 'samples_completed':len(fitted), 'failures':failures,
+                 'seed':seed, 'block_months':3, 'weights':[], 'median_one_way_reallocation':None}
+    if fitted:
+        fitted = np.asarray(fitted)
+        stability['weights'] = [{'ticker':t, 'p10':float(np.percentile(fitted[:,i],10)),
+                                'p90':float(np.percentile(fitted[:,i],90))} for i,t in enumerate(tickers)]
+        stability['median_one_way_reallocation'] = float(np.median(np.abs(fitted-weights).sum(axis=1)/2))
+    windows = []
+    for window in sorted({36,60,84,120,lookback}):
+        try:
+            sample = monthly_panel(prices,tickers,window)
+            if len(sample) != window: raise ValueError(f'Only {len(sample)} common months available')
+            mu,cov,_ = estimate(sample)
+            w = optimize_weights(mu,cov,preference,cap)
+            windows.append({'months':window,'available':True,'weights':w.tolist(),
+                'effective_holdings':float(1/(w@w)), 'one_way_reallocation':float(np.abs(w-weights).sum()/2)})
+        except ValueError as error:
+            windows.append({'months':window,'available':False,'reason':str(error)})
+    mu,cov,_ = estimate(r)
+    caps=[]
+    for limit in sorted({.25,.35,cap}):
+        if len(tickers)*limit < 1-1e-10:
+            caps.append({'cap':limit,'available':False,'reason':'Too few stocks for this holding cap'})
+            continue
+        try:
+            w=optimize_weights(mu,cov,preference,limit)
+            caps.append({'cap':limit,'available':True,'weights':w.tolist(),'effective_holdings':float(1/(w@w)),
+                         'estimated_annual_return':float(mu@w),'estimated_annual_volatility':float(np.sqrt(w@cov@w))})
+        except ValueError as error:
+            caps.append({'cap':limit,'available':False,'reason':str(error)})
+    return {'stability':stability,'history_windows':windows,'holding_caps':caps,
+        'interpretation':'Joint circular block resampling, re-estimating means and covariance under the same policy. '
+            '10th–90th weight percentiles are conditional sensitivity ranges, not confidence intervals for future optimal weights. '
+            'History windows and holding caps were fixed in advance; no alternative is automatically selected. '
+            'A smaller cap can increase estimated variance within a correlated stock universe.'}

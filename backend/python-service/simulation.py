@@ -1,11 +1,13 @@
 """Monthly joint Monte Carlo engine. Historical calibration fits GARCH via Gaussian QML.
 
 Historical draws sample complete monthly rows to preserve cross-asset dependence.
-Cash flows happen at month end; inflation uses completed years (year one is base).
+Cash flows happen at month end; real wealth discounts cumulative inflation.
 """
 import copy
 from functools import lru_cache
 import numpy as np
+import pandas as pd
+from research_audit import receipt, block_indices
 from market_data import monthly_panel, estimate, context
 from volatility import fit_garch
 from sklearn.covariance import LedoitWolf
@@ -101,8 +103,9 @@ def validate(features):
             number(weights, ticker, 0, 0, 100)
         if abs(sum(weights.values()) - 100) > 1e-6:
             raise ValueError('Each portfolio allocation must sum to 100%')
-    p['calibration'] = p.get('calibration', 'historical' if p['simulation_model'] == 'statistical' else 'manual')
+    p['calibration'] = p.get('calibration', 'manual' if p['simulation_model'] == 'parameterized' else 'historical')
     if p['calibration'] not in ['historical', 'manual']: raise ValueError('Invalid calibration')
+    if p['simulation_model'] == 'historical': p['calibration'] = 'historical'
     if len({t for portfolio in portfolios for t in portfolio['weights']}) > 10:
         raise ValueError('At most 10 distinct assets across all portfolios')
     p['portfolios'] = portfolios
@@ -169,6 +172,10 @@ def run_paths(p, weights_dict, shared_paths):
     annual_vol = float(np.sqrt(max(return_square_sum / max(return_count, 1) - mean**2, 0) * 12))
     real_final = final / (1 + p['inflation_rate'] / 100)**years
     return {
+        'goal_sensitivity': [{'goal_real': goal, 'success_count':int(np.sum(real_final >= goal)),
+            'paths':n, 'fraction':float(np.mean(real_final >= goal))}
+            for goal in sorted({p['goal_amount'],p['initial_amount'],2*p['initial_amount'],5*p['initial_amount'],10*p['initial_amount'],20*p['initial_amount']})],
+        'goal_success_count':int(np.sum(real_final >= p['goal_amount'])),
         'probability_intervals': {
             'probability_goal_met_real': probability_interval(real_final >= p['goal_amount']),
             'probability_below_initial': probability_interval(final < p['initial_amount']),
@@ -181,6 +188,11 @@ def run_paths(p, weights_dict, shared_paths):
             'probability_goal_met_real': float(np.mean(real_final >= p['goal_amount'])),
             'probability_depleted': float(ruined.mean()),
             'median_real_final': float(np.median(real_final)),
+            'terminal_real_wealth_p5':float(np.percentile(real_final,5)),
+            'lower_tail_mean_real_wealth':float(real_final[final <= p5].mean()),
+            'p95_investment_max_drawdown':float(np.percentile(investment_drawdowns,95)),
+            'probability_drawdown_30':float(np.mean(investment_drawdowns >= .3)),
+            'probability_below_initial_real':float(np.mean(real_final < p['initial_amount'])),
             'mean_final': float(final.mean()), 'median_final': float(np.median(final)),
             'std_final': float(final.std()), 'avg_max_drawdown': float(drawdowns.mean()),
             'avg_investment_max_drawdown': float(investment_drawdowns.mean()),
@@ -235,6 +247,7 @@ def simulate(features, prices):
     root = eigenvectors @ np.diag(np.sqrt(np.maximum(eigenvalues,0)))
     historical_values = r.to_numpy() if r is not None else None
     scenarios = {}
+    baseline_paths = None
     for scenario in p['scenarios']:
         # Same innovations for every scenario and portfolio: a controlled comparison.
         rng = np.random.default_rng(p['random_seed'])
@@ -272,13 +285,17 @@ def simulate(features, prices):
                     paths[month] = np.expm1(drift-vol**2/2+vol*z)
                 else:
                     paths[month] = monthly_mu+shift/12+np.sqrt(np.diag(monthly_cov))*multiplier*z
+        if p['simulation_model']=='historical' and baseline_paths is None:
+            baseline_paths = paths-shift/12
         if not np.isfinite(paths).all(): raise ValueError('Non-finite simulation; reduce horizon/volatility')
         results = {}
         for i,portfolio in enumerate(p['portfolios']):
             indices = [universe.index(t) for t in portfolio['weights']]
             results[f'portfolio_{i+1}'] = run_paths(p,portfolio['weights'],paths[:,:,indices])
         scenarios[scenario] = {'portfolioResults':results}
-    return {'scenarios':scenarios, 'initial_amount':p['initial_amount'], 'model':p['simulation_model'], 'calibration':params, 'assumptions':{
+    return {'calculation':receipt('simulation',p,params,r),
+        'sensitivity':simulation_sensitivity(p,prices,universe,r,baseline_paths),
+        'scenarios':scenarios, 'initial_amount':p['initial_amount'], 'model':p['simulation_model'], 'calibration':params, 'assumptions':{
         'step':'monthly', 'seed':p['random_seed'], 'paths':n,
         'garch':('Gaussian QML fitted on monthly log returns; constant residual correlation; short samples and near-boundary fits are uncertain' if garch else 'Manual assumed alpha=.1, beta=.85') if p['time_series_model']=='garch' and p['simulation_model']=='statistical' else 'Not used',
         'costs':'Simulations exclude transaction costs and taxes; walk-forward evaluation reports trading costs separately',
@@ -292,3 +309,59 @@ def simulate(features, prices):
         'scenario_shift':'Sensitivity assumptions, not probabilities: annual arithmetic mean +/-1pp, non-historical volatility x0.9/x1.1',
         'comparison':'Same joint market paths reused across portfolios. Returns/volatility pool investment-only monthly returns; drawdown includes cash flows.',
     }}
+
+
+def simulation_sensitivity(p, prices, universe, returns, baseline_paths):
+    """Separate diagnostics with explicit conditional assumptions, not scenario probabilities."""
+    checks=[]
+    if baseline_paths is not None:
+        # Each path receives a fixed mean perturbation estimated from one independent
+        # bootstrap sample. Market innovations stay identical to baseline, isolating
+        # persistent mean-estimation uncertainty from ordinary within-path variation.
+        rng=np.random.default_rng(np.random.SeedSequence([p['random_seed'],20261029]))
+        values=returns.to_numpy()
+        indices=block_indices(rng,len(values),p['num_simulations'],p['block_months'])
+        mean_offsets=values[indices].mean(axis=1)-values.mean(axis=0)
+        variations=[('mean_minus_10pp',-.10/12),('mean_minus_20pp',-.20/12),
+                    ('resampled_mean',mean_offsets)]
+        for name,offset in variations:
+            paths=baseline_paths+offset
+            results={}
+            for i,portfolio in enumerate(p['portfolios']):
+                columns=[universe.index(t) for t in portfolio['weights']]
+                summary=run_paths(p,portfolio['weights'],paths[:,:,columns])
+                results[f'portfolio_{i+1}']={'performance_metrics':summary['performance_metrics'],
+                    'goal_success_count':summary['goal_success_count']}
+            checks.append({'name':name,'portfolioResults':results})
+    events=[]
+    if returns is not None:
+        all_returns=prices[universe].pct_change(fill_method=None)
+        for label,start,end in [('Global financial crisis','2008-09','2009-03'),
+                               ('COVID sell-off and rebound','2020-02','2020-04'),
+                               ('2022 equity sell-off','2022-01','2022-12')]:
+            dates=pd.period_range(start,end,freq='M').to_timestamp('M')
+            sample=all_returns.reindex(dates)
+            event={'label':label,'start':start,'end':end,'available':False}
+            if sample.isna().any().any() or not np.isfinite(sample.to_numpy()).all():
+                event['reason']='Full monthly history is unavailable for every selected stock; no proxy or backfill used.'
+            else:
+                event['available']=True
+                event['portfolios']={}
+                for i,portfolio in enumerate(p['portfolios']):
+                    w=np.array(list(portfolio['weights'].values()))/100
+                    monthly=sample[list(portfolio['weights'])].to_numpy()@w
+                    wealth=np.r_[1.,np.cumprod(1+monthly)]
+                    event['portfolios'][f'portfolio_{i+1}']={'total_return':float(wealth[-1]-1),
+                        'max_drawdown':float((wealth/np.maximum.accumulate(wealth)-1).min())}
+            events.append(event)
+    return {'available':baseline_paths is not None,'checks':checks,'historical_replays':events,
+        'method':'For historical resampling only: same innovations, horizon, cash flows and holdings. '
+            'Mean −10/−20 percentage points subtract 0.10/12 or 0.20/12 from each monthly asset return; '
+            'these are deliberately broad stress assumptions, without assigned likelihood. '
+            'Resampled mean uses one independent joint block sample of the calibration window per path, '
+            'adds its mean minus the original sample mean to every month of that path, and holds that offset fixed. '
+            'This is a conditional parameter-sensitivity experiment, not a calibrated predictive distribution; '
+            'it can add sampling noise and cannot capture unknown regimes. Returns below −100% are floored at total loss.',
+        'replay_method':'Today’s weights reapplied at each month start over fixed past event windows, no cash flows, fees or taxes. '
+            'These are nominal monthly-close replays, not investable historical strategies or intramonth worst losses. '
+            'Missing constituent history makes the whole event unavailable.'}

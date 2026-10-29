@@ -5,6 +5,7 @@ import { Typography, Button, Paper, Box, Alert, Autocomplete, TextField, Chip, M
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import AllocationDonut from '../../components/research/AllocationDonut';
 import PortfolioComparison from '../../components/research/PortfolioComparison';
+import AllocationAudit from '../../components/research/AllocationAudit';
 import ModelGuide from '../../components/research/ModelGuide';
 import InvestorForm, { validProfile } from './InvestorForm';
 import EfficientFrontierChart from './EfficientFrontierChart';
@@ -118,6 +119,7 @@ export default function User() {
                 {report.diagnostics.warnings.map(w=><Alert key={w} severity="warning" sx={{my:1}}>{w}</Alert>)}
                 <AllocationDonut tickers={report.stock_tickers} weights={report.allocations} industries={report.diagnostics.industry_weights}/>
                 <PortfolioComparison report={report}/>
+                <AllocationAudit report={report}/>
                 <div className="allocation-table"><Table size="small"><TableHead><TableRow><TableCell>Stock</TableCell><TableCell>Portfolio weight</TableCell><TableCell align="right">Share of variance</TableCell></TableRow></TableHead><TableBody>{report.stock_tickers.map((ticker,i)=><TableRow key={ticker}><TableCell><strong>{ticker}</strong></TableCell><TableCell><div className="allocation-bar"><span style={{width:`${report.allocations[i]*100}%`}}/></div>{pct(report.allocations[i])}</TableCell><TableCell align="right">{pct(report.diagnostics.risk_contributions?.[i])}</TableCell></TableRow>)}</TableBody></Table></div>
                 <details className="method-details"><summary>Estimation & diversification details</summary><p>Mean shrinkage: {pct(report.policy.mean_shrinkage)} (uncertainty heuristic). Ledoit–Wolf covariance shrinkage: {pct(report.policy.covariance_shrinkage)}. Variance contributions measure risk concentration, not expected losses; negative contributions can reflect hedging.</p><p>{Object.entries(report.diagnostics.industry_weights).map(([i,w])=>`${i}: ${pct(w)}`).join(' · ')}</p><p>Price basis: {report.data_context.price_adjustment || 'unverified_close'}. Raw or split-adjusted prices do not represent reinvested-dividend total returns. This calculation uses the dated research dataset.</p></details>
                 <Button variant="contained" sx={{mt:2}} onClick={()=>navigate('/tools/simulator',{state:{portfolio:{tickers:report.stock_tickers,weights:report.allocations,lookback_months:report.policy.lookback_months,as_of:report.data_context.end}}})}>Explore this portfolio in the simulator →</Button>

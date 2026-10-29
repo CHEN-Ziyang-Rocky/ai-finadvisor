@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Box, Button, Checkbox, Chip, FormControlLabel, LinearProgress, TextField, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Alert, Box, Button, Checkbox, Chip, FormControlLabel, LinearProgress, TextField, Typography } from '@mui/material';
 import api from '../../api';
 
 export function quickPayload(portfolio, amount, years, contribution, compare, goal) {
@@ -34,8 +34,8 @@ export default function QuickSimulation({ portfolio, onPredictionComplete }) {
         finally {setLoading(false);}
     };
     return <Box component="form" onSubmit={submit} className="research-card" sx={{my:3}}>
-        <div className="eyebrow">QUICK START</div><Typography variant="h5" sx={{mb:1}}>Your portfolio, three simple inputs.</Typography>
-        <Typography color="text.secondary" sx={{mb:2}}>Compare baseline, optimistic and pessimistic scenarios. Your saved weights are carried over automatically.</Typography>
+        <div className="eyebrow">QUICK START</div><Typography variant="h5" sx={{mb:1}}>Set your horizon and a meaningful target.</Typography>
+        <Typography color="text.secondary" sx={{mb:2}}>Compare baseline assumptions and mean sensitivity cases. Your saved weights are carried over automatically.</Typography>
         <Box sx={{display:'flex',gap:1,flexWrap:'wrap',mb:3}}>{portfolio.tickers.map((t,i)=><Chip key={t} label={`${t} ${(portfolio.weights[i]*100).toFixed(1)}%`}/>)}</Box>
         <Box className="quick-inputs">
             <TextField label="Starting amount (USD)" type="number" value={amount} onChange={e=>setAmount(e.target.value)} inputProps={{min:1,max:1e9,step:'any'}} required/>
@@ -43,11 +43,11 @@ export default function QuickSimulation({ portfolio, onPredictionComplete }) {
             <TextField label="Monthly contribution (USD)" type="number" value={contribution} onChange={e=>setContribution(e.target.value)} inputProps={{min:0,max:1e9,step:'any'}} required/>
         </Box>
         <Typography variant="body2" color="text.secondary" sx={{mt:2}}>Historical resampling · 500 paths · annual rebalancing · 2.5% assumed inflation. No fees or taxes. These are adjustable assumptions, not a forecast.</Typography>
-        <Typography variant="body2" color="text.secondary" sx={{mt:1}}>Why this model? Resampling entire three-month blocks keeps assets moving together and retains short runs of market returns. Optimistic / pessimistic add / subtract 1 percentage point of annual arithmetic return; they are sensitivity tests with no assigned likelihood.</Typography>
-        <Accordion disableGutters elevation={0} sx={{my:2}}><AccordionSummary expandIcon={<span>+</span>}>Optional goal and comparison</AccordionSummary><AccordionDetails>
-            <TextField label="Target wealth (today's USD)" type="number" value={goal} onChange={e=>setGoal(e.target.value)} inputProps={{min:0,max:1e12,step:'any'}} helperText="Default: preserve $10,000 of today's purchasing power."/>
+        <Typography variant="body2" color="text.secondary" sx={{mt:1}}>Why this model? Resampling entire three-month blocks keeps assets moving together and retains short runs of market returns. The sensitivity cases add / subtract 1 percentage point of annual arithmetic return; they are sensitivity tests with no assigned likelihood.</Typography>
+        <Box sx={{my:2}}>
+            <TextField label="Target wealth (today's USD)" type="number" value={goal} onChange={e=>setGoal(e.target.value)} inputProps={{min:0,max:1e12,step:'any'}} helperText="This exact target defines success. The default $10,000 means preserving that purchasing power, not earning $100,000." fullWidth required/>
             <FormControlLabel control={<Checkbox checked={compare} onChange={e=>setCompare(e.target.checked)}/>} label="Compare equal weights in the same assets"/>
-        </AccordionDetails></Accordion>
+        </Box>
         {error&&<Alert severity="error" sx={{mb:2}}>{error}</Alert>}
         {loading&&<Box role="status" sx={{mb:2}}><LinearProgress/><Typography variant="body2">Simulating shared market paths and measuring the outcome range…</Typography></Box>}
         <Button type="submit" variant="contained" disabled={loading}>{loading?'Calculating…':'Explore outcomes'}</Button>

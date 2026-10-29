@@ -29,11 +29,11 @@ test('three scenario summaries remain visible while detail charts switch',async(
  api.post.mockResolvedValue({data:{scenarios:Object.fromEntries(['baseline','optimistic','pessimistic'].map(s=>[s,{portfolioResults:{portfolio_1:summary}}]))}});
  render(<Simulator/>);
  fireEvent.click(await screen.findByRole('button',{name:'Explore outcomes'}));
- expect(await screen.findByRole('button',{name:'Optimistic scenario'})).toBeInTheDocument();
- expect(screen.getByRole('button',{name:'Pessimistic scenario'})).toBeInTheDocument();
+ expect(await screen.findByRole('button',{name:'Mean +1 pp scenario'})).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'Mean −1 pp scenario'})).toBeInTheDocument();
  expect(screen.getByText('Baseline scenario · portfolios')).toBeInTheDocument();
- fireEvent.click(screen.getByRole('tab',{name:'Pessimistic details'}));
- expect(screen.getByText('Pessimistic scenario · portfolios')).toBeInTheDocument();
+ fireEvent.click(screen.getByRole('tab',{name:'Mean −1 pp details'}));
+ expect(screen.getByText('Mean −1 pp scenario · portfolios')).toBeInTheDocument();
  expect(screen.queryByText('Baseline scenario · portfolios')).not.toBeInTheDocument();
  expect(screen.getByText(/95% simulation sampling interval/)).toHaveTextContent('40.0% – 60.0%');
 });

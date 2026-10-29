@@ -19,13 +19,13 @@ const formatCurrency = (value) =>
         maximumFractionDigits: 0
     }).format(value);
 
-export default function PredictionChart({ data, scenario }) {
+export default function PredictionChart({ data, scenario, basisLabel }) {
     const theme = useTheme();
 
     const scenarioNames = {
         baseline: 'Baseline Scenario',
-        optimistic: 'Optimistic Scenario',
-        pessimistic: 'Pessimistic Scenario'
+        optimistic: 'Mean +1 pp sensitivity',
+        pessimistic: 'Mean −1 pp sensitivity'
     };
 
     const lineColors = {
@@ -40,7 +40,7 @@ export default function PredictionChart({ data, scenario }) {
     return (
         <Box sx={{ mt: 2, mb: 3 }}>
             <Typography variant="subtitle1" gutterBottom>
-                {scenarioNames[scenario] || 'Simulation'} - Portfolio Value
+                {scenarioNames[scenario] || 'Simulation'} · {basisLabel || 'Future nominal USD'}
             </Typography>
             <ResponsiveContainer width="100%" height={400}>
                 <LineChart
