@@ -11,6 +11,7 @@ import EfficientFrontierChart from './EfficientFrontierChart';
 import api, { fetchRiskTolerance, fetchAvailableAssets } from '../../api';
 
 const pct = value => value == null ? '—' : `${(value * 100).toFixed(1)}%`;
+export const MAGNIFICENT_SEVEN = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'NVDA', 'TSLA'];
 const labels = { reference:'Previous weights', optimized: 'Selected method', equal_weight: 'Equal weight', minimum_variance: 'Minimum variance' };
 const StepTitle = ({ number, title, description }) => <div className="step-heading"><span>{number}</span><div><Typography variant="h5">{title}</Typography><Typography variant="body2" color="text.secondary">{description}</Typography></div></div>;
 const Metric = ({ label, value, note }) => <div className="research-metric"><span>{label}</span><strong>{value}</strong><small>{note}</small></div>;
@@ -23,11 +24,12 @@ export default function User() {
     const [catalog, setCatalog] = useState([]), [asOf, setAsOf] = useState(''), [selected, setSelected] = useState([]);
     const [policy, setPolicy] = useState({max_weight:.5,lookback_months:60,cost_bps:10,method:'target_return'});
     const [report, setReport] = useState(null), [busy, setBusy] = useState(''), [error, setError] = useState('');
+    const [savedProfileChanged, setSavedProfileChanged] = useState(false);
     useEffect(() => {
         fetchAvailableAssets().then(data => {setCatalog(data.catalog || []);setAsOf(data.as_of);setDataset({...data.dataset,freshness:data.freshness});})
             .catch(() => setError('Could not load the asset catalog. Refresh to retry.'));
     }, []);
-    useEffect(()=>{let active=true;api.get('/overview').then(({data})=>{if(!active)return;setPrevious(data.portfolio);if(data.profile){setFeatures({...data.profile,risk:data.profile.risk??''});if(data.profile.risk_tolerance!=null){setRisk(data.profile.risk_tolerance);setPreference(data.profile.risk_tolerance);}} if(data.latest_run){setReport(data.latest_run.report);setPolicy(p=>({...p,...data.latest_run.report.policy}));setPreference(data.latest_run.report.policy.risk_score);}}).catch(()=>{if(active)setError('Saved inputs could not be restored. Re-enter your inputs before calculating.');}).finally(()=>{if(active)setProfileLoading(false);});return()=>{active=false;};},[]);
+    useEffect(()=>{let active=true;api.get('/overview').then(({data})=>{if(!active)return;setPrevious(data.portfolio);if(data.profile){setFeatures({...data.profile,risk:data.profile.risk??''});if(data.profile.risk_tolerance!=null){setRisk(data.profile.risk_tolerance);setPreference(data.profile.risk_tolerance);}} if(data.latest_run){setReport(data.latest_run.report);setPolicy(p=>({...p,...data.latest_run.report.policy}));setSavedProfileChanged(Boolean(data.profile?.updated_at && data.latest_run.created_at && new Date(data.profile.updated_at)>new Date(data.latest_run.created_at)));if(data.profile?.risk_tolerance!=null)setPreference(data.latest_run.report.policy.risk_score);}}).catch(()=>{if(active)setError('Saved inputs could not be restored. Re-enter your inputs before calculating.');}).finally(()=>{if(active)setProfileLoading(false);});return()=>{active=false;};},[]);
     useEffect(()=>{if(previous&&catalog.length)setSelected(current=>current.length?current:previous.tickers.map(t=>catalog.find(c=>c.ticker===t)).filter(Boolean));},[previous,catalog]);
     const reference = previous && selected.length===previous.tickers.length && selected.every(s=>previous.tickers.includes(s.ticker)) ? Object.fromEntries(previous.tickers.map((t,i)=>[t,previous.weights[i]])):undefined;
     const changeFeatures = update => {setFeatures(update);setRisk(null);setModelInfo(null);setReport(null);};
@@ -40,7 +42,7 @@ export default function User() {
     };
     const allocate = async () => {
         setBusy('allocation');setError('');setReport(null);
-        try {setReport((await api.post('/allocate',{risk_tolerance:preference,stock_tickers:selected.map(s=>s.ticker),...policy,reference_weights:reference})).data);}
+        try {setReport((await api.post('/allocate',{risk_tolerance:preference,stock_tickers:selected.map(s=>s.ticker),...policy,reference_weights:reference})).data);setSavedProfileChanged(false);}
         catch(e){setError(e.response?.data?.details || e.response?.data?.error || 'Optimization failed.');}
         finally{setBusy('');}
     };
@@ -49,7 +51,11 @@ export default function User() {
         Number.isFinite(policy.cost_bps) && policy.cost_bps >= 0 && policy.cost_bps <= 100;
     const infeasible = selected.length > 0 && selected.length * policy.max_weight < 1 - 1e-10;
     const validation = report?.validation;
-    const example = () => {setSelected(['AAPL','MSFT','JNJ','JPM'].map(t=>catalog.find(c=>c.ticker===t && c.eligible)).filter(Boolean));setReport(null);};
+    const exampleStocks = MAGNIFICENT_SEVEN.map(t=>catalog.find(c=>c.ticker===t && c.eligible));
+    const missingExample = MAGNIFICENT_SEVEN.filter((_,i)=>!exampleStocks[i]);
+    const unavailableSelection = selected.filter(s=>!s.eligible);
+    const staleReport = report && asOf && (report.data_context.end!==asOf || (dataset?.dataset_id && report.data_context.dataset_id!==dataset.dataset_id));
+    const example = () => {if(missingExample.length)return;setSelected(exampleStocks);setReport(null);setError('');};
     return <div className="research-page">
         <div className="research-hero"><div><div className="eyebrow">PORTFOLIO WORKSPACE</div><h1>From profile to portfolio.</h1><p>Explore a household risk proxy, compare allocations, and test the assumptions.</p></div><Chip label={asOf ? `Historical data · ${asOf}` : 'Loading dataset…'} variant="outlined" /></div>
         <ModelGuide />
@@ -83,7 +89,9 @@ export default function User() {
         </div>
         <Paper className="research-card" sx={{mt:3}}>
             <StepTitle number="02" title="Build your research universe" description="Choose stocks first, then set the constraints. Historical examples are not recommendations." />
-            <Box sx={{display:'flex',gap:1,alignItems:'center',mb:2,flexWrap:'wrap'}}><Button variant="outlined" size="small" onClick={example} disabled={Boolean(busy) || !catalog.length}>Load four-stock example</Button><Typography variant="body2" color="text.secondary">{selected.length} / 10 selected · at least 36 common months required</Typography></Box>
+            <Box sx={{display:'flex',gap:1,alignItems:'center',mb:2,flexWrap:'wrap'}}><Button variant="outlined" size="small" onClick={example} disabled={Boolean(busy) || !catalog.length || missingExample.length>0}>Load Magnificent Seven</Button><Typography variant="body2" color="text.secondary">{selected.length} / 10 selected · at least 36 common months required</Typography></Box>
+            {catalog.length>0 && missingExample.length>0 && <Alert severity="info" sx={{mb:2}}>The full seven-stock example is unavailable because current research history is missing for {missingExample.join(', ')}. You can choose other eligible stocks below.</Alert>}
+            {unavailableSelection.length>0 && <Alert severity="warning" sx={{mb:2}}>Remove stocks without current research history before calculating: {unavailableSelection.map(s=>s.ticker).join(', ')}.</Alert>}
             <Autocomplete multiple options={catalog} value={selected} disabled={Boolean(busy)}
                 getOptionLabel={o=>o.ticker} filterOptions={(options,{inputValue})=>options.filter(o=>`${o.ticker} ${o.industry}`.toLowerCase().includes(inputValue.toLowerCase()))}
                 isOptionEqualToValue={(a,b)=>a.ticker===b.ticker}
@@ -99,11 +107,12 @@ export default function User() {
             </div>
             {infeasible && <Alert severity="warning" sx={{mb:2}}>The holding cap is infeasible. Select more stocks or increase the cap.</Alert>}
             {!policyValid && <Alert severity="warning" sx={{mb:2}}>Check the holding cap, history window and trading cost ranges.</Alert>}
-            <div className="section-action"><Typography variant="body2" color="text.secondary">{risk === null ? 'Estimate your profile first to continue.' : policy.method==='minimum_variance' ? 'Minimizes estimated variance; does not use your return preference.' : `Return preference: ${Math.round(preference*100)} / 100. All-stock portfolios can still lose value.`}</Typography><Button variant="contained" disabled={Boolean(busy) || risk===null || selected.length===0 || infeasible || !policyValid} onClick={allocate}>{busy==='allocation'?'Comparing…':'Optimize & compare'}</Button></div>
+            <div className="section-action"><Typography variant="body2" color="text.secondary">{risk === null ? 'Estimate your profile first to continue.' : policy.method==='minimum_variance' ? 'Minimizes estimated variance; does not use your return preference.' : `Return preference: ${Math.round(preference*100)} / 100. All-stock portfolios can still lose value.`}</Typography><Button variant="contained" disabled={Boolean(busy) || risk===null || selected.length===0 || unavailableSelection.length>0 || infeasible || !policyValid} onClick={allocate}>{busy==='allocation'?'Comparing…':'Optimize & compare'}</Button></div>
         </Paper>
         {report && <>
             <Paper className="research-card" sx={{mt:3}}>
-                {asOf && report.data_context.end!==asOf && <Alert severity="info" sx={{mb:2}}>Saved calculation uses an earlier dataset. Recalculate to use the current research history.</Alert>}
+                {staleReport && <Alert severity="info" sx={{mb:2}}>Saved calculation uses a different data version. Recalculate to use the current research history.</Alert>}
+                {savedProfileChanged && <Alert severity="info" sx={{mb:2}}>Your profile was edited after this saved calculation. Estimate your profile score again and review the allocation.</Alert>}
                 <StepTitle number="03" title="Your allocation" description={`${report.data_context.start} to ${report.data_context.end} · ${report.data_context.observations} monthly observations`} />
                 <div className="metric-grid"><Metric label="Estimated annual mean" value={pct(report.diagnostics.estimated_annual_return)} note="Historical estimate, not a forecast"/><Metric label="Estimated volatility" value={pct(report.diagnostics.estimated_annual_volatility)} note="Annualized standard deviation"/><Metric label="Effective holdings" value={report.diagnostics.effective_holdings.toFixed(1)} note="1 / sum of squared weights"/></div>
                 {report.diagnostics.warnings.map(w=><Alert key={w} severity="warning" sx={{my:1}}>{w}</Alert>)}

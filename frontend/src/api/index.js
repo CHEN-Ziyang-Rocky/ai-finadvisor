@@ -27,7 +27,6 @@ api.interceptors.request.use(
         }
 
         if (config.method === 'get') {
-            console.log('Handling GET request');
             const SessionserverPublicKey = await getKeyFromIndexedDB('SessionserverPublicKey');
             if (SessionserverPublicKey && SessionKeyId) {
                 try {
@@ -70,7 +69,6 @@ api.interceptors.request.use(
                         SessionKeyId,
                         clientPublicKey: clientPublicKeyBase64
                     };
-                    console.log('Message to be sent:', config.data);
                 } catch (error) {
                     console.error('Error during encryption with OT server public key:', error);
                     throw error;
@@ -82,7 +80,6 @@ api.interceptors.request.use(
                         config.data = typeof config.data === 'string' ? { message: config.data } : config.data;
                         config.data.user_id = userId;
                         const encryptedData = await encryptMessage(config.data, SessionserverPublicKey);
-                        console.log('Encrypted data:', encryptedData);
                         config.data = {
                             encryptedMessage: encryptedData.encryptedMessage,
                             iv: encryptedData.iv,
@@ -104,7 +101,7 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.error('Request Error:', error);
+        console.error('API request setup failed');
         return Promise.reject(error);
     }
 );
@@ -181,7 +178,6 @@ export const generateSessionKeyPair = async () => {
 };
 export const Logout = async (sessionKeyId) => {
     try {
-        console.log('Logging out with session key ID:', sessionKeyId);
         const token = localStorage.getItem('token');
         await api.post('/auth/logout', { sessionKeyId }, {
             headers: {
@@ -189,7 +185,7 @@ export const Logout = async (sessionKeyId) => {
             }
         });
     } catch (error) {
-        console.error('Error during logout:', error);
+        console.error('Logout request failed');
     }
 };
 // User
@@ -255,7 +251,6 @@ export const fetchStockData_StockSearch = async (stock) => {
 export const fetchMarketData = async (interval, region) => {
     try {
         const url = '/marketoverview/market-data';
-        console.log('Fetching market data from URL:', url, 'with params:', { interval, region });
         const response = await api.get(url, {
             params: {
                 interval,
@@ -267,7 +262,6 @@ export const fetchMarketData = async (interval, region) => {
 
         // Ensure rawData is a string and replace NaN values
         if (typeof rawData === 'string') {
-            console.log('Raw data is a string, replacing NaN values and parsing JSON');
             rawData = rawData.replace(/NaN/g, 'null');
         }
 
@@ -330,7 +324,6 @@ export const resetInitialData = async (stock) => {
         const payload = {
             message: `*!sys!*0_reset ${stock}`
         };
-        console.log('Reset Initial Data Payload:', payload);
         const response = await api.post('/stock/generate_commentary', payload);
         return response.data;
     } catch (error) {
@@ -344,7 +337,6 @@ export const sendInitialData = async (initial_message) => {
         const payload = {
             message: initial_message
         };
-        console.log('Send Initial Data Payload:', payload);
         const response = await api.post('/stock/generate_commentary', payload);
         return response.data.commentary;
     } catch (error) {
@@ -355,7 +347,6 @@ export const sendInitialData = async (initial_message) => {
 
 export const fetchData = async (type, stock) => {
     let endpoint = '';
-    console.log('statmets :', type, stock);
     switch (type) {
         case 'incomeStatement':
             endpoint = '/stock/income-statement';
@@ -416,7 +407,6 @@ export const fetchNews_api = async () => {
 };
 export const sendMessage = async (text, settings) => {
     try {
-        console.log('Sending message:', text, 'with settings:', settings);
         const message =   {
             text,
             temperature: settings.temperature,
@@ -527,11 +517,9 @@ export const removeFromWatchlist = async (stockSymbol) => {
 export const fetchAndStoreWatchlistWithPrices = async () => {
     try {
         const userId = localStorage.getItem('userId');
-        console.log('Fetching watchlist with prices for user ID:', userId);
         const response = await api.post('/watchlist_with_prices', { user_id: userId });
         const watchlistWithPrices = response.data;
         localStorage.setItem('watchlist', JSON.stringify(watchlistWithPrices));
-        console.log('Watchlist fetched and stored locally:', watchlistWithPrices);
         return watchlistWithPrices;
     } catch (error) {
         console.error('Error fetching and storing watchlist with prices:', error);
@@ -541,7 +529,6 @@ export const fetchAndStoreWatchlistWithPrices = async () => {
 export const fetchYouTubeChannels = async () => {
     try {
         const response = await api.get('/channels');
-        console.log('Fetched channels:', response.data);
 
         // Ensure response.data is an array
         if (Array.isArray(response.data)) {
@@ -559,7 +546,6 @@ export const fetchYouTubeChannels = async () => {
 export const fetchYouTubeVideos = async () => {
     try {
         const response = await api.get('/videos');
-        console.log('Fetched videos:', response.data);
 
         // Ensure response.data is an array
         if (Array.isArray(response.data)) {

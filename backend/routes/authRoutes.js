@@ -2,7 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const userModel = require('../models/userModel');
+const pool = require('../config/db');
+const {validateProfile,saveProfile} = require('../services/researchService');
 const authMiddleware = require('../middleware/authMiddleware');
 const decryptRequestMiddleware = require('../middleware/decryptRequestMiddleware');
 const encryptResponseMiddleware = require('../middleware/encryptResponseMiddleware');
@@ -15,22 +16,15 @@ router.post('/logout', authController.logout);
 
 router.post('/update-portrait', authMiddleware, decryptRequestMiddleware, encryptResponseMiddleware, async (req, res) => {
     const user_id = req.user.id;
-    const { age, income, asset, education_level, married, kids, occupation } = req.body;
-
-    // 验证输入数据
-    if (!user_id) {
-        return res.status(400).json({ error: 'user_id is required' });
-    }
-
+    let profile;
+    try {profile=validateProfile(req.body);}
+    catch(error){return res.status(400).json({error:error.message});}
     try {
-        await userModel.updateUserPortrait(user_id, {
-            age, income, asset, education_level, married, kids, occupation
-        });
-
-        res.json({ message: 'User portrait updated successfully' });
+        await saveProfile(pool,user_id,profile);
+        res.json({ message: 'User portrait updated successfully',score_invalidated:true });
     } catch (error) {
         console.error('Error updating user portrait:', error.message);
-        res.status(500).json({ error: 'Failed to update user portrait', details: error.message });
+        res.status(503).json({ error: 'Failed to update user portrait' });
     }
 });
 

@@ -72,7 +72,6 @@ class TempStore {
     for (const [key, entry] of this.store.entries()) {
       if (now - entry.timestamp > 2* 60 * 60 * 1000) { 
         this.delete(key);
-        console.log(`Cleaned up expired key: ${key}`);
       }
     }
   }

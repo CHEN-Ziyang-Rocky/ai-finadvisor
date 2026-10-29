@@ -83,7 +83,7 @@ exports.generateSessionKeyPair = async (req, res) => {
 
         res.status(200).json({ publicKey, SessionKeyId, signature });
     } catch (error) {
-        console.error('Error generating one-time key pair:', error);
+        console.error('Session setup failed:', error.code || error.name);
         res.status(500).json({ error: 'Failed to generate one-time key pair' });
     }
 };
@@ -219,7 +219,7 @@ exports.login = async (req, res) => {
 
         res.json(encryptedResponse);
     } catch (err) {
-        console.error('Error during login:', err);
+        console.error('Login failed:', err.code || err.name);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
@@ -258,12 +258,12 @@ exports.logout = async (req, res) => {
         secureStore.delete(SessionKeyId);
         const deletedEntry = secureStore.get(sessionKeyId);
         if (deletedEntry) {
-            console.error('Failed to delete session key:', sessionKeyId);
+            console.error('Session cleanup failed');
             return res.status(500).json({ message: 'Failed to delete session key' });
         }
         return res.status(200).json({ message: 'Logged out successfully' });
     } catch (err) {
-        console.error(err);
+        console.error('Account request failed:', err.code || err.name);
         return res.status(500).json({ message: 'Server error.' });
     }
 };
@@ -274,7 +274,7 @@ exports.getExpenseIncome = async (req, res) => {
         const expenses_income = await userModel.getExpenseIncome(user_id);
         return res.status(200).json(expenses_income);
     } catch (err) {
-        console.error(err);
+        console.error('Account request failed:', err.code || err.name);
         return res.status(500).json({ message: 'Server error.' });
     }
 };
@@ -286,7 +286,7 @@ exports.setGoal = async (req, res) => {
         await userModel.setGoal(userid, goalType, goalAmount, startDate, endDate);
         return res.status(201).json({ message: 'Data added successfully' });
     } catch (err) {
-        console.error(err);
+        console.error('Account request failed:', err.code || err.name);
         return res.status(500).json({ message: 'Server error.' });
     }
 };
@@ -297,7 +297,7 @@ exports.getGoals = async (req, res) => {
         const goals = await userModel.getGoals(userid);
         return res.status(200).json(goals);
     } catch (err) {
-        console.error(err);
+        console.error('Account request failed:', err.code || err.name);
         return res.status(500).json({ message: 'Server error.' });
     }
 };

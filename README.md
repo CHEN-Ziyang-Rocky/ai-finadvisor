@@ -1,8 +1,20 @@
-# AI Financial Advisor — Portfolio Research Application
+# Rocky Finance — Portfolio Research Application
 
 A full-stack research application combining survey-based risk profiling, constrained portfolio optimization, rolling evaluation and Monte Carlo scenarios.
 
 **[Live application](https://finance.imrocky.com)** · **[Author's portfolio](https://imrocky.com)** · [Data preparation](docs/DATA-SETUP.md)
+
+## Review the project in three minutes
+
+1. Open the [live application](https://finance.imrocky.com/user), create your own account and use fictional household inputs.
+2. Estimate the profile proxy, choose **Load Magnificent Seven**, then optimize and inspect the holding cap, equal-weight comparison and rolling historical evaluation.
+3. Continue to the simulator and compare baseline, optimistic and pessimistic outcomes using the same portfolio.
+
+The example selects AAPL, MSFT, AMZN, GOOGL, META, NVDA and TSLA. It includes one Alphabet share class and remains editable. Numerical constraints, dated data and model limitations are visible in the application.
+
+For verification without raw research data, install the core/data dependencies and run `python scripts/test-python.py`, plus the JavaScript tests below. This entry uses in-memory unit-test fixtures only; normal application startup still requires real research inputs. GitHub Actions verifies Node 24, Python 3.12, tests, the production build and runtime dependency advisories without production credentials.
+
+Read the [portfolio readiness review](docs/PORTFOLIO-READINESS-2026-10-29.zh-CN.md) for evidence and remaining limitations. The current build uses deprecated Create React App tooling, has known development-tool advisories and a roughly 693 kB gzip main bundle; runtime audit results do not mean a complete security assessment. The deployed market history and provenance are described in the [full CSV update report](docs/FULL-HISTORY-UPDATE-2026-10-29.zh-CN.md).
 
 ## Main workflow
 
@@ -94,7 +106,7 @@ Open `https://localhost:3000`. Express listens on local port 5001 and Flask on 5
 
 ```sh
 npm test --prefix backend
-PYTHONPATH=backend/python-service ENABLE_AI_EXTENSIONS=0 .venv/bin/python -m unittest discover -s backend/python-service/tests -v
+.venv/bin/python scripts/test-python.py
 CI=true npm test --prefix frontend -- --watchAll=false --runInBand
 npm run build --prefix frontend
 ```

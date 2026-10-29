@@ -33,7 +33,14 @@ app.use(cors({
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'SessionKeyId']
 }));
-app.use(express.json({ limit: '64kb' }));
+app.use(express.json({ limit: '64kb', inflate: false }));
+app.use((error, req, res, next) => {
+    if (['encoding.unsupported','charset.unsupported','entity.too.large','entity.parse.failed','request.aborted'].includes(error.type)) {
+        const status=error.status===413?413:error.status===415?415:400;
+        return res.status(status).json({error:status===413?'Request body exceeds the limit':status===415?'Use uncompressed UTF-8 JSON requests':'Invalid JSON request body'});
+    }
+    next(error);
+});
 app.use(helmet());
 app.use('/api/auth', authRoutes);
 app.use(helmet.xssFilter());
@@ -227,7 +234,6 @@ app.get('/api/performance/:userId', async (req, res) => {
     if (req.params.userId !== user_id) {
         return res.status(403).json({ error: 'Forbidden' });
     }
-    console.log('GET /api/performance/:userId =>', user_id);
 
     try {
         const [rows] = await pool.query(
@@ -245,19 +251,15 @@ app.get('/api/performance/:userId', async (req, res) => {
 
         const latestAllocations = {};
         rows.forEach(row => {
-            console.log('Processing row:', row);
             if (!(row.asset in latestAllocations)) {
                 latestAllocations[row.asset] = row.allocation;
             }
         });
 
-        console.log('Constructed latestAllocations:', latestAllocations);
 
         const stockTickers = Object.keys(latestAllocations);
         const allocations = Object.values(latestAllocations);
 
-        console.log('Stock tickers:', stockTickers);
-        console.log('Allocations:', allocations);
 
         const response = await axios.post(
             `${PYTHON_SERVICE_URL}/get_performance`,
@@ -764,15 +766,19 @@ app.get('/api/videos', async (req, res) => {
 app.post('/api/user-portraits-chat', async (req, res) => {
     try {
         const user_id = req.user.id;
-        console.log('Fetching user portraits for user_id:', user_id);
         const response = await userModel.fetchUserPortraits_chat(user_id); // Await the response
 
-        console.log('User portraits:', response);
         res.status(200).json(response); // Send the response back to the client
     } catch (error) {
         console.error('Error in /api/user-portraits-chat:', error.message);
         res.status(500).json({ error: 'Failed to fetch user portraits', details: error.message });
     }
+});
+
+app.use((error, req, res, next) => {
+    if (res.headersSent) return next(error);
+    console.error('Request failed:',error.code || error.name);
+    res.status(500).json({error:'Request could not be completed'});
 });
 
 async function startServer() {

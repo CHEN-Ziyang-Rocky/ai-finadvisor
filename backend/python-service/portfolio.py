@@ -43,8 +43,33 @@ def optimize_weights(expected_returns, cov_matrix, risk_tolerance, max_weight=1.
     target = low + risk_tolerance * max(high-low, 0)
     if high-low < 1e-10 or risk_tolerance == 0:
         weights = minimum.x
+    elif risk_tolerance == 1:
+        # The maximum-return target lies on a face of the capped simplex. Asking
+        # SLSQP to reach it through an inequality can look infeasible on some BLAS
+        # builds. Higher-return names must be at the cap, lower names at zero;
+        # only names tied at the marginal return can share the remainder.
+        threshold = float(mu[maximum > 1e-12].min())
+        fixed = np.where(mu > threshold, max_weight, 0.)
+        free = np.flatnonzero(mu == threshold)
+        remainder = 1-float(fixed.sum())
+        if len(free) == 1:
+            fixed[free[0]] = remainder
+        elif np.isclose(len(free)*max_weight,remainder,atol=1e-10,rtol=0):
+            fixed[free] = max_weight
+        else:
+            def full(values):
+                candidate=fixed.copy();candidate[free]=values;return candidate
+            result=minimize(lambda values:objective(full(values)),np.full(len(free),remainder/len(free)),
+                jac=lambda values:gradient(full(values))[free],method='SLSQP',
+                bounds=[(0,max_weight)]*len(free),
+                constraints=[{'type':'eq','fun':lambda values:values.sum()-remainder,'jac':lambda values:np.ones(len(free))}],options=options)
+            if not result.success:
+                raise ValueError('Maximum-return face optimization failed: '+result.message)
+            fixed[free]=result.x
+        weights = fixed
     else:
-        constraints.append({'type': 'ineq', 'fun': lambda w: mu @ w-target, 'jac': lambda w: mu})
+        normalized_mean = (mu-low)/(high-low)
+        constraints.append({'type': 'ineq', 'fun': lambda w: normalized_mean @ w-risk_tolerance, 'jac': lambda w: normalized_mean})
         initial = (1-risk_tolerance)*minimum.x + risk_tolerance*maximum
         result = minimize(objective, initial, jac=gradient, method='SLSQP', bounds=bounds, constraints=constraints, options=options)
         if not result.success:

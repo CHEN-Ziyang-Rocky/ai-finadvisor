@@ -28,7 +28,7 @@ Run `python backend/python-service/train_risk_model.py` to create `risk_pipeline
 
 ## Historical market input
 
-Flask loads a validated `backend/data/market/current.json` snapshot when one exists. Otherwise it expects the legacy `backend/python-service/stock_data_with_sector.csv`. The legacy CSV is a large historical research input with unverified price-adjustment metadata and is not redistributed here.
+Flask loads a validated `backend/data/market/current.json` snapshot when one exists. Otherwise it expects the legacy `backend/python-service/stock_data_with_sector.csv`. The CSV is a large historical research input and is not redistributed here. With a matching `.csv.metadata.json` sidecar, the loader validates its checksum, adjustment basis, currency, coverage and completed monthly observations. A CSV without provenance retains the `unverified_close` label. The current deployment uses the full daily history described in [the October 2026 update report](FULL-HISTORY-UPDATE-2026-10-29.zh-CN.md).
 
 For a new environment, obtain historical prices under your own data provider's permitted use and normalize them through the included market workflow. Do not use invented prices as if they were observed market data.
 
@@ -51,3 +51,16 @@ python backend/python-service/market_snapshot.py \
 Run the Python command from the repository root. Replace the candidate path with the actual output. Flask validates dataset integrity, completed calendar months and sufficient consecutive history. Restart the local Python process after publishing. Generated market files remain ignored by Git.
 
 `backend/scripts/fetch-market-history.js` is an optional downloader for an entitled Twelve Data account. It requires explicit data-usage approval and your own environment-based API key. It is not required for code review or tests and is not run as part of source publication.
+
+## Existing baseline: complete free-source rebuild
+
+If you already have the full original CSV under permitted use, it supplies the fixed ticker universe, industries and overlapping returns for identity verification. No paid API key is required for this route:
+
+```sh
+.venv/bin/python -m pip install -r requirements-data.txt
+.venv/bin/python backend/python-service/market_refresh.py --download-history
+```
+
+It creates a new complete candidate and provenance file; it does not overwrite the baseline during download. It is not a fresh-clone bootstrap without the existing reference CSV. Data sources, delisted securities, adjustments and the existing weekly publication entry are documented in the update report.
+
+For code verification without any research inputs or secrets, use `.venv/bin/python scripts/test-python.py`. Test fixtures are in memory and are never installed as application data.

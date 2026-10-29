@@ -35,6 +35,7 @@ require.cache[dbPath] = { id: dbPath, filename: dbPath, loaded: true, exports: {
     },
     getConnection: async () => ({
         beginTransaction: async () => calls.push({ sql: 'BEGIN' }),
+        query: async (sql,params) => {calls.push({sql,params});return [{affectedRows:1}];},
         execute: async (sql, params) => {
             calls.push({ sql, params });
             if (sql.startsWith('INSERT INTO users')) {
@@ -77,6 +78,25 @@ test('health is public; profile update requires authentication', async () => {
     assert.equal((await request('/api/auth/update-portrait', { user_id: 'bob' }, false)).status, 401);
 });
 
+test('malformed trailing bytes after a compressed body cannot terminate the server', async () => {
+    const {gzipSync}=require('node:zlib');
+    const response=await fetch(base+'/api/profile',{
+        method:'POST',headers:{'Content-Type':'application/json','Content-Encoding':'gzip'},
+        body:Buffer.concat([gzipSync('{}'),Buffer.from('invalid trailing bytes')])
+    });
+    assert.equal(response.status,415);
+    assert.match(response.headers.get('content-type'),/application\/json/);
+    await new Promise(resolve=>setImmediate(resolve));
+    assert.equal((await request('/health',undefined,false)).status,503);
+});
+
+test('invalid JSON returns a bounded JSON error and leaves the service available',async()=>{
+    const response=await fetch(base+'/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"invalid":'});
+    assert.equal(response.status,400);
+    assert.deepEqual(await response.json(),{error:'Invalid JSON request body'});
+    assert.equal((await request('/health',undefined,false)).status,503);
+});
+
 test('performance rejects another user before any database read', async () => {
     calls.length = 0;
     assert.equal((await request('/api/performance/bob')).status, 403);
@@ -87,10 +107,19 @@ test('profile mutation uses JWT identity, ignoring client user_id', async () => 
     calls.length = 0;
     const response = await request('/api/auth/update-portrait', {
         user_id: 'bob', age: 30, income: 100, asset: 200,
-        education_level: 2, married: false, kids: 0, occupation: 1,
+        education_level: 2, married: false, kids: 0, occupation: 1, risk: 1,
     });
     assert.equal(response.status, 200);
-    assert.equal(calls[0].params.at(-1), 'alice');
+    assert.equal(calls.find(c=>c.sql.startsWith('SELECT id FROM users')).params[0], 'alice');
+    assert.equal(calls.find(c=>c.sql.startsWith('INSERT INTO user_portrait')).params.at(-1),null);
+    assert.equal((await response.json()).score_invalidated,true);
+});
+
+test('legacy portrait endpoint rejects invalid inputs before any database write',async()=>{
+    calls.length=0;
+    const response=await request('/api/auth/update-portrait',{age:-1});
+    assert.equal(response.status,400);
+    assert.equal(calls.length,0);
 });
 
 test('goal deletion and update constrain both resource ID and owner', async () => {

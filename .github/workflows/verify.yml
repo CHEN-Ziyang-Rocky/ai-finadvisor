@@ -1,0 +1,52 @@
+name: Verify research application
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  javascript:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+      - run: npm ci --prefix backend
+      - run: npm ci --prefix frontend
+      - run: npm test --prefix backend
+      - run: npm test --prefix frontend -- --watchAll=false --runInBand
+        env:
+          CI: 'true'
+      - run: npm run build --prefix frontend
+        env:
+          CI: 'true'
+      - run: npm audit --prefix backend --omit=dev --audit-level=high
+      - run: npm audit --prefix frontend --omit=dev --audit-level=high
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements-core.txt
+            requirements-data.txt
+            requirements-production.txt
+      - run: python -m pip install pip==26.2.2
+      - run: python -m pip install -r requirements-data.txt -r requirements-production.txt pip-audit
+      - run: python scripts/test-python.py
+      - run: pip-audit --local --progress-spinner off

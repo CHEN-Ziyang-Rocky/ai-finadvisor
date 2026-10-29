@@ -222,7 +222,6 @@ export const verifySignature = async (message, signatureBase64, publicKeyBase64)
     }
 };
 export const encryptMessage = async (message, publicKeyBase64) => {
-    console.log('Starting encryptMessage');
     try {
         const privateKeyBase64 = await getKeyFromIndexedDB('privateKey');
         const hashedSharedSecretBase64 = await deriveSharedSecret(privateKeyBase64, publicKeyBase64);
@@ -263,7 +262,6 @@ export const encryptMessage = async (message, publicKeyBase64) => {
 
 export const decryptMessage = async (encryptedMessageBase64, ivBase64, authTagBase64, serverPublicKey) => {
     try {
-        console.log('Starting decryptMessage');
 
         const privateKeyBase64 = await getKeyFromIndexedDB('privateKey');
         const hashedSharedSecretBase64 = await deriveSharedSecret(privateKeyBase64, serverPublicKey);

@@ -38,6 +38,23 @@ class PortfolioResearchTests(unittest.TestCase):
         np.testing.assert_allclose(mu,x.mean(axis=0)*12)
         self.assertTrue(0<=details['covariance_shrinkage']<=1)
 
+    def test_maximum_return_endpoint_respects_caps_and_minimizes_variance_among_ties(self):
+        mu=np.array([.4,.3,.3,.1]);cov=np.diag([.04,.01,.09,.0001])
+        w=optimize_weights(mu,cov,1,.5)
+        np.testing.assert_allclose(w,[.5,.45,.05,0],atol=1e-6)
+        self.assertAlmostEqual(mu@w,.35)
+        self.assertLess(w@cov@w,np.array([.5,.25,.25,0])@cov@np.array([.5,.25,.25,0]))
+
+    def test_unique_maximum_return_endpoint_is_the_capped_greedy_solution(self):
+        mu=np.array([.225688734,.201509341,.198906727,.250070438,.257327190,.379894124,.258480107])
+        cov=np.diag([.04,.05,.06,.07,.08,.09,.1])
+        w=optimize_weights(mu,cov,1,.5)
+        np.testing.assert_allclose(w,[0,0,0,0,0,.5,.5],atol=1e-10)
+        for score in np.linspace(0,1,30):
+            point=optimize_weights(mu,cov,float(score),.5)
+            self.assertAlmostEqual(point.sum(),1)
+            self.assertLessEqual(point.max(),.5000001)
+
     def test_noisier_mean_receives_more_shrinkage(self):
         rng=np.random.default_rng(17)
         low=rng.normal(0,.01,120); high=rng.normal(0,.1,120)
