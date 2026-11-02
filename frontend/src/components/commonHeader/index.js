@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { getKeyFromIndexedDB, deleteKeyFromIndexedDB } from '../../utils/cryptoUtils';
 import { Logout } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
+import ProjectLinks from '../ProjectLinks';
 
 const { Header } = Layout
 
@@ -62,12 +63,14 @@ const CommonHeader = ({ collapsed }) => {
         onClick={() => setCollapsed(!collapsed)}
         style={{
           fontSize: '16px',
-          width: 64,
-          height: 32,
+          width: 40,
+          minWidth: 40,
+          height: 44,
           backgroundColor: '#fff'
         }}
       />
       <span className="header-label">ROCKY FINANCE · AI FINADVISOR</span>
+      <ProjectLinks />
       <Dropdown
         trigger={['click']}
         menu={{ items }}

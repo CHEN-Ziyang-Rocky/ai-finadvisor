@@ -1,4 +1,5 @@
-import DemoBanner from './demo/Banner'
+import DemoBanner, { DEMO_DESCRIPTION } from './demo/Banner'
+import { demoToken } from '../utils/demo'
 import { ThemeProvider } from '@mui/material/styles'
 import researchTheme from './researchTheme'
 import './research.css'
@@ -22,7 +23,10 @@ const Main = () => {
       <ThemeProvider theme={researchTheme}><Layout className="main-container research-shell">
         <CommonAside collapsed={collapsed} />
         <Layout style={{ minWidth: 0 }}>
-          <CommonHeader collapsed={collapsed} />
+          <div className="app-chrome" data-app-chrome>
+            <CommonHeader collapsed={collapsed} />
+            <DemoBanner />
+          </div>
 
           <Content
             style={{
@@ -31,8 +35,7 @@ const Main = () => {
               minHeight: 280
             }}
           >
-            <p className="research-notice">Research demo · Use fictional personal inputs; results are historical or simulated and are not investment advice.</p>
-            <DemoBanner />
+            <p className="research-notice">{demoToken() ? DEMO_DESCRIPTION : 'Research demo · Use fictional personal inputs; results are historical or simulated and are not investment advice.'}</p>
             <Outlet />
           </Content>
 

@@ -81,7 +81,7 @@ const CommonAside = ({ collapsed }) => {
         theme="dark"
         items={generateMenuItems()}
         onClick={selectMenu}
-        style={{ height: "100%" }}
+        style={{ height: "auto" }}
       />
     </Sider>
   );

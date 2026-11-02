@@ -2,11 +2,9 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 20px;
-  height: 48px;
-  padding: 0 24px;
-  border-bottom: 1px solid #e1e8ec;
-  background: #fff;
+  gap: 16px;
+  flex-shrink: 0;
+  margin-left: auto;
   font-size: 12px;
 }
 .project-links a {
@@ -26,13 +24,40 @@
   outline-offset: 2px;
 }
 .App .research-shell {
-  min-height: calc(100vh - 48px);
+  min-height: 100vh;
 }
 .App .auth-page {
   height: auto;
-  min-height: calc(100vh - 48px);
+  min-height: calc(100vh - 64px);
   padding-block: 24px;
 }
+.app-chrome, .public-project-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(20,47,60,.04);
+}
+.public-project-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid #e1e8ec;
+}
+.public-project-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #244653;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.research-shell [id] { scroll-margin-top: 180px; }
 @media (max-width: 600px) {
-  .project-links { padding-inline: 18px; }
+  .project-links { gap: 10px; font-size: 11px; }
+  .public-project-header { padding-inline: 12px; }
+  .public-project-brand { font-size: 13px; }
 }
