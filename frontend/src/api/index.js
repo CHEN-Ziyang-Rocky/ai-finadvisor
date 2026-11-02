@@ -1,3 +1,4 @@
+import { demoToken } from '../utils/demo';
 import axios from 'axios';
 import { encryptMessage, decryptMessage, getKeyFromIndexedDB, verifySignature, storeKeyInIndexedDB } from '../utils/cryptoUtils';
 import { API_BASE } from './base';
@@ -14,6 +15,7 @@ serverPublicKeyBase64 = serverPublicKeyPem
 // Request Interceptor
 api.interceptors.request.use(
     async (config) => {
+        if (demoToken() && !config.url?.startsWith('/auth/')) { config.baseURL='/api/demo'; config.headers.Authorization=`Bearer ${demoToken()}`; return config; }
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId'); 
         const SessionKeyId = await getKeyFromIndexedDB('SessionKeyId');
@@ -146,6 +148,7 @@ api.interceptors.response.use(
         return response;
     },
     async (error) => {
+        if(error.config?.baseURL==='/api/demo') { if(error.response?.status===401){sessionStorage.removeItem('portfolio_demo_token');sessionStorage.removeItem('portfolio_demo_key');window.location.assign('/demo');} return Promise.reject(error); }
         // Validation errors may also use the authenticated encrypted envelope.
         const data = error.response?.data;
         if (data?.encryptedMessage) {
@@ -210,6 +213,7 @@ export const fetchAssetAllocation = (userId, riskTolerance, stockTickers) =>
 
 export async function fetchAvailableAssets() {
     try {
+        if(demoToken()) return (await api.get('/assets')).data;
         const response = await fetch(`${API_BASE}/assets`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

@@ -18,6 +18,8 @@ load_dotenv(HERE.parent / ".env")
 from blueprints.signup import signup_bp
 from blueprints.simulator import simulator_bp
 app = Flask(__name__)
+from demo_research import create_demo_blueprint
+app.register_blueprint(create_demo_blueprint())
 # Python is an internal service. Browser requests go through the Node gateway.
 app.register_blueprint(signup_bp)
 app.register_blueprint(simulator_bp, url_prefix="/api")

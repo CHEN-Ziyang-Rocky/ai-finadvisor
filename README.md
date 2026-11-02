@@ -122,3 +122,9 @@ The repository includes application source, dependency lockfiles, numerical and 
 - [2026-10-29 线上登录接口地址修复与浏览器验收](docs/LOGIN-ROUTING-FIX-2026-10-29.zh-CN.md)
 
 - [2026-10-29 完整历史 CSV、免费来源、质量记录及每周更新](docs/FULL-HISTORY-UPDATE-2026-10-29.zh-CN.md)
+
+## One-click portfolio demo (2026-11-02)
+
+The guest demo update is being released. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).
+
+Public registration is available through `/signup` and has a visible Register button.

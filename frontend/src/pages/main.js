@@ -1,3 +1,4 @@
+import DemoBanner from './demo/Banner'
 import { ThemeProvider } from '@mui/material/styles'
 import researchTheme from './researchTheme'
 import './research.css'
@@ -31,6 +32,7 @@ const Main = () => {
             }}
           >
             <p className="research-notice">Research demo · Use fictional personal inputs; results are historical or simulated and are not investment advice.</p>
+            <DemoBanner />
             <Outlet />
           </Content>
 

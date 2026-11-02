@@ -70,6 +70,7 @@ const Login = () => {
                 >
                     <Input.Password placeholder="Password" />
                 </Form.Item>
+                <p><a href="/demo">Try Demo</a> · No registration required. Explore with sample data.</p>
                 <Form.Item className="auth-form-item">
                     <Button type="primary" htmlType="submit" className="auth-button">
                         Log In
@@ -79,8 +80,8 @@ const Login = () => {
                 <div className="auth-link">
                     <p>
                         Don't have an account?{" "}
-                        <Button type="link" onClick={() => navigate("/signup")}>
-                            Sign Up
+                        <Button type="default" onClick={() => navigate("/signup")}>
+                            Register
                         </Button>
                     </p>
                 </div>

@@ -287,3 +287,10 @@ test('malformed, whitespace and overlong identifiers are rejected without databa
         assert.equal(calls.length, 0);
     }
 });
+
+// Demo credentials must never authorize the normal encrypted API.
+test('opaque demo token cannot access normal user or extension APIs', async()=>{
+ const created=await fetch(base+'/api/demo/session',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':'d'.repeat(64)},body:'{}'});
+ const {token}=await created.json();
+ for(const route of ['/api/overview','/api/profile','/api/watchlist']){ const r=await fetch(base+route,{headers:{Authorization:`Bearer ${token}`}});assert.equal(r.status,401); }
+});

@@ -1,3 +1,4 @@
+import { demoToken, exitDemo } from '../../utils/demo';
 // client/src/components/commonHeader/index.js
 import React from 'react'
 import { Button, Layout, Dropdown, Avatar } from 'antd';
@@ -20,6 +21,7 @@ const CommonHeader = ({ collapsed }) => {
   }
   const navigate = useNavigate()
   const logout = async () => {
+    if(demoToken()){try{await exitDemo();}catch{window.alert("Exit failed. Please retry.");}return;}
     try {
       const sessionKeyId = await getKeyFromIndexedDB('SessionKeyId');
       if (sessionKeyId) await Logout(sessionKeyId);

@@ -31,7 +31,7 @@ app.use(cors({
     origin: process.env.FRONTEND_ORIGIN || ['http://localhost:3000', 'https://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'SessionKeyId']
+    allowedHeaders: ['Content-Type', 'Authorization', 'SessionKeyId', 'Idempotency-Key']
 }));
 app.use(express.json({ limit: '64kb', inflate: false }));
 app.use((error, req, res, next) => {
@@ -42,6 +42,7 @@ app.use((error, req, res, next) => {
     next(error);
 });
 app.use(helmet());
+app.use('/api/demo', require('./demo/router').createDemoRouter());
 app.use('/api/auth', authRoutes);
 app.use(helmet.xssFilter());
 app.use(helmet.noSniff());

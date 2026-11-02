@@ -1,0 +1,8 @@
+import React,{useState} from 'react';
+import {Button,Alert,Paper,Typography,Stack} from '@mui/material';
+import {Link} from 'react-router-dom';
+import {startDemo} from '../../utils/demo';
+export default function Demo(){
+ const [busy,setBusy]=useState(false),[error,setError]=useState('');
+ return <Paper sx={{maxWidth:650,m:'40px auto',p:{xs:3,md:5}}}><Stack spacing={3}><Typography variant="h4">Explore AI Financial Advisor</Typography><Typography>No registration required. Explore with sample data.</Typography><Typography>A fictional questionnaire, model score, allocation and Monte Carlo results are ready to explore. Recalculate using the existing local research engines and a frozen historical sample through September 2026. No paid APIs are used.</Typography><Typography>Research demonstration only. Results are not investment advice. No personal identity or account details are required.</Typography><Typography variant="body2">Your normal login is preserved. By default, this separate workspace expires after 60 minutes idle, 24 hours total, or service restart.</Typography>{error&&<Alert severity="error">Demo temporarily unavailable. {error} Retry below or visit the project overview.</Alert>}<Button variant="contained" disabled={busy} onClick={async()=>{setBusy(true);setError('');try{await startDemo();}catch{setError('Please try again.');sessionStorage.removeItem('portfolio_demo_key');setBusy(false);}}}>{busy?'Preparing demo…':'Try Demo'}</Button><Button component={Link} to="/login">Sign in</Button><Button variant="outlined" component={Link} to="/signup">Register</Button><Button href="https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor">Project overview & GitHub</Button></Stack></Paper>;
+}

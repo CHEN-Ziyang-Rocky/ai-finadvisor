@@ -1,4 +1,5 @@
 import React from 'react';
+import Demo from '../pages/demo';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import Overview from '../pages/overview';
 import Profile from '../pages/overview/Profile';
@@ -15,6 +16,7 @@ export default createBrowserRouter([
         { path: 'user', Component: Dashboard },
         { path: 'tools/simulator', Component: Simulator },
     ] },
+    { path: '/demo', Component: Demo },
     { path: '/login', Component: Login },
     { path: '/signup', Component: SignUp },
     { path: '*', element: <Navigate to="/overview" replace /> },

@@ -1,3 +1,4 @@
+import { demoToken } from '../../utils/demo';
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import {
@@ -38,9 +39,12 @@ export default function User() {
     }, [state]);
     const [predictionData, setPredictionData] = useState(null);
     const [activeTab, setActiveTab] = useState(0);
+    const [restored, setRestored] = useState(false);
+    useEffect(()=>{if(!demoToken())return;let active=true;api.get('/simulation').then(({data})=>{if(active){setPredictionData(data.result);setActiveTab(1);setRestored(true);}}).catch(()=>{if(active)setPortfolioError('Saved demo simulation unavailable. Try calculating again.');});return()=>{active=false;};},[]);
 
     const handlePredictionComplete = (data) => {
         // Expecting data.scenarios and data.portfolioCompositions (optional)
+        setRestored(false);
         setPredictionData(data);
         setActiveTab(1);
     };
@@ -49,6 +53,7 @@ export default function User() {
         <Box className="simulation-page" sx={{ width: '100%' }}>
             <div className="research-hero"><div><div className="eyebrow">SCENARIO LAB</div><h1>Explore possible futures.</h1><p>Compare portfolio paths, cash flows and purchasing power under explicit assumptions.</p></div></div>
             <ModelGuide />
+            {restored && <Alert severity="info">Restored saved demo result. Initial results were precomputed with the existing engine; use Configure to run a new calculation.</Alert>}
             <Tabs value={activeTab} onChange={(e, newVal) => setActiveTab(newVal)}>
                 <Tab label="Configure" />
                 <Tab label="Results" disabled={!predictionData} />

@@ -26,23 +26,24 @@ export default function User() {
     const [policy, setPolicy] = useState({max_weight:.5,lookback_months:60,cost_bps:10,method:'target_return'});
     const [report, setReport] = useState(null), [busy, setBusy] = useState(''), [error, setError] = useState('');
     const [savedProfileChanged, setSavedProfileChanged] = useState(false);
+    const [exampleInfo,setExampleInfo]=useState(null);
     useEffect(() => {
         fetchAvailableAssets().then(data => {setCatalog(data.catalog || []);setAsOf(data.as_of);setDataset({...data.dataset,freshness:data.freshness});})
             .catch(() => setError('Could not load the asset catalog. Refresh to retry.'));
     }, []);
-    useEffect(()=>{let active=true;api.get('/overview').then(({data})=>{if(!active)return;setPrevious(data.portfolio);if(data.profile){setFeatures({...data.profile,risk:data.profile.risk??''});if(data.profile.risk_tolerance!=null){setRisk(data.profile.risk_tolerance);setPreference(data.profile.risk_tolerance);}} if(data.latest_run){setReport(data.latest_run.report);setPolicy(p=>({...p,...data.latest_run.report.policy}));setSavedProfileChanged(Boolean(data.profile?.updated_at && data.latest_run.created_at && new Date(data.profile.updated_at)>new Date(data.latest_run.created_at)));if(data.profile?.risk_tolerance!=null)setPreference(data.latest_run.report.policy.risk_score);}}).catch(()=>{if(active)setError('Saved inputs could not be restored. Re-enter your inputs before calculating.');}).finally(()=>{if(active)setProfileLoading(false);});return()=>{active=false;};},[]);
+    useEffect(()=>{let active=true;api.get('/overview').then(({data})=>{if(!active)return;setExampleInfo(data.example);setPrevious(data.portfolio);if(data.profile){setFeatures({...data.profile,risk:data.profile.risk??''});if(data.profile.risk_tolerance!=null){setRisk(data.profile.risk_tolerance);setPreference(data.profile.risk_tolerance);}} if(data.latest_run){setReport(data.latest_run.report);setPolicy(p=>({...p,...Object.fromEntries(['max_weight','lookback_months','cost_bps','method'].map(k=>[k,data.latest_run.report.policy[k]??p[k]]))}));setSavedProfileChanged(Boolean(data.profile?.updated_at && data.latest_run.created_at && new Date(data.profile.updated_at)>new Date(data.latest_run.created_at)));if(data.profile?.risk_tolerance!=null)setPreference(data.latest_run.report.policy.risk_score);}}).catch(()=>{if(active)setError('Saved inputs could not be restored. Re-enter your inputs before calculating.');}).finally(()=>{if(active)setProfileLoading(false);});return()=>{active=false;};},[]);
     useEffect(()=>{if(previous&&catalog.length)setSelected(current=>current.length?current:previous.tickers.map(t=>catalog.find(c=>c.ticker===t)).filter(Boolean));},[previous,catalog]);
     const reference = previous && selected.length===previous.tickers.length && selected.every(s=>previous.tickers.includes(s.ticker)) ? Object.fromEntries(previous.tickers.map((t,i)=>[t,previous.weights[i]])):undefined;
     const changeFeatures = update => {setFeatures(update);setRisk(null);setModelInfo(null);setReport(null);};
     const changePolicy = (key,value) => {setPolicy(p=>({...p,[key]:value}));setReport(null);};
     const predict = async () => {
-        setBusy('profile');setError('');setReport(null);
+        setBusy('profile');setError('');setReport(null);setExampleInfo(null);
         try {const {data} = await fetchRiskTolerance(features);setRisk(data.risk_tolerance);setPreference(data.risk_tolerance);setModelInfo(data.model_info);}
         catch(e){setError(e.response?.data?.details || 'Profile estimate failed. Check your inputs and session.');}
         finally{setBusy('');}
     };
     const allocate = async () => {
-        setBusy('allocation');setError('');setReport(null);
+        setBusy('allocation');setError('');setReport(null);setExampleInfo(null);
         try {setReport((await api.post('/allocate',{risk_tolerance:preference,stock_tickers:selected.map(s=>s.ticker),...policy,reference_weights:reference})).data);setSavedProfileChanged(false);}
         catch(e){setError(e.response?.data?.details || e.response?.data?.error || 'Optimization failed.');}
         finally{setBusy('');}
@@ -60,6 +61,7 @@ export default function User() {
     return <div className="research-page">
         <div className="research-hero"><div><div className="eyebrow">PORTFOLIO WORKSPACE</div><h1>From profile to portfolio.</h1><p>Explore a household risk proxy, compare allocations, and test the assumptions.</p></div><Chip label={asOf ? `Historical data · ${asOf}` : 'Loading dataset…'} variant="outlined" /></div>
         <ModelGuide />
+        {exampleInfo && <Alert severity="info" sx={{mb:2}}>{exampleInfo.precomputed ? "Precomputed example — generated offline with the existing model. Recalculate to explore different inputs." : "Saved calculation from this demo session."}</Alert>}
         <details className="method-details"><summary>Data source and freshness</summary><p>Research uses completed monthly prices through {asOf || "the recorded cutoff"}. It does not use a live trading feed. Source: {dataset?.provider || "bundled snapshot"}. Price basis: {dataset?.price_adjustment || "unverified close"}. Raw or split-adjusted closes do not include reinvested dividends.</p><p>New prices are validated and published as a complete version before calculations use them. A newer quote alone does not refresh this history.</p>{dataset?.dataset_id && <p>Dataset: {dataset.dataset_id.slice(0,12)}</p>}</details>
         <div className="workflow-strip"><span>01 · Your profile</span><span>02 · Research universe</span><span>03 · Compare & simulate</span></div>
         {dataset?.freshness?.stale && <Alert severity="warning" sx={{mb:2}}>Research prices are older than the last complete month ({dataset.freshness.expected_through}). {dataset.freshness.update_status==='pending_source'?'An ongoing data source is awaiting configuration.':'The latest complete refresh is unavailable.'} These results use the displayed historical cutoff.</Alert>}
