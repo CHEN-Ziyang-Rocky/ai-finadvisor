@@ -1,0 +1,11 @@
+# Project navigation
+
+AI Financial Advisor exposes a compact, right-aligned `Project links` navigation on application, sign-in and demo pages (and registration where supported). Both links remain visible on mobile without opening a menu.
+
+- `← Portfolio`: return to https://imrocky.com/ in the current tab.
+- `GitHub ↗`: open https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor in a new tab, with `noopener noreferrer`.
+- Demo entry: https://finance.imrocky.com/demo
+
+The links use ordinary anchors, visible keyboard focus and a minimum 44px touch height. They do not create sessions or change authentication. This change adds no dependencies, backend routes, database migrations or infrastructure configuration.
+
+Deploy using the existing frontend build and deployment process. Preserve environment files, backend processes and database contents. Keep the preceding frontend build for rollback; after restoring a Next.js build, restart only its frontend process. For the static React app, restore the preceding index/asset manifest while retaining its hashed static assets.
