@@ -26,5 +26,8 @@
   "devDependencies": {},
   "engines": {
     "node": "24.x"
+  },
+  "overrides": {
+    "follow-redirects": "1.16.2"
   }
 }
