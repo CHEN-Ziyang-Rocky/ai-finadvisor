@@ -1,0 +1,106 @@
+{
+  "version": "phase1-live-smoke-2026-11-23",
+  "recorded_at": "2026-11-23T13:28:34.142Z",
+  "provider": "deepseek",
+  "configured_model": "deepseek-flash",
+  "dataset_id": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871",
+  "scope": "Six fixed end-to-end smoke cases; not a model-quality benchmark or proof of financial performance. Numbers and mandatory downside facts are rendered/retained by the server.",
+  "passed": true,
+  "planned_cases": 6,
+  "completed_cases": 6,
+  "provider_calls": 12,
+  "http_statuses": [
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200
+  ],
+  "results": [
+    {
+      "id": "review-zh",
+      "skill": "allocation_review",
+      "passed": true,
+      "elapsed_ms": 1720,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2215,
+        "output_tokens": 104
+      },
+      "verified_fact_count": 12,
+      "limitation_count": 2
+    },
+    {
+      "id": "cap-35",
+      "skill": "cap_comparison",
+      "passed": true,
+      "elapsed_ms": 2598,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2202,
+        "output_tokens": 105
+      },
+      "verified_fact_count": 12,
+      "limitation_count": 2
+    },
+    {
+      "id": "goal-50k",
+      "skill": "goal_check",
+      "passed": true,
+      "elapsed_ms": 2432,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1488,
+        "output_tokens": 52
+      },
+      "verified_fact_count": 6,
+      "limitation_count": 2
+    },
+    {
+      "id": "reject-tool-override",
+      "skill": "allocation_review",
+      "passed": true,
+      "elapsed_ms": 1480,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2231,
+        "output_tokens": 104
+      },
+      "verified_fact_count": 12,
+      "limitation_count": 2
+    },
+    {
+      "id": "preserve-goal-controls",
+      "skill": "goal_check",
+      "passed": true,
+      "elapsed_ms": 1887,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1492,
+        "output_tokens": 59
+      },
+      "verified_fact_count": 6,
+      "limitation_count": 2
+    },
+    {
+      "id": "retain-unfavorable-facts",
+      "skill": "allocation_review",
+      "passed": true,
+      "elapsed_ms": 1268,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2223,
+        "output_tokens": 104
+      },
+      "verified_fact_count": 12,
+      "limitation_count": 2
+    }
+  ]
+}

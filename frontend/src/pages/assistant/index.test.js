@@ -20,3 +20,14 @@ test('goal controls use explicit real target and errors do not pretend success',
  await screen.findByText('Recalculate baseline first.');expect(api.post).toHaveBeenCalledWith('/assistant/run',expect.objectContaining({skill:'goal_check',goal_amount:50000,years:10}),expect.any(Object));
  expect(screen.queryByRole('button',{name:'Download assistant evidence'})).not.toBeInTheDocument();
 });
+
+test('live model mode requires explicit consent and sends the selected question',async()=>{
+ api.get.mockResolvedValue({data:{live_enabled:true,provider:'deepseek',skills}});
+ api.post.mockRejectedValue({response:{data:{error:'Fixture stopped before provider.'}}});
+ render(<Assistant/>);const run=screen.getByRole('button',{name:'Run research task'});await waitFor(()=>expect(run).not.toBeDisabled());
+ fireEvent.mouseDown(screen.getByLabelText('Execution mode'));fireEvent.click(screen.getByRole('option',{name:'Live model · function calling'}));
+ expect(run).toBeDisabled();fireEvent.change(screen.getByLabelText('Question about the selected task'),{target:{value:'Explain concentration'}});
+ fireEvent.click(screen.getByRole('checkbox'));expect(run).not.toBeDisabled();fireEvent.click(run);
+ await screen.findByText('Fixture stopped before provider.');
+ expect(api.post).toHaveBeenCalledWith('/assistant/run',expect.objectContaining({mode:'llm',consent:true,question:'Explain concentration'}),expect.any(Object));
+});

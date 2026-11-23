@@ -85,3 +85,9 @@ test('HTTP router applies scope, demo live restrictions and rejects client-selec
 test('goal receipt cannot silently change the target or assumptions',async()=>{
  await assert.rejects(runAssistant({body:{...body('goal_check'),goal_amount:50000},readReport:async()=>baseline(),calculate:async()=>structuredClone(example.simulation)}),{status:409});
 });
+
+test('provider billing failure is actionable without exposing upstream details',async()=>{
+ const env={FINANCE_AI_ENABLED:'true',FINANCE_AI_PROVIDER:'deepseek',FINANCE_AI_KEY:'synthetic-test-only',FINANCE_AI_MODEL:'test-model'};
+ const provider=createProvider({env,transport:{post:async()=>{throw Object.assign(Error('private provider payload'),{response:{status:402}});}}});
+ await assert.rejects(provider.choose(skills[0],{question:''}),e=>e.status===503&&e.message.includes('balance')&&!e.message.includes('private'));
+});

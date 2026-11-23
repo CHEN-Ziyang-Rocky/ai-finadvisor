@@ -15,7 +15,9 @@ function createProvider({env=process.env,transport=axios}={}){
     {headers:{Authorization:`Bearer ${env.FINANCE_AI_KEY}`,'Content-Type':'application/json'},timeout:20000,maxRedirects:0,maxContentLength:128*1024});
    usage.input_tokens+=data.usage?.prompt_tokens??0;usage.output_tokens+=data.usage?.completion_tokens??0;
    const choice=data.choices?.[0];if(!choice||!['stop','tool_calls'].includes(choice.finish_reason))throw Error('Incomplete output');return choice.message;
-  }catch{throw fail('The model provider did not return a complete supported response. No model answer was published; use workflow mode.',502);}
+  }catch(error){
+   if(error.response?.status===402)throw fail('Live model billing is unavailable. Use local workflow; the site operator needs to check the provider balance.',503);
+   throw fail('The model provider did not return a complete supported response. No model answer was published; use workflow mode.',502);}
  }
  return {name:state.provider,model:state.model,usage,
   async choose(skill,p){

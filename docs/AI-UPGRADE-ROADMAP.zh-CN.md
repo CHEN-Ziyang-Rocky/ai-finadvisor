@@ -45,9 +45,9 @@
 - [x] 用户逐次同意发送问题、结构化参数和计算事实；不发送家庭画像、登录信息或完整历史价格。自由问题仍可能含用户自行输入的个人资料，界面提醒不要输入。
 - [x] 单元与接口测试覆盖无密钥、未知工具、错误身份、伪造引用、隐藏负面事实、错误计算回执、限流和模式标注。
 
-### 尚未完成，不能宣称已完成
+### 模型接入状态与尚待完成的验证
 
-- [ ] 用户注册并配置可用 API 账户，明确费用与数据处理条件。
+- [x] 服务端配置 DeepSeek；2026-11-23 完成六项真实调用 smoke 验证。登录用户可选择模型模式，匿名 Demo 保持离线。
 - [ ] 使用真实指定模型运行固定评估集；目前连接器协议测试使用模拟响应，不是模型准确率。
 - [ ] 在真实模型评估中记录模型版本、日期、输入/输出 tokens、延迟、任务成功率、工具选择失败与拒答案例。
 - [ ] 生产持久化调用审计、按用户的耐久预算、服务商费用核对；当前证据可下载，运行日志不写入新数据库表。
@@ -131,7 +131,7 @@
 
 先查看[支持的国家和地区](https://help.openai.com/en/articles/7947663-chatgpt-and-openai-api-supported-countries-and-territories)，确认账户与使用场景符合要求，不要通过网络手段绕过地区限制。按[官方 Quickstart](https://developers.openai.com/api/docs/quickstart)创建 API 项目和 key；ChatGPT 与 API 的[账单独立管理](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform)。选择当前支持 Chat Completions、工具调用与 JSON 输出的模型，将 provider 改为 `openai`，填写实际模型 ID。不要把 OpenAI Responses API 的配置直接套入本连接器。
 
-本阶段没有替用户注册、付款或调用真实模型，也没有验证某账户在某地区的资格。上线配置名不含密钥；配置完毕后需要真实联网验收，不能仅凭 `live_enabled` 就宣称模型已验证。
+账户与付款由用户自行完成。2026-11-23 已实际调用 DeepSeek，六个固定 smoke 场景全部通过，详见下方记录；这不代表完整质量评估，也不构成对账户地区资格的审查。配置名不含密钥，不能仅凭 `live_enabled` 宣称模型已验证。
 
 ## 可展示的项目材料与简历写法
 
@@ -151,3 +151,17 @@
 - [LangChain 官方学习文档](https://docs.langchain.com/oss/python/learn)：检索和 Agent 编排框架，按实际复杂度采用。
 - [OpenAI SFT](https://developers.openai.com/api/docs/guides/supervised-fine-tuning)：先建立评估再训练。
 - [Hugging Face TRL GRPO](https://huggingface.co/docs/trl/grpo_trainer)：训练机制与实现参考，不代表本项目已训练 GRPO。
+
+### 真实模型验收工具（2026-11-23）
+
+`backend/assistant/live-evaluate.cjs` 定义六个固定 smoke 场景：中文配置解释、35% 上限、五万美元目标、越权工具诱导、擅改目标诱导、隐藏负面事实诱导。它在应用服务器调用真实模型与冻结数值引擎，最多 12 次模型请求，首次失败即停止；只输出用量、状态和校验结果，不记录密钥或原始服务商错误。
+
+密钥通过标准输入提供，不放在命令参数中，终端输入时必须关闭回显；不要把密钥直接写入 Shell 历史。只有显式使用 `--enable-after-pass` 且六项全通过，脚本才追加服务端启用配置；之后仍需重启 FinAdvisor API。报告写入服务器 `/tmp/finance-ai-live-evaluation.json`。六项通过只是基本连通与应用约束验证，不能替代前文至少 30 条的真实模型质量评估。
+
+如果服务商返回 HTTP 402，界面现在会说明模型计费暂不可用并提示使用本地工作流；检查服务商余额后再试，不应盲目重试或把它误报为模型推理错误。依据：[DeepSeek 官方错误码](https://api-docs.deepseek.com/quick_start/error_codes/)。
+
+### 已完成的真实调用记录
+
+[六项真实 DeepSeek smoke 记录](evals/phase1-deepseek-live-smoke.json)：配置模型 `deepseek-flash`，12 次服务商请求均返回 200。六项均通过工具、来源、必需风险事实与不可修改目标的校验，每项耗时约 1.3–2.6 秒。输入合计 11,851 tokens，输出合计 528 tokens。它衡量的是预设受限流程；数值文字和必需事实由服务端保留，不能把这些校验通过归因于模型具备通用抗攻击能力。
+
+仍需完成至少 30 条固定质量测试，并记录误拒答、问题覆盖、成本和失败样本；RAG、开放规划 Agent、SFT 均尚未交付。
