@@ -1,0 +1,13 @@
+{
+  "version": "phase1-offline-2026-11-23",
+  "cases": [
+    {"id":"saved-allocation","body":{"skill":"allocation_review"},"status":200,"required":["largest_holding","optimized_cagr","equal_weight_cagr"]},
+    {"id":"unknown-task","body":{"skill":"trade_now"},"status":400},
+    {"id":"cross-account","body":{"skill":"allocation_review","user_id":999},"status":400},
+    {"id":"missing-model","body":{"skill":"allocation_review","mode":"llm","consent":true},"status":503},
+    {"id":"missing-consent","body":{"skill":"allocation_review","mode":"llm"},"status":400},
+    {"id":"negative-goal","body":{"skill":"goal_check","goal_amount":-1},"status":400},
+    {"id":"fractional-horizon","body":{"skill":"goal_check","years":1.5},"status":400},
+    {"id":"infeasible-cap","body":{"skill":"cap_comparison","cap_pct":10},"status":400}
+  ]
+}

@@ -22,6 +22,7 @@ jobs:
             frontend/package-lock.json
       - run: npm ci --prefix backend
       - run: npm ci --prefix frontend
+      - run: node backend/assistant/evaluate.cjs
       - run: npm test --prefix backend
       - run: npm test --prefix frontend -- --watchAll=false --runInBand
         env:

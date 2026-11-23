@@ -1,0 +1,57 @@
+{
+  "suite": "phase1-offline-2026-11-23",
+  "workflow": "2026-11-23-assistant-1",
+  "mode": "offline fixtures; no live model",
+  "passed": 8,
+  "total": 8,
+  "results": [
+    {
+      "id": "saved-allocation",
+      "expected_status": 200,
+      "actual_status": 200,
+      "passed": true
+    },
+    {
+      "id": "unknown-task",
+      "expected_status": 400,
+      "actual_status": 400,
+      "passed": true
+    },
+    {
+      "id": "cross-account",
+      "expected_status": 400,
+      "actual_status": 400,
+      "passed": true
+    },
+    {
+      "id": "missing-model",
+      "expected_status": 503,
+      "actual_status": 503,
+      "passed": true
+    },
+    {
+      "id": "missing-consent",
+      "expected_status": 400,
+      "actual_status": 400,
+      "passed": true
+    },
+    {
+      "id": "negative-goal",
+      "expected_status": 400,
+      "actual_status": 400,
+      "passed": true
+    },
+    {
+      "id": "fractional-horizon",
+      "expected_status": 400,
+      "actual_status": 400,
+      "passed": true
+    },
+    {
+      "id": "infeasible-cap",
+      "expected_status": 400,
+      "actual_status": 400,
+      "passed": true
+    }
+  ]
+}

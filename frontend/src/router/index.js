@@ -7,6 +7,7 @@ import Profile from '../pages/overview/Profile';
 import Main from '../pages/main';
 import Dashboard from '../pages/user';
 import Simulator from '../pages/tools/simulator';
+import ResearchAssistant from '../pages/assistant';
 import Login from '../pages/login';
 import SignUp from '../pages/signup';
 
@@ -27,6 +28,7 @@ export default createBrowserRouter([
         { path: 'profile', Component: Profile },
         { path: 'user', Component: Dashboard },
         { path: 'tools/simulator', Component: Simulator },
+        { path: 'tools/assistant', Component: ResearchAssistant },
     ] },
     { Component: PublicLayout, children: [
         { path: '/demo', Component: Demo },

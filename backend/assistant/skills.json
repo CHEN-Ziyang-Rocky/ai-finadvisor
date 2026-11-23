@@ -1,0 +1,5 @@
+[
+ {"id":"allocation_review","version":"1.0","title":"Explain my allocation","tool":"inspect_allocation","purpose":"Explain concentration and compare the saved allocation with equal weights using recorded evidence.","required":"A saved allocation with a calculation receipt","limitations":["historical","suitability"]},
+ {"id":"cap_comparison","version":"1.0","title":"Test a holding cap","tool":"compare_holding_cap","purpose":"Recalculate one holding-cap change with the same dataset, training window and evaluation dates; do not save or trade.","required":"A saved allocation and a feasible cap","limitations":["historical","tradeoff"]},
+ {"id":"goal_check","version":"1.0","title":"Check a long-term goal","tool":"simulate_goal","purpose":"Use the saved weights in the existing simulation engine and explain the actual real-wealth goal and drawdown.","required":"A saved allocation, real-dollar goal and horizon","limitations":["conditional","costs"]}
+]

@@ -18,6 +18,7 @@ function createDemoRouter({upstream=axios,store=new DemoStore()}={}) {
   try { const s=store.create(req.get('Idempotency-Key'),req.socket.remoteAddress||'local',seed);res.json({token:s.token}); }catch(e){res.status(e.status||503).json({error:e.message});}
  });
  router.use((req,res,next)=>{try{req.demo=store.get(req.get('Authorization'));next();}catch(e){res.status(e.status||401).json({error:e.message});}});
+ router.use('/assistant',require('../assistant/router').createAssistantRouter({isDemo:true,upstream,getContext:async req=>({owner:req.demo.token,report:req.demo.state.latest_run?.report,assertActive:()=>store.get(req.get('Authorization'))})}));
  router.get('/me',(req,res)=>res.json({username:'Demo visitor',demo:true}));
  router.get('/assets',(req,res)=>res.json(example.assets));
  router.get('/overview',(req,res)=>{const {profile,portfolio,latest_run,example}=req.demo.state;res.json({profile,portfolio,latest_run,example});});

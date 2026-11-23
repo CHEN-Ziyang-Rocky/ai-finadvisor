@@ -79,7 +79,7 @@ app.use((req, res, next) => {
 
 if (process.env.CORE_DEMO !== 'false') {
     app.use('/api', (req, res, next) => {
-        const allowed = /^\/(assets|overview|profile|saved-portfolio|predict|allocate|efficient_frontier|simulator|performance\/[^/]+)\/?$/;
+        const allowed = /^\/(assets|overview|profile|saved-portfolio|assistant\/(?:capabilities|run)|predict|allocate|efficient_frontier|simulator|performance\/[^/]+)\/?$/;
         if (!allowed.test(req.path)) return res.status(404).json({ error: 'Not part of this demo' });
         next();
     });
@@ -100,6 +100,9 @@ if (!PYTHON_SERVICE_URL) {
     process.exit(1);
 }
 const FMP_API_KEY = process.env.FWP_api_key;
+app.use('/api/assistant', require('./assistant/router').createAssistantRouter({
+    getContext: async req => ({owner:req.user.id, report:(await readResearch(pool,req.user.id)).latest_run?.report})
+}));
 // /api/assets no need to be authenticated
 app.get('/api/assets', async (req, res) => {
     try {

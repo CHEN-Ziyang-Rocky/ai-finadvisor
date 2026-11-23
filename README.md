@@ -128,3 +128,11 @@ The repository includes application source, dependency lockfiles, numerical and 
 The guest demo is deployed at https://finance.imrocky.com/demo. The application entry is `/demo`; no shared credentials are required. Normal login remains available. See [demo setup, limits, tests and rollout](docs/ONE-CLICK-DEMO.md).
 
 Public registration is available through `/signup` and has a visible Register button.
+
+### Evidence-based research assistant (phase 1)
+
+The authenticated and isolated demo UI includes `/tools/assistant`: review the saved allocation, trial a holding cap, or check a real-dollar goal. Every displayed number comes from a saved calculation or the numerical engine; comparisons and limitations cannot be removed by the model. Trials do not replace the saved allocation.
+
+Local workflow mode makes **no LLM request**. An optional, disabled-by-default DeepSeek/OpenAI connector supports two bounded function-calling steps and validated evidence selection; it is not an open-ended planning agent. Anonymous demos cannot call paid models. Protocol tests use mock responses; real-model quality and billing acceptance require an operator-configured account. See the [Chinese roadmap, acceptance criteria and API setup](docs/AI-UPGRADE-ROADMAP.zh-CN.md) and [configuration template](backend/assistant/.env.example).
+
+Run `node backend/assistant/evaluate.cjs` for the versioned offline fixture evaluation. These results measure deterministic contracts, not live model accuracy or financial performance.
