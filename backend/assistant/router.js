@@ -1,6 +1,7 @@
 const express=require('express');
 const {validateDocument, answerDocuments}=require('./library/search');
 const axios=require('axios');
+const {runAgent,validateAgent}=require('./agent');
 const {runAssistant,validate,skills,fail}=require('./service');
 const {createProvider,status}=require('./provider');
 // Process-local abuse limits, not a persistent monetary budget. Provider billing limits remain necessary.
@@ -11,11 +12,12 @@ function cleanTransport(body){
 function createAssistantRouter({getContext,upstream=axios,isDemo=false,providerFactory=createProvider}={}){
  const router=express.Router();
  router.get('/capabilities',(req,res)=>{res.set('Cache-Control','no-store');res.json({skills,workflow_available:true,...(isDemo?{live_enabled:false,provider:null,model:null}:status()),note:'Workflow uses local tools. Live model mode requires operator configuration and per-request consent. This endpoint exposes no credentials.'});});
- router.post(['/run','/documents'],async(req,res)=>{
+ router.post(['/run','/documents','/agent'],async(req,res)=>{
   let occupied=false;
   try{
    const documents=req.path==='/documents';
-   const body=(documents?validateDocument:validate)(isDemo?req.body:cleanTransport(req.body));
+   const agent=req.path==='/agent';
+   const body=(agent?validateAgent:documents?validateDocument:validate)(isDemo?req.body:cleanTransport(req.body));
    if(isDemo&&body.mode==='llm')throw fail('Live model calls are disabled for anonymous demo sessions.',403);
    const context=await getContext(req,documents),now=Date.now(),key=(isDemo?'demo:':'user:')+context.owner;
    for(const [k,v] of buckets)if(now-v[v.length-1]>=60000)buckets.delete(k);
@@ -29,11 +31,13 @@ function createAssistantRouter({getContext,upstream=axios,isDemo=false,providerF
     if(dailyLive>=20)throw fail('The process daily live-run allowance has been reached.',429);dailyLive++;
    }
    active++;occupied=true;
-   const result=documents ? await answerDocuments(body,provider) : await runAssistant({body,provider,readReport:()=>context.report,calculate:async(name,payload)=>{
+   const calculate=async(name,payload)=>{
     const routes=isDemo?{allocate:'/demo/allocate',simulator:'/demo/simulator'}:{allocate:'/allocate',simulator:'/api/simulator'};
     if(!routes[name])throw fail('Unknown numerical tool.');
     const reply=await upstream.post(`${process.env.PYTHON_SERVICE_URL||'http://127.0.0.1:5002'}${routes[name]}`,payload,{timeout:45000,maxContentLength:4*1024*1024});return reply.data;
-   }});
+   };
+   const options={body,provider,calculate,readReport:()=>context.report,assertActive:context.assertActive};
+   const result=documents ? await answerDocuments(body,provider) : agent ? await runAgent(options) : await runAssistant(options);
    if(context.assertActive)context.assertActive();
    res.set('Cache-Control','no-store');res.json(result);
   }catch(error){res.status(error.status||503).json({error:error.status?error.message:'Calculation service unavailable. No verified answer was published.'});}

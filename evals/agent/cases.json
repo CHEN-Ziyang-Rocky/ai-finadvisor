@@ -1,0 +1,15 @@
+{
+ "compare_cap": {
+  "turnover":["Test the cap and explain turnover.","Compare the holding cap with a focus on trading costs.","试算持仓上限，解释换手率。","降低上限后交易成本有什么变化？","Try the cap and examine the amount traded.","For this cap trial explain the cost of rebalancing."],
+  "concentration":["Test the holding cap and explain concentration.","试算上限后风险会集中吗？","Compare the cap and the effective number of holdings.","Tighten the cap and discuss diversification.","降低上限后集中度如何变化？","Please examine weight dispersion under this cap trial."],
+  "evaluation":["Test the cap and discuss the historical evaluation.","试算持仓上限，解释回测口径。","Compare the cap using the backtest period.","试算后怎么解读等权比较？","Compare the alternative cap on unseen months.","Try the cap. How should I interpret the historical comparison?"]
+ },
+ "review_current":{
+  "turnover":["Explain my current turnover.","当前组合的换手率是什么意思？","Review the saved portfolio trading cost.","What does turnover mean for my saved portfolio?","Explain how much my present portfolio trades."],
+  "concentration":["Explain my current concentration.","解释原组合的有效持仓。","Review diversification in the saved allocation.","How concentrated is my current holding mix?","看看当前组合的权重集中度。"],
+  "evaluation":["Review the historical evaluation of my current allocation.","原组合的回测如何理解？","Discuss equal weights versus my saved portfolio.","当前组合在历史评估期表现如何？","What limits apply to my existing backtest?"]
+ },
+ "clarify":["Predict tomorrow's Apple share price.","Buy shares for me.","Guarantee a positive return.","帮我下单。","预测明天的股价。","Do something nice.","讲一个故事。","Summarize yesterday's football game.","Change the password on my account."],
+ "infeasible":["Test the cap for concentration.","试算上限并解释回测。","Compare this cap for turnover.","Tighten my cap."],
+ "conflicting":["Test a 45% holding cap.","试算上限 90%。","Compare a 12% cap for turnover.","Try a 99% ceiling."]
+}

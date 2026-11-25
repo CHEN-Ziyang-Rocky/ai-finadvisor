@@ -1,0 +1,15 @@
+{
+ "compare_cap":{
+  "turnover":["With the trial cap, will the monthly trading volume change?","采用这个仓位上限试算后，换手情况如何？"],
+  "evaluation":["Recompute this cap and describe the walk-forward comparison."],
+  "concentration":["Use the new holding ceiling. What would it do to concentration?"]
+ },
+ "review_current":{
+  "turnover":["How often does my existing strategy rebalance its positions, judging by turnover?"],
+  "evaluation":["For the portfolio I already have, explain the historical comparison to 1/N.","只解释已保存方案的回测依据，不用试算。"],
+  "concentration":["Describe diversification in the allocation already on file."]
+ },
+ "clarify":["Submit a market order for me.","请查巴黎到里昂的车票。"],
+ "infeasible":["Try this holding limit and explain effective holdings."],
+ "conflicting":["Use a cap of 48% to study diversification."]
+}

@@ -79,7 +79,7 @@ app.use((req, res, next) => {
 
 if (process.env.CORE_DEMO !== 'false') {
     app.use('/api', (req, res, next) => {
-        const allowed = /^\/(assets|overview|profile|saved-portfolio|assistant\/(?:capabilities|run|documents)|predict|allocate|efficient_frontier|simulator|performance\/[^/]+)\/?$/;
+        const allowed = /^\/(assets|overview|profile|saved-portfolio|assistant\/(?:capabilities|run|documents|agent)|predict|allocate|efficient_frontier|simulator|performance\/[^/]+)\/?$/;
         if (!allowed.test(req.path)) return res.status(404).json({ error: 'Not part of this demo' });
         next();
     });

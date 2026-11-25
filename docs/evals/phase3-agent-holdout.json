@@ -1,0 +1,833 @@
+{
+  "suite": "holdout",
+  "at": "2026-11-25T14:28:33.631Z",
+  "model": "deepseek-flash",
+  "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871",
+  "summary": {
+    "workflow": {
+      "passed": 4,
+      "total": 12,
+      "p95_ms": 1632,
+      "requests": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "over_budget": 0,
+      "unsupported_completions": 0
+    },
+    "agent": {
+      "passed": 9,
+      "total": 12,
+      "p95_ms": 2031,
+      "requests": 18,
+      "input_tokens": 7543,
+      "output_tokens": 110,
+      "over_budget": 0,
+      "unsupported_completions": 0
+    }
+  },
+  "results": [
+    {
+      "action": "compare_cap",
+      "topic": "turnover",
+      "question": "With the trial cap, will the monthly trading volume change?",
+      "workflow": {
+        "mode": "workflow",
+        "status": "completed",
+        "chosen": "compare_cap",
+        "topic": "concentration",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 1,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "compare_cap"
+          },
+          {
+            "step": "compare_cap",
+            "cap_pct": 25,
+            "receipt": "ad2a245f8c1f4d7ea8b9b8fa09f43a4d3f9a42dd160279c15f96376b09857722"
+          },
+          {
+            "step": "method",
+            "selected": "concentration"
+          },
+          {
+            "step": "read_method",
+            "topic": "concentration",
+            "passage": "m17"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1632,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 833,
+        "usage": {
+          "requests": 1,
+          "input_tokens": 421,
+          "output_tokens": 6
+        }
+      }
+    },
+    {
+      "action": "compare_cap",
+      "topic": "turnover",
+      "question": "采用这个仓位上限试算后，换手情况如何？",
+      "workflow": {
+        "mode": "workflow",
+        "status": "completed",
+        "chosen": "compare_cap",
+        "topic": "turnover",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 1,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "compare_cap"
+          },
+          {
+            "step": "compare_cap",
+            "cap_pct": 30,
+            "receipt": "6b29b7a9102ccb72264b887a7603f587329455214359a62cae0bde8ce366f9f3"
+          },
+          {
+            "step": "method",
+            "selected": "turnover"
+          },
+          {
+            "step": "read_method",
+            "topic": "turnover",
+            "passage": "m21"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1582,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "review_current",
+        "topic": "turnover",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "review_current"
+          },
+          {
+            "step": "method",
+            "selected": "turnover"
+          },
+          {
+            "step": "read_method",
+            "topic": "turnover",
+            "passage": "m21"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1574,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 844,
+          "output_tokens": 12
+        }
+      }
+    },
+    {
+      "action": "compare_cap",
+      "topic": "evaluation",
+      "question": "Recompute this cap and describe the walk-forward comparison.",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "review_current",
+        "topic": "evaluation",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "review_current"
+          },
+          {
+            "step": "method",
+            "selected": "evaluation"
+          },
+          {
+            "step": "read_method",
+            "topic": "evaluation",
+            "passage": "m20"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1999,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 840,
+          "output_tokens": 12
+        }
+      }
+    },
+    {
+      "action": "compare_cap",
+      "topic": "concentration",
+      "question": "Use the new holding ceiling. What would it do to concentration?",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "compare_cap",
+        "topic": "concentration",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 1,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "compare_cap"
+          },
+          {
+            "step": "compare_cap",
+            "cap_pct": 40,
+            "receipt": "e12210e739a6e9d14ee6f529974890d6b600ff423f8671b5e2fb7af6a9ffedc5"
+          },
+          {
+            "step": "method",
+            "selected": "concentration"
+          },
+          {
+            "step": "read_method",
+            "topic": "concentration",
+            "passage": "m17"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 2031,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 832,
+          "output_tokens": 13
+        }
+      }
+    },
+    {
+      "action": "review_current",
+      "topic": "turnover",
+      "question": "How often does my existing strategy rebalance its positions, judging by turnover?",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "review_current",
+        "topic": "turnover",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "review_current"
+          },
+          {
+            "step": "method",
+            "selected": "turnover"
+          },
+          {
+            "step": "read_method",
+            "topic": "turnover",
+            "passage": "m21"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1137,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 844,
+          "output_tokens": 12
+        }
+      }
+    },
+    {
+      "action": "review_current",
+      "topic": "evaluation",
+      "question": "For the portfolio I already have, explain the historical comparison to 1/N.",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "review_current",
+        "topic": "evaluation",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "review_current"
+          },
+          {
+            "step": "method",
+            "selected": "evaluation"
+          },
+          {
+            "step": "read_method",
+            "topic": "evaluation",
+            "passage": "m20"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1049,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 846,
+          "output_tokens": 12
+        }
+      }
+    },
+    {
+      "action": "review_current",
+      "topic": "evaluation",
+      "question": "只解释已保存方案的回测依据，不用试算。",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "review_current",
+        "topic": "evaluation",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "review_current"
+          },
+          {
+            "step": "method",
+            "selected": "evaluation"
+          },
+          {
+            "step": "read_method",
+            "topic": "evaluation",
+            "passage": "m20"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1690,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 840,
+          "output_tokens": 12
+        }
+      }
+    },
+    {
+      "action": "review_current",
+      "topic": "concentration",
+      "question": "Describe diversification in the allocation already on file.",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "completed",
+        "chosen": "review_current",
+        "topic": "concentration",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "review_current"
+          },
+          {
+            "step": "method",
+            "selected": "concentration"
+          },
+          {
+            "step": "read_method",
+            "topic": "concentration",
+            "passage": "m17"
+          }
+        ],
+        "reason": "Calculation receipts and method citation verified.",
+        "elapsed_ms": 1007,
+        "usage": {
+          "requests": 2,
+          "input_tokens": 832,
+          "output_tokens": 12
+        }
+      }
+    },
+    {
+      "action": "clarify",
+      "question": "Submit a market order for me.",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 932,
+        "usage": {
+          "requests": 1,
+          "input_tokens": 412,
+          "output_tokens": 6
+        }
+      }
+    },
+    {
+      "action": "clarify",
+      "question": "请查巴黎到里昂的车票。",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 931,
+        "usage": {
+          "requests": 1,
+          "input_tokens": 414,
+          "output_tokens": 6
+        }
+      }
+    },
+    {
+      "action": "infeasible",
+      "question": "Try this holding limit and explain effective holdings.",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "chosen": "clarify",
+        "passed": false,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "clarify"
+          }
+        ],
+        "reason": "Ask about the current allocation or a trial holding cap, then specify the aspect to examine.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "stopped",
+        "chosen": "compare_cap",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          },
+          {
+            "step": "plan",
+            "selected": "compare_cap"
+          },
+          {
+            "step": "compare_cap",
+            "outcome": "stopped"
+          }
+        ],
+        "reason": "This holding cap is infeasible for the selected stocks.",
+        "elapsed_ms": 553,
+        "usage": {
+          "requests": 1,
+          "input_tokens": 418,
+          "output_tokens": 7
+        }
+      }
+    },
+    {
+      "action": "conflicting",
+      "question": "Use a cap of 48% to study diversification.",
+      "workflow": {
+        "mode": "workflow",
+        "status": "clarify",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          }
+        ],
+        "reason": "The percentage in your question differs from the trial cap. Align them and run again.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      },
+      "agent": {
+        "mode": "llm",
+        "status": "clarify",
+        "passed": true,
+        "grounded": true,
+        "correctCap": true,
+        "trialCalls": 0,
+        "trace": [
+          {
+            "step": "inspect_allocation",
+            "receipt": "91ac20a926c5420ec6d8a9b61565986a1f65037bdcc5ac774beee09b4c4644a6",
+            "dataset": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871"
+          }
+        ],
+        "reason": "The percentage in your question differs from the trial cap. Align them and run again.",
+        "elapsed_ms": 1,
+        "usage": {
+          "requests": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        }
+      }
+    }
+  ]
+}

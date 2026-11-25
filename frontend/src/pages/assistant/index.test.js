@@ -41,3 +41,14 @@ test('library search shows passage citations and sends only the public question'
  expect(await screen.findByRole('link',{name:'Methods · v1 · Line 21'})).toHaveAttribute('href','https://example.org/method#L21');
  expect(api.post).toHaveBeenCalledWith('/assistant/documents',{question:'How is turnover calculated?',mode:'workflow',consent:false});
 });
+
+test('multi-step study sends the displayed cap and offers correction after clarification',async()=>{
+ api.post.mockResolvedValue({data:{run_id:'run123',mode:'workflow',question:'Test 25%',cap_pct:35,status:'clarify',reason:'Align the percentages.',elapsed_ms:1,trace:[]}});
+ render(<Assistant/>);const run=screen.getByRole('button',{name:'Run with local workflow'});
+ await waitFor(()=>expect(run).not.toBeDisabled());
+ fireEvent.change(screen.getByLabelText('Research question'),{target:{value:'Test 25%'}});
+ fireEvent.click(run);
+ expect(await screen.findByText('Align the percentages.')).toBeInTheDocument();
+ expect(api.post).toHaveBeenCalledWith('/assistant/agent',{question:'Test 25%',cap_pct:35,mode:'workflow',consent:false},expect.any(Object));
+ expect(run).not.toBeDisabled();
+});

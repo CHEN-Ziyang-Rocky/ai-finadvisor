@@ -20,8 +20,12 @@ jobs:
           cache-dependency-path: |
             backend/package-lock.json
             frontend/package-lock.json
+            tools/research-mcp/package-lock.json
       - run: npm ci --prefix backend
       - run: npm ci --prefix frontend
+      - run: npm ci --prefix tools/research-mcp
+      - run: npm test --prefix tools/research-mcp
+      - run: npm audit --prefix tools/research-mcp --omit=dev --audit-level=high
       - run: node backend/assistant/evaluate.cjs
       - run: npm test --prefix backend
       - run: npm test --prefix frontend -- --watchAll=false --runInBand
