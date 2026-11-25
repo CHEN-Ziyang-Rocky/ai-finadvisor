@@ -23,3 +23,17 @@ test('model may only select citations actually retrieved for this question',asyn
   }
   assert.deepEqual((await answerDocuments(live,{documentEvidence:async()=>['m27']})).evidence,[retrieve(question).find(p=>p.id==='m27')]);
 });
+test('annual filing queries bind the issuer, fiscal year, metric and USD unit',()=>{
+  const [row,...others]=retrieve('苹果 2025 财年的营收是多少？');
+  assert.equal(others.length,0);
+  assert.equal(row.id,'aapl-revenue-2025');
+  assert.match(row.text,/USD 416,161 million/);
+  assert.match(row.locator,/FY2025/);
+  assert.equal(row.version,'FY2026');
+});
+test('out-of-scope fiscal periods and financial measures abstain before paid inference',async()=>{
+  for (const question of ['Microsoft Q2 sales in 2026','Apple operating profit for 2015','微软2025年的利润率','Alphabet revenue in 2026']) {
+    const result=await answerDocuments({...live,question},{documentEvidence:()=>assert.fail('Model call on empty evidence')});
+    assert.equal(result.status,'insufficient');
+  }
+});

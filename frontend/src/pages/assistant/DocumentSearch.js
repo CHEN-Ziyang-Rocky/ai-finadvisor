@@ -27,9 +27,9 @@ export default function DocumentSearch({capabilities}) {
   }
   return <Paper component="section" className="research-card" sx={{mt:3}}>
     <Typography variant="h5" component="h2">Ask the research library</Typography>
-    <p>Search the portfolio methodology and selected figures from Table 5.4 of the Federal Reserve’s 2024 annual report.</p>
+    <p>Search the portfolio methodology, selected Federal Reserve holdings, or Apple and Microsoft annual results. Company figures cover consolidated revenue and operating income for fiscal 2024–2026 in USD millions.</p>
     <form onSubmit={submit}>
-      <TextField fullWidth label="Document question" placeholder="How does inflation affect real wealth?" value={question}
+      <TextField fullWidth label="Document question" placeholder="What was Microsoft operating income in FY2026?" value={question}
         onChange={e=>setQuestion(e.target.value)} disabled={busy} inputProps={{maxLength:500}}/>
       {capabilities?.live_enabled && <FormControlLabel control={<Checkbox checked={consent} disabled={busy}
         onChange={e=>setConsent(e.target.checked)}/>} label={`Let ${capabilities.provider} read this question and public passages to select supporting evidence`}/>}
@@ -38,7 +38,7 @@ export default function DocumentSearch({capabilities}) {
     {error && <Alert severity="error">{error}</Alert>}
     {result && <div aria-live="polite"><h3>{result.question}</h3>
       <p>{result.status === 'insufficient' ? 'Insufficient evidence in the indexed documents.' :
-        result.mode === 'llm' ? `Supporting passages selected by ${result.model}` : 'Closest source passages · keyword search'}</p>
+        result.mode === 'llm' ? `Supporting passages selected by ${result.model}` : 'Matching source passages'}</p>
       {result.evidence.map(p=><div key={p.id}><blockquote>{p.text}</blockquote><a href={p.url} target="_blank" rel="noreferrer">{p.title} · {p.version} · {p.locator}</a></div>)}
     </div>}
   </Paper>;

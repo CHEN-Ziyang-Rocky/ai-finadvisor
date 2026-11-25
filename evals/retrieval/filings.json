@@ -1,0 +1,36 @@
+{
+ "development": [
+  ["Apple total revenue FY2024","aapl-revenue-2024"],
+  ["AAPL在2024财年营业利润是多少？","aapl-operating-2024"],
+  ["How big were Apple's 2024 net sales?","aapl-revenue-2024"],
+  ["2024财年苹果公司的营收是多少？","aapl-revenue-2024"],
+  ["Apple annual operating income during 2024","aapl-operating-2024"],
+  ["请问苹果2024年的经营利润是多少","aapl-operating-2024"],
+  ["AAPL operating profit in fiscal 2024","aapl-operating-2024"],
+  ["How much revenue did Apple report in 2024?","aapl-revenue-2024"],
+  ["Apple revenue 2016",null],["苹果2024年的每股收益？",null],
+  ["What was Apple's Q3 2024 revenue?",null],["Tesla operating income in 2024?",null]
+ ],
+ "holdout": [
+  ["What did Microsoft take in as revenue for fiscal 2026?","msft-revenue-2026"],
+  ["微软2025财年的营业收入为多少？","msft-revenue-2025"],
+  ["MSFT 2026年赚了多少营业利润？","msft-operating-2026"],
+  ["Microsoft operating earnings for fiscal 2025?","msft-operating-2025"],
+  ["2026 财年微软公司的销售收入是多少？","msft-revenue-2026"],
+  ["What was the top line at MSFT in FY2025?","msft-revenue-2025"],
+  ["How much operating profit did Microsoft record in 2026?","msft-operating-2026"],
+  ["请查一下微软 2025 年的经营利润。","msft-operating-2025"],
+  ["How much were Microsoft's consolidated sales in fiscal 2026?","msft-revenue-2026"],
+  ["微软在 FY2026 的营业收入是多少美元？","msft-revenue-2026"],
+  ["MSFT FY25 operating income","msft-operating-2025"],
+  ["Microsoft annual revenue, year ended June 30 2025","msft-revenue-2025"],
+  ["Microsoft 2026 fiscal year operating income in millions of dollars","msft-operating-2026"],
+  ["微软二〇二五年的营业利润是多少？","msft-operating-2025"],
+  ["Show Microsoft operating income for 2029",null],
+  ["微软2025年净利润？",null],["MSFT Azure revenue FY2025",null],
+  ["Microsoft operating margin percentage in fiscal 2026?",null],
+  ["How large was Nvidia revenue in 2026?",null],["苹果和微软2030年的营收是多少？",null],
+  ["Q2 2026 Microsoft consolidated sales?",null],["微软2026年第二季度的营收？",null],
+  ["How many staff did Microsoft employ in 2025?",null],["微软 2026 年的每股营业利润？",null]
+ ]
+}

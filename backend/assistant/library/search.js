@@ -1,4 +1,5 @@
-const passages = require('./passages.json');
+const passages = [...require('./passages.json'), ...require('./filings.json')];
+const {eligiblePassages} = require('./filing-scope');
 const {fail} = require('../service');
 const stop = new Set('a an the for and of is in on it are where do does why what how to my i can me from as or at has was be explain our your which when by with this about many did much its'.split(' '));
 const glossary = {
@@ -16,7 +17,7 @@ function terms(text) {
 }
 const indexed = passages.map(p => terms(p.text));
 const averageLength = indexed.reduce((n, doc) => n + doc.length, 0) / indexed.length;
-function retrieve(question) {
+function rankKeywords(question) {
   const translations = Object.entries(glossary).filter(([word]) => question.includes(word)).map(([,translation]) => translation);
   const query = [...new Set(terms([question, ...translations].join(' ')))];
   const scores = indexed.map(() => 0);
@@ -29,7 +30,13 @@ function retrieve(question) {
     });
   }
   return passages.map((passage, i) => ({passage, score:scores[i]}))
-    .filter(hit => hit.score >= 2.2).sort((a,b) => b.score-a.score).slice(0,3).map(hit => hit.passage);
+    .sort((a,b) => b.score-a.score);
+}
+function retrieve(question) {
+  const eligible = new Set(eligiblePassages(question, passages));
+  return rankKeywords(question)
+    .filter(({passage,score}) => eligible.has(passage) && (passage.issuer || score >= 2.2))
+    .slice(0,3).map(hit => hit.passage);
 }
 function validateDocument(body) {
   if (!body || Object.keys(body).some(key => !['mode','consent','question'].includes(key)) ||
@@ -51,4 +58,4 @@ async function answerDocuments(body, provider) {
   return {question:body.question, mode:body.mode, model:provider?.model || null, usage:provider?.usage || null,
     status:evidence.length ? (provider ? 'supported' : 'matches') : 'insufficient', evidence};
 }
-module.exports = {retrieve, validateDocument, answerDocuments};
+module.exports = {retrieve, rankKeywords, validateDocument, answerDocuments};

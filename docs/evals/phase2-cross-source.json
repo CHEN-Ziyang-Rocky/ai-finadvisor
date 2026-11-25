@@ -1,0 +1,1655 @@
+{
+  "model": "Xenova/multilingual-e5-small@761b726dd34fb83930e26aab4e9ac3899aa1fa78",
+  "quantization": "ONNX int8",
+  "cosine_threshold": 0.89,
+  "splits": {
+    "development": {
+      "metrics": {
+        "bm25": {
+          "positive": 8,
+          "negative": 4,
+          "recall_at_3": 0.5,
+          "mrr_at_3": 0.4166666666666667,
+          "no_match_rate": 0.25
+        },
+        "e5": {
+          "positive": 8,
+          "negative": 4,
+          "recall_at_3": 0.5,
+          "mrr_at_3": 0.4375,
+          "no_match_rate": 1.0
+        },
+        "hybrid": {
+          "positive": 8,
+          "negative": 4,
+          "recall_at_3": 0.625,
+          "mrr_at_3": 0.5416666666666666,
+          "no_match_rate": 0.25
+        },
+        "scoped": {
+          "positive": 8,
+          "negative": 4,
+          "recall_at_3": 1.0,
+          "mrr_at_3": 1.0,
+          "no_match_rate": 1.0
+        }
+      },
+      "results": [
+        {
+          "q": "Apple total revenue FY2024",
+          "expected": "aapl-revenue-2024",
+          "bm25": [
+            "msft-revenue-2024",
+            "msft-revenue-2025",
+            "msft-revenue-2026"
+          ],
+          "e5": [
+            "aapl-operating-2024",
+            "aapl-revenue-2024",
+            "aapl-revenue-2025"
+          ],
+          "hybrid": [
+            "aapl-revenue-2024",
+            "aapl-operating-2024",
+            "aapl-revenue-2025"
+          ],
+          "scoped": [
+            "aapl-revenue-2024"
+          ]
+        },
+        {
+          "q": "AAPL在2024财年营业利润是多少？",
+          "expected": "aapl-operating-2024",
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": [
+            "aapl-operating-2024"
+          ]
+        },
+        {
+          "q": "How big were Apple's 2024 net sales?",
+          "expected": "aapl-revenue-2024",
+          "bm25": [
+            "aapl-revenue-2024",
+            "aapl-revenue-2025",
+            "aapl-revenue-2026"
+          ],
+          "e5": [
+            "aapl-revenue-2024"
+          ],
+          "hybrid": [
+            "aapl-revenue-2024",
+            "aapl-revenue-2025",
+            "aapl-revenue-2026"
+          ],
+          "scoped": [
+            "aapl-revenue-2024"
+          ]
+        },
+        {
+          "q": "2024财年苹果公司的营收是多少？",
+          "expected": "aapl-revenue-2024",
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": [
+            "aapl-revenue-2024"
+          ]
+        },
+        {
+          "q": "Apple annual operating income during 2024",
+          "expected": "aapl-operating-2024",
+          "bm25": [
+            "aapl-operating-2024",
+            "aapl-operating-2025",
+            "aapl-operating-2026"
+          ],
+          "e5": [
+            "aapl-operating-2024",
+            "aapl-operating-2026",
+            "aapl-operating-2025"
+          ],
+          "hybrid": [
+            "aapl-operating-2024",
+            "aapl-operating-2025",
+            "aapl-operating-2026"
+          ],
+          "scoped": [
+            "aapl-operating-2024"
+          ]
+        },
+        {
+          "q": "请问苹果2024年的经营利润是多少",
+          "expected": "aapl-operating-2024",
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": [
+            "aapl-operating-2024"
+          ]
+        },
+        {
+          "q": "AAPL operating profit in fiscal 2024",
+          "expected": "aapl-operating-2024",
+          "bm25": [
+            "aapl-operating-2024",
+            "msft-operating-2024",
+            "aapl-operating-2025"
+          ],
+          "e5": [
+            "aapl-operating-2024"
+          ],
+          "hybrid": [
+            "aapl-operating-2024",
+            "msft-operating-2024",
+            "aapl-operating-2025"
+          ],
+          "scoped": [
+            "aapl-operating-2024"
+          ]
+        },
+        {
+          "q": "How much revenue did Apple report in 2024?",
+          "expected": "aapl-revenue-2024",
+          "bm25": [
+            "msft-revenue-2024",
+            "aapl-operating-2024",
+            "aapl-revenue-2024"
+          ],
+          "e5": [],
+          "hybrid": [
+            "msft-revenue-2024",
+            "aapl-operating-2024",
+            "aapl-revenue-2024"
+          ],
+          "scoped": [
+            "aapl-revenue-2024"
+          ]
+        },
+        {
+          "q": "Apple revenue 2016",
+          "expected": null,
+          "bm25": [
+            "msft-revenue-2024",
+            "msft-revenue-2025",
+            "msft-revenue-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "msft-revenue-2024",
+            "msft-revenue-2025",
+            "msft-revenue-2026"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "苹果2024年的每股收益？",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "What was Apple's Q3 2024 revenue?",
+          "expected": null,
+          "bm25": [
+            "msft-revenue-2024",
+            "aapl-operating-2024",
+            "aapl-revenue-2024"
+          ],
+          "e5": [],
+          "hybrid": [
+            "msft-revenue-2024",
+            "aapl-operating-2024",
+            "aapl-revenue-2024"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "Tesla operating income in 2024?",
+          "expected": null,
+          "bm25": [
+            "aapl-operating-2024",
+            "msft-operating-2024",
+            "aapl-operating-2025"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2024",
+            "msft-operating-2024",
+            "aapl-operating-2025"
+          ],
+          "scoped": []
+        }
+      ]
+    },
+    "holdout": {
+      "metrics": {
+        "bm25": {
+          "positive": 14,
+          "negative": 10,
+          "recall_at_3": 0.7142857142857143,
+          "mrr_at_3": 0.511904761904762,
+          "no_match_rate": 0.1
+        },
+        "e5": {
+          "positive": 14,
+          "negative": 10,
+          "recall_at_3": 0.35714285714285715,
+          "mrr_at_3": 0.35714285714285715,
+          "no_match_rate": 0.7
+        },
+        "hybrid": {
+          "positive": 14,
+          "negative": 10,
+          "recall_at_3": 0.7142857142857143,
+          "mrr_at_3": 0.511904761904762,
+          "no_match_rate": 0.1
+        },
+        "scoped": {
+          "positive": 14,
+          "negative": 10,
+          "recall_at_3": 1.0,
+          "mrr_at_3": 1.0,
+          "no_match_rate": 1.0
+        }
+      },
+      "results": [
+        {
+          "q": "What did Microsoft take in as revenue for fiscal 2026?",
+          "expected": "msft-revenue-2026",
+          "bm25": [
+            "msft-revenue-2026",
+            "msft-revenue-2024",
+            "msft-revenue-2025"
+          ],
+          "e5": [
+            "msft-revenue-2026",
+            "msft-revenue-2024",
+            "msft-revenue-2025"
+          ],
+          "hybrid": [
+            "msft-revenue-2026",
+            "msft-revenue-2024",
+            "msft-revenue-2025"
+          ],
+          "scoped": [
+            "msft-revenue-2026"
+          ]
+        },
+        {
+          "q": "微软2025财年的营业收入为多少？",
+          "expected": "msft-revenue-2025",
+          "bm25": [
+            "aapl-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2025"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2025"
+          ],
+          "scoped": [
+            "msft-revenue-2025"
+          ]
+        },
+        {
+          "q": "MSFT 2026年赚了多少营业利润？",
+          "expected": "msft-operating-2026",
+          "bm25": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "scoped": [
+            "msft-operating-2026"
+          ]
+        },
+        {
+          "q": "Microsoft operating earnings for fiscal 2025?",
+          "expected": "msft-operating-2025",
+          "bm25": [
+            "msft-operating-2025",
+            "aapl-operating-2025",
+            "msft-revenue-2025"
+          ],
+          "e5": [
+            "msft-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2024"
+          ],
+          "hybrid": [
+            "msft-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2024"
+          ],
+          "scoped": [
+            "msft-operating-2025"
+          ]
+        },
+        {
+          "q": "2026 财年微软公司的销售收入是多少？",
+          "expected": "msft-revenue-2026",
+          "bm25": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "scoped": [
+            "msft-revenue-2026"
+          ]
+        },
+        {
+          "q": "What was the top line at MSFT in FY2025?",
+          "expected": "msft-revenue-2025",
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": [
+            "msft-revenue-2025"
+          ]
+        },
+        {
+          "q": "How much operating profit did Microsoft record in 2026?",
+          "expected": "msft-operating-2026",
+          "bm25": [
+            "msft-operating-2026",
+            "aapl-operating-2026",
+            "msft-revenue-2026"
+          ],
+          "e5": [
+            "msft-operating-2026"
+          ],
+          "hybrid": [
+            "msft-operating-2026",
+            "aapl-operating-2026",
+            "msft-revenue-2026"
+          ],
+          "scoped": [
+            "msft-operating-2026"
+          ]
+        },
+        {
+          "q": "请查一下微软 2025 年的经营利润。",
+          "expected": "msft-operating-2025",
+          "bm25": [
+            "aapl-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2025"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2025"
+          ],
+          "scoped": [
+            "msft-operating-2025"
+          ]
+        },
+        {
+          "q": "How much were Microsoft's consolidated sales in fiscal 2026?",
+          "expected": "msft-revenue-2026",
+          "bm25": [
+            "aapl-revenue-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-revenue-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "scoped": [
+            "msft-revenue-2026"
+          ]
+        },
+        {
+          "q": "微软在 FY2026 的营业收入是多少美元？",
+          "expected": "msft-revenue-2026",
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": [
+            "msft-revenue-2026"
+          ]
+        },
+        {
+          "q": "MSFT FY25 operating income",
+          "expected": "msft-operating-2025",
+          "bm25": [
+            "aapl-operating-2024",
+            "aapl-operating-2025",
+            "aapl-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2024",
+            "aapl-operating-2025",
+            "aapl-operating-2026"
+          ],
+          "scoped": [
+            "msft-operating-2025"
+          ]
+        },
+        {
+          "q": "Microsoft annual revenue, year ended June 30 2025",
+          "expected": "msft-revenue-2025",
+          "bm25": [
+            "msft-revenue-2025",
+            "msft-revenue-2024",
+            "msft-revenue-2026"
+          ],
+          "e5": [
+            "msft-revenue-2025"
+          ],
+          "hybrid": [
+            "msft-revenue-2025",
+            "msft-revenue-2024",
+            "msft-revenue-2026"
+          ],
+          "scoped": [
+            "msft-revenue-2025"
+          ]
+        },
+        {
+          "q": "Microsoft 2026 fiscal year operating income in millions of dollars",
+          "expected": "msft-operating-2026",
+          "bm25": [
+            "msft-operating-2026",
+            "aapl-operating-2026",
+            "msft-operating-2024"
+          ],
+          "e5": [
+            "msft-operating-2026",
+            "msft-operating-2024",
+            "msft-operating-2025"
+          ],
+          "hybrid": [
+            "msft-operating-2026",
+            "msft-operating-2024",
+            "msft-operating-2025"
+          ],
+          "scoped": [
+            "msft-operating-2026"
+          ]
+        },
+        {
+          "q": "微软二〇二五年的营业利润是多少？",
+          "expected": "msft-operating-2025",
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": [
+            "msft-operating-2025"
+          ]
+        },
+        {
+          "q": "Show Microsoft operating income for 2029",
+          "expected": null,
+          "bm25": [
+            "msft-operating-2024",
+            "msft-operating-2025",
+            "msft-operating-2026"
+          ],
+          "e5": [
+            "msft-operating-2026"
+          ],
+          "hybrid": [
+            "msft-operating-2026",
+            "msft-operating-2024",
+            "msft-operating-2025"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "微软2025年净利润？",
+          "expected": null,
+          "bm25": [
+            "aapl-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2025"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2025",
+            "msft-revenue-2025",
+            "msft-operating-2025"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "MSFT Azure revenue FY2025",
+          "expected": null,
+          "bm25": [
+            "msft-revenue-2024",
+            "msft-revenue-2025",
+            "msft-revenue-2026"
+          ],
+          "e5": [
+            "msft-revenue-2025"
+          ],
+          "hybrid": [
+            "msft-revenue-2025",
+            "msft-revenue-2024",
+            "msft-revenue-2026"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "Microsoft operating margin percentage in fiscal 2026?",
+          "expected": null,
+          "bm25": [
+            "msft-operating-2026",
+            "aapl-operating-2026",
+            "msft-revenue-2026"
+          ],
+          "e5": [
+            "msft-operating-2026",
+            "msft-operating-2024",
+            "msft-operating-2025"
+          ],
+          "hybrid": [
+            "msft-operating-2026",
+            "msft-operating-2024",
+            "msft-operating-2025"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "How large was Nvidia revenue in 2026?",
+          "expected": null,
+          "bm25": [
+            "msft-revenue-2026",
+            "msft-revenue-2024",
+            "msft-revenue-2025"
+          ],
+          "e5": [],
+          "hybrid": [
+            "msft-revenue-2026",
+            "msft-revenue-2024",
+            "msft-revenue-2025"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "苹果和微软2030年的营收是多少？",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "Q2 2026 Microsoft consolidated sales?",
+          "expected": null,
+          "bm25": [
+            "aapl-revenue-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-revenue-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "微软2026年第二季度的营收？",
+          "expected": null,
+          "bm25": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "How many staff did Microsoft employ in 2025?",
+          "expected": null,
+          "bm25": [
+            "msft-revenue-2025",
+            "msft-operating-2025",
+            "aapl-operating-2025"
+          ],
+          "e5": [],
+          "hybrid": [
+            "msft-revenue-2025",
+            "msft-operating-2025",
+            "aapl-operating-2025"
+          ],
+          "scoped": []
+        },
+        {
+          "q": "微软 2026 年的每股营业利润？",
+          "expected": null,
+          "bm25": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "e5": [],
+          "hybrid": [
+            "aapl-operating-2026",
+            "msft-revenue-2026",
+            "msft-operating-2026"
+          ],
+          "scoped": []
+        }
+      ]
+    },
+    "previous": {
+      "metrics": {
+        "bm25": {
+          "positive": 45,
+          "negative": 12,
+          "recall_at_3": 1.0,
+          "mrr_at_3": 0.9666666666666667,
+          "no_match_rate": 0.6666666666666666
+        },
+        "e5": {
+          "positive": 45,
+          "negative": 12,
+          "recall_at_3": 0.13333333333333333,
+          "mrr_at_3": 0.13333333333333333,
+          "no_match_rate": 1.0
+        },
+        "hybrid": {
+          "positive": 45,
+          "negative": 12,
+          "recall_at_3": 1.0,
+          "mrr_at_3": 0.9666666666666667,
+          "no_match_rate": 0.6666666666666666
+        },
+        "scoped": {
+          "positive": 45,
+          "negative": 12,
+          "recall_at_3": 1.0,
+          "mrr_at_3": 0.9666666666666667,
+          "no_match_rate": 0.75
+        }
+      },
+      "results": [
+        {
+          "q": "Where did survivorship bias enter the original stock universe?",
+          "expected": "m10",
+          "bm25": [
+            "m10",
+            "m20",
+            "m30"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m10",
+            "m20",
+            "m30"
+          ],
+          "scoped": [
+            "m10",
+            "m20",
+            "m30"
+          ]
+        },
+        {
+          "q": "Was historical index membership reconstructed?",
+          "expected": "m10",
+          "bm25": [
+            "m10"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m10"
+          ],
+          "scoped": [
+            "m10"
+          ]
+        },
+        {
+          "q": "Which provider supplies the price history?",
+          "expected": "m11",
+          "bm25": [
+            "m12",
+            "m11"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m12",
+            "m11"
+          ],
+          "scoped": [
+            "m12",
+            "m11"
+          ]
+        },
+        {
+          "q": "数据来源和缺失价格怎么处理？",
+          "expected": "m11",
+          "bm25": [
+            "m11",
+            "m12"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m11",
+            "m12"
+          ],
+          "scoped": [
+            "m11",
+            "m12"
+          ]
+        },
+        {
+          "q": "Is the incomplete current month included?",
+          "expected": "m12",
+          "bm25": [
+            "m12",
+            "m10"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m12",
+            "m10"
+          ],
+          "scoped": [
+            "m12",
+            "m10"
+          ]
+        },
+        {
+          "q": "Can provider revisions affect the history?",
+          "expected": "m12",
+          "bm25": [
+            "m12",
+            "m11"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m12",
+            "m11"
+          ],
+          "scoped": [
+            "m12",
+            "m11"
+          ]
+        },
+        {
+          "q": "How does minimum variance use the holding cap?",
+          "expected": "m14",
+          "bm25": [
+            "m14",
+            "m20",
+            "m15"
+          ],
+          "e5": [
+            "m14"
+          ],
+          "hybrid": [
+            "m14",
+            "m20",
+            "m15"
+          ],
+          "scoped": [
+            "m14",
+            "m20",
+            "m15"
+          ]
+        },
+        {
+          "q": "Are negative holdings allowed?",
+          "expected": "m14",
+          "bm25": [
+            "m14",
+            "m15"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m14",
+            "m15"
+          ],
+          "scoped": [
+            "m14",
+            "m15"
+          ]
+        },
+        {
+          "q": "Why apply covariance shrinkage?",
+          "expected": "m16",
+          "bm25": [
+            "m16",
+            "m31",
+            "m17"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m16",
+            "m31",
+            "m17"
+          ],
+          "scoped": [
+            "m16",
+            "m31",
+            "m17"
+          ]
+        },
+        {
+          "q": "协方差为什么要收缩？",
+          "expected": "m16",
+          "bm25": [
+            "m16",
+            "m17",
+            "m26"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m16",
+            "m17",
+            "m26"
+          ],
+          "scoped": [
+            "m16",
+            "m17",
+            "m26"
+          ]
+        },
+        {
+          "q": "How are effective holdings calculated?",
+          "expected": "m17",
+          "bm25": [
+            "m17",
+            "m14",
+            "m15"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m17",
+            "m14",
+            "m15"
+          ],
+          "scoped": [
+            "m17",
+            "m14",
+            "m15"
+          ]
+        },
+        {
+          "q": "How is share of variance defined?",
+          "expected": "m17",
+          "bm25": [
+            "m17",
+            "m20",
+            "m14"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m17",
+            "m20",
+            "m14"
+          ],
+          "scoped": [
+            "m17",
+            "m20",
+            "m14"
+          ]
+        },
+        {
+          "q": "What is the household survey proxy?",
+          "expected": "m18",
+          "bm25": [
+            "m18",
+            "m35",
+            "m31"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m18",
+            "m35",
+            "m31"
+          ],
+          "scoped": [
+            "m18",
+            "m35",
+            "m31"
+          ]
+        },
+        {
+          "q": "What does the ExtraTrees model estimate?",
+          "expected": "m18",
+          "bm25": [
+            "m18",
+            "m30",
+            "m16"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m18",
+            "m30",
+            "m16"
+          ],
+          "scoped": [
+            "m18",
+            "m30",
+            "m16"
+          ]
+        },
+        {
+          "q": "Which rolling evaluation months are compared?",
+          "expected": "m20",
+          "bm25": [
+            "m20"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m20"
+          ],
+          "scoped": [
+            "m20"
+          ]
+        },
+        {
+          "q": "How do preceding observations prevent future returns entering the fit?",
+          "expected": "m20",
+          "bm25": [
+            "m20",
+            "m24"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m20",
+            "m24"
+          ],
+          "scoped": [
+            "m20",
+            "m24"
+          ]
+        },
+        {
+          "q": "How is gross turnover computed?",
+          "expected": "m21",
+          "bm25": [
+            "m21",
+            "m22"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m21",
+            "m22"
+          ],
+          "scoped": [
+            "m21",
+            "m22"
+          ]
+        },
+        {
+          "q": "How do drifted holdings affect turnover?",
+          "expected": "m21",
+          "bm25": [
+            "m21",
+            "m12",
+            "m14"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m21",
+            "m12",
+            "m14"
+          ],
+          "scoped": [
+            "m21",
+            "m12",
+            "m14"
+          ]
+        },
+        {
+          "q": "Does the evaluation include terminal liquidation?",
+          "expected": "m22",
+          "bm25": [
+            "m22",
+            "m20",
+            "m34"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m22",
+            "m20",
+            "m34"
+          ],
+          "scoped": [
+            "m22",
+            "m20",
+            "m34"
+          ]
+        },
+        {
+          "q": "How are gross buys and sells charged?",
+          "expected": "m22",
+          "bm25": [
+            "m22",
+            "m21"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m22",
+            "m21"
+          ],
+          "scoped": [
+            "m22",
+            "m21"
+          ]
+        },
+        {
+          "q": "Which predeclared cost settings are compared?",
+          "expected": "m23",
+          "bm25": [
+            "m23"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m23"
+          ],
+          "scoped": [
+            "m23"
+          ]
+        },
+        {
+          "q": "Which holding caps enter the sensitivity checks?",
+          "expected": "m23",
+          "bm25": [
+            "m29",
+            "m23",
+            "m14"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m29",
+            "m23",
+            "m14"
+          ],
+          "scoped": [
+            "m29",
+            "m23",
+            "m14"
+          ]
+        },
+        {
+          "q": "What does the middle 80% weight range describe?",
+          "expected": "m24",
+          "bm25": [
+            "m24",
+            "m20"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m24",
+            "m20"
+          ],
+          "scoped": [
+            "m24",
+            "m20"
+          ]
+        },
+        {
+          "q": "How many circular block resamples measure weight stability?",
+          "expected": "m24",
+          "bm25": [
+            "m24",
+            "m26",
+            "m18"
+          ],
+          "e5": [
+            "m24"
+          ],
+          "hybrid": [
+            "m24",
+            "m26",
+            "m18"
+          ],
+          "scoped": [
+            "m24",
+            "m26",
+            "m18"
+          ]
+        },
+        {
+          "q": "Why resample all assets together?",
+          "expected": "m26",
+          "bm25": [
+            "m26",
+            "m24",
+            "m16"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m26",
+            "m24",
+            "m16"
+          ],
+          "scoped": [
+            "m26",
+            "m24",
+            "m16"
+          ]
+        },
+        {
+          "q": "Does quick exploration apply mean shrinkage?",
+          "expected": "m26",
+          "bm25": [
+            "m26",
+            "m16",
+            "m31"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m26",
+            "m16",
+            "m31"
+          ],
+          "scoped": [
+            "m26",
+            "m16",
+            "m31"
+          ]
+        },
+        {
+          "q": "How does inflation convert nominal wealth to real wealth?",
+          "expected": "m27",
+          "bm25": [
+            "m27",
+            "m34"
+          ],
+          "e5": [
+            "m27"
+          ],
+          "hybrid": [
+            "m27",
+            "m34"
+          ],
+          "scoped": [
+            "m27",
+            "m34"
+          ]
+        },
+        {
+          "q": "通胀如何影响名义财富和达标比例？",
+          "expected": "m27",
+          "bm25": [
+            "m27",
+            "m28",
+            "m34"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m27",
+            "m28",
+            "m34"
+          ],
+          "scoped": [
+            "m27",
+            "m28",
+            "m34"
+          ]
+        },
+        {
+          "q": "Can a high goal fraction coexist with interim losses?",
+          "expected": "m28",
+          "bm25": [
+            "m28",
+            "m27",
+            "m26"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m28",
+            "m27",
+            "m26"
+          ],
+          "scoped": [
+            "m28",
+            "m27",
+            "m26"
+          ]
+        },
+        {
+          "q": "What does preserving purchasing power mean for the target?",
+          "expected": "m28",
+          "bm25": [
+            "m28",
+            "m14",
+            "m15"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m28",
+            "m14",
+            "m15"
+          ],
+          "scoped": [
+            "m28",
+            "m14",
+            "m15"
+          ]
+        },
+        {
+          "q": "Are baseline and mean sensitivity cases assigned likelihoods?",
+          "expected": "m29",
+          "bm25": [
+            "m29",
+            "m30",
+            "m24"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m29",
+            "m30",
+            "m24"
+          ],
+          "scoped": [
+            "m29",
+            "m30",
+            "m24"
+          ]
+        },
+        {
+          "q": "What happens to volatility in manual cases?",
+          "expected": "m29",
+          "bm25": [
+            "m29",
+            "m23"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m29",
+            "m23"
+          ],
+          "scoped": [
+            "m29",
+            "m23"
+          ]
+        },
+        {
+          "q": "How does the mean-uncertainty experiment use the original sample?",
+          "expected": "m30",
+          "bm25": [
+            "m30",
+            "m16",
+            "m24"
+          ],
+          "e5": [
+            "m30"
+          ],
+          "hybrid": [
+            "m30",
+            "m16",
+            "m24"
+          ],
+          "scoped": [
+            "m30",
+            "m16",
+            "m24"
+          ]
+        },
+        {
+          "q": "Does the bootstrap mean offset persist throughout a path?",
+          "expected": "m30",
+          "bm25": [
+            "m30",
+            "m28",
+            "m27"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m30",
+            "m28",
+            "m27"
+          ],
+          "scoped": [
+            "m30",
+            "m28",
+            "m27"
+          ]
+        },
+        {
+          "q": "What happens if a crisis window is incomplete?",
+          "expected": "m31",
+          "bm25": [
+            "m31",
+            "m12"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m31",
+            "m12"
+          ],
+          "scoped": [
+            "m31",
+            "m12"
+          ]
+        },
+        {
+          "q": "Do historical replays include cash flows?",
+          "expected": "m31",
+          "bm25": [
+            "m31",
+            "m34",
+            "m32"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m31",
+            "m34",
+            "m32"
+          ],
+          "scoped": [
+            "m31",
+            "m34",
+            "m32"
+          ]
+        },
+        {
+          "q": "What do Wilson intervals describe?",
+          "expected": "m32",
+          "bm25": [
+            "m32",
+            "m24"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m32",
+            "m24"
+          ],
+          "scoped": [
+            "m32",
+            "m24"
+          ]
+        },
+        {
+          "q": "When are cash flows posted during simulation?",
+          "expected": "m32",
+          "bm25": [
+            "m31",
+            "m32",
+            "m34"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m31",
+            "m32",
+            "m34"
+          ],
+          "scoped": [
+            "m31",
+            "m32",
+            "m34"
+          ]
+        },
+        {
+          "q": "What is stored in a calculation record?",
+          "expected": "m34",
+          "bm25": [
+            "m34",
+            "m12"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m34",
+            "m12"
+          ],
+          "scoped": [
+            "m34",
+            "m12"
+          ]
+        },
+        {
+          "q": "Does editing a form rewrite the receipt?",
+          "expected": "m34",
+          "bm25": [
+            "m34"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m34"
+          ],
+          "scoped": [
+            "m34"
+          ]
+        },
+        {
+          "q": "What dependencies do I need for reproduction?",
+          "expected": "m35",
+          "bm25": [
+            "m35"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m35"
+          ],
+          "scoped": [
+            "m35"
+          ]
+        },
+        {
+          "q": "Are login credentials included in the export?",
+          "expected": "m35",
+          "bm25": [
+            "m35"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m35"
+          ],
+          "scoped": [
+            "m35"
+          ]
+        },
+        {
+          "q": "How large were average daily Treasury securities in 2024?",
+          "expected": "treasury",
+          "bm25": [
+            "treasury",
+            "mbs",
+            "total"
+          ],
+          "e5": [],
+          "hybrid": [
+            "treasury",
+            "mbs",
+            "total"
+          ],
+          "scoped": [
+            "treasury",
+            "mbs",
+            "total"
+          ]
+        },
+        {
+          "q": "How large were average daily mortgage-backed securities in 2023?",
+          "expected": "mbs",
+          "bm25": [
+            "mbs",
+            "treasury",
+            "total"
+          ],
+          "e5": [
+            "mbs"
+          ],
+          "hybrid": [
+            "mbs",
+            "treasury",
+            "total"
+          ],
+          "scoped": [
+            "mbs",
+            "treasury",
+            "total"
+          ]
+        },
+        {
+          "q": "What were total SOMA assets for 2024?",
+          "expected": "total",
+          "bm25": [
+            "total",
+            "msft-revenue-2024",
+            "aapl-revenue-2024"
+          ],
+          "e5": [
+            "total"
+          ],
+          "hybrid": [
+            "total",
+            "msft-revenue-2024",
+            "aapl-revenue-2024"
+          ],
+          "scoped": [
+            "total"
+          ]
+        },
+        {
+          "q": "Who won Wimbledon?",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "明天深圳会下雨吗？",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "Translate a poem into Italian",
+          "expected": null,
+          "bm25": [
+            "m16"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m16"
+          ],
+          "scoped": [
+            "m16"
+          ]
+        },
+        {
+          "q": "Who leads the Premier League?",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "Show rail departures for Paris",
+          "expected": null,
+          "bm25": [
+            "m12"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m12"
+          ],
+          "scoped": [
+            "m12"
+          ]
+        },
+        {
+          "q": "What is the capital of Peru?",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "北京现在几点？",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "Find a lentil soup recipe",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "Which island has penguins?",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "Compute the orbital period of Mars",
+          "expected": null,
+          "bm25": [
+            "m26"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m26"
+          ],
+          "scoped": [
+            "m26"
+          ]
+        },
+        {
+          "q": "Tell me about dinosaur fossils",
+          "expected": null,
+          "bm25": [],
+          "e5": [],
+          "hybrid": [],
+          "scoped": []
+        },
+        {
+          "q": "What is Apple's dividend yield today?",
+          "expected": null,
+          "bm25": [
+            "m20",
+            "m31",
+            "m28"
+          ],
+          "e5": [],
+          "hybrid": [
+            "m20",
+            "m31",
+            "m28"
+          ],
+          "scoped": []
+        }
+      ]
+    }
+  }
+}
