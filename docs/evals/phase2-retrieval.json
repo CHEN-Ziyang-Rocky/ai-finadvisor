@@ -1,0 +1,505 @@
+{
+  "dataset": "Authored document smoke questions. Same indexed sources; no independent holdout.",
+  "cases": 57,
+  "positives": 45,
+  "negatives": 12,
+  "recall_at_3": 1,
+  "mrr_at_3": 0.9666666666666667,
+  "no_match_rate": 0.6666666666666666,
+  "results": [
+    {
+      "question": "Where did survivorship bias enter the original stock universe?",
+      "expected": "m10",
+      "ids": [
+        "m10",
+        "m20",
+        "m30"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Was historical index membership reconstructed?",
+      "expected": "m10",
+      "ids": [
+        "m10"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Which provider supplies the price history?",
+      "expected": "m11",
+      "ids": [
+        "m12",
+        "m11"
+      ],
+      "rank": 2
+    },
+    {
+      "question": "数据来源和缺失价格怎么处理？",
+      "expected": "m11",
+      "ids": [
+        "m11",
+        "m12"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Is the incomplete current month included?",
+      "expected": "m12",
+      "ids": [
+        "m12",
+        "m10"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Can provider revisions affect the history?",
+      "expected": "m12",
+      "ids": [
+        "m12",
+        "m11"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How does minimum variance use the holding cap?",
+      "expected": "m14",
+      "ids": [
+        "m14",
+        "m20",
+        "m15"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Are negative holdings allowed?",
+      "expected": "m14",
+      "ids": [
+        "m14"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Why apply covariance shrinkage?",
+      "expected": "m16",
+      "ids": [
+        "m16",
+        "m31",
+        "m26"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "协方差为什么要收缩？",
+      "expected": "m16",
+      "ids": [
+        "m16",
+        "m26"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How are effective holdings calculated?",
+      "expected": "m17",
+      "ids": [
+        "m17"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How is share of variance defined?",
+      "expected": "m17",
+      "ids": [
+        "m17",
+        "m20",
+        "m14"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What is the household survey proxy?",
+      "expected": "m18",
+      "ids": [
+        "m18",
+        "m35",
+        "m31"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What does the ExtraTrees model estimate?",
+      "expected": "m18",
+      "ids": [
+        "m18",
+        "m30",
+        "m16"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Which rolling evaluation months are compared?",
+      "expected": "m20",
+      "ids": [
+        "m20"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How do preceding observations prevent future returns entering the fit?",
+      "expected": "m20",
+      "ids": [
+        "m20",
+        "m24"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How is gross turnover computed?",
+      "expected": "m21",
+      "ids": [
+        "m21",
+        "m22"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How do drifted holdings affect turnover?",
+      "expected": "m21",
+      "ids": [
+        "m21",
+        "m12"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Does the evaluation include terminal liquidation?",
+      "expected": "m22",
+      "ids": [
+        "m22",
+        "m20"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How are gross buys and sells charged?",
+      "expected": "m22",
+      "ids": [
+        "m22",
+        "m21"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Which predeclared cost settings are compared?",
+      "expected": "m23",
+      "ids": [
+        "m23"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Which holding caps enter the sensitivity checks?",
+      "expected": "m23",
+      "ids": [
+        "m29",
+        "m23"
+      ],
+      "rank": 2
+    },
+    {
+      "question": "What does the middle 80% weight range describe?",
+      "expected": "m24",
+      "ids": [
+        "m24"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How many circular block resamples measure weight stability?",
+      "expected": "m24",
+      "ids": [
+        "m24",
+        "m26",
+        "m18"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Why resample all assets together?",
+      "expected": "m26",
+      "ids": [
+        "m26",
+        "m24",
+        "m16"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Does quick exploration apply mean shrinkage?",
+      "expected": "m26",
+      "ids": [
+        "m26",
+        "m16",
+        "m31"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How does inflation convert nominal wealth to real wealth?",
+      "expected": "m27",
+      "ids": [
+        "m27"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "通胀如何影响名义财富和达标比例？",
+      "expected": "m27",
+      "ids": [
+        "m27",
+        "m28",
+        "m34"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Can a high goal fraction coexist with interim losses?",
+      "expected": "m28",
+      "ids": [
+        "m28",
+        "m27",
+        "m26"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What does preserving purchasing power mean for the target?",
+      "expected": "m28",
+      "ids": [
+        "m28",
+        "m14"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Are baseline and mean sensitivity cases assigned likelihoods?",
+      "expected": "m29",
+      "ids": [
+        "m29",
+        "m30",
+        "m24"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What happens to volatility in manual cases?",
+      "expected": "m29",
+      "ids": [
+        "m29",
+        "m23"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How does the mean-uncertainty experiment use the original sample?",
+      "expected": "m30",
+      "ids": [
+        "m30",
+        "m16",
+        "m24"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Does the bootstrap mean offset persist throughout a path?",
+      "expected": "m30",
+      "ids": [
+        "m30",
+        "m28",
+        "m27"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What happens if a crisis window is incomplete?",
+      "expected": "m31",
+      "ids": [
+        "m31"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Do historical replays include cash flows?",
+      "expected": "m31",
+      "ids": [
+        "m31",
+        "m34",
+        "m32"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What do Wilson intervals describe?",
+      "expected": "m32",
+      "ids": [
+        "m32",
+        "m24"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "When are cash flows posted during simulation?",
+      "expected": "m32",
+      "ids": [
+        "m31",
+        "m32",
+        "m34"
+      ],
+      "rank": 2
+    },
+    {
+      "question": "What is stored in a calculation record?",
+      "expected": "m34",
+      "ids": [
+        "m34"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Does editing a form rewrite the receipt?",
+      "expected": "m34",
+      "ids": [
+        "m34"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What dependencies do I need for reproduction?",
+      "expected": "m35",
+      "ids": [
+        "m35"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Are login credentials included in the export?",
+      "expected": "m35",
+      "ids": [
+        "m35"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How large were average daily Treasury securities in 2024?",
+      "expected": "treasury",
+      "ids": [
+        "treasury",
+        "mbs",
+        "total"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "How large were average daily mortgage-backed securities in 2023?",
+      "expected": "mbs",
+      "ids": [
+        "mbs",
+        "treasury",
+        "total"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "What were total SOMA assets for 2024?",
+      "expected": "total",
+      "ids": [
+        "total",
+        "m27",
+        "m16"
+      ],
+      "rank": 1
+    },
+    {
+      "question": "Who won Wimbledon?",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "明天深圳会下雨吗？",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "Translate a poem into Italian",
+      "expected": "none",
+      "ids": [
+        "m16"
+      ],
+      "rank": 0
+    },
+    {
+      "question": "Who leads the Premier League?",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "Show rail departures for Paris",
+      "expected": "none",
+      "ids": [
+        "m12"
+      ],
+      "rank": 0
+    },
+    {
+      "question": "What is the capital of Peru?",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "北京现在几点？",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "Find a lentil soup recipe",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "Which island has penguins?",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "Compute the orbital period of Mars",
+      "expected": "none",
+      "ids": [
+        "m26"
+      ],
+      "rank": 0
+    },
+    {
+      "question": "Tell me about dinosaur fossils",
+      "expected": "none",
+      "ids": [],
+      "rank": 0
+    },
+    {
+      "question": "What is Apple's dividend yield today?",
+      "expected": "none",
+      "ids": [
+        "m20",
+        "m31",
+        "m28"
+      ],
+      "rank": 0
+    }
+  ]
+}

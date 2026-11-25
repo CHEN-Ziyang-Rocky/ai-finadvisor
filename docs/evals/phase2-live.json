@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-11-25T14:11:04.172Z",
+  "results": [
+    {
+      "question": "How does inflation convert nominal wealth to real wealth?",
+      "expected": "m27",
+      "ids": [
+        "m27"
+      ],
+      "status": "supported",
+      "usage": {
+        "requests": 1,
+        "input_tokens": 163,
+        "output_tokens": 8
+      },
+      "model": "deepseek-flash",
+      "passed": true
+    },
+    {
+      "question": "In the Fed report, what was the average daily net US Treasury securities balance in 2024?",
+      "expected": "treasury",
+      "ids": [
+        "treasury"
+      ],
+      "status": "supported",
+      "usage": {
+        "requests": 1,
+        "input_tokens": 310,
+        "output_tokens": 8
+      },
+      "model": "deepseek-flash",
+      "passed": true
+    },
+    {
+      "question": "What is the SOMA Treasury securities balance for 2035?",
+      "expected": null,
+      "ids": [],
+      "status": "insufficient",
+      "usage": {
+        "requests": 1,
+        "input_tokens": 303,
+        "output_tokens": 5
+      },
+      "model": "deepseek-flash",
+      "passed": true
+    },
+    {
+      "question": "Which player won Wimbledon?",
+      "expected": null,
+      "ids": [],
+      "status": "insufficient",
+      "usage": {
+        "requests": 0,
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "model": "deepseek-flash",
+      "passed": true
+    }
+  ]
+}

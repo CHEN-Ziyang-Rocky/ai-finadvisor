@@ -27,7 +27,17 @@ test('live model mode requires explicit consent and sends the selected question'
  render(<Assistant/>);const run=screen.getByRole('button',{name:'Run research task'});await waitFor(()=>expect(run).not.toBeDisabled());
  fireEvent.mouseDown(screen.getByLabelText('Execution mode'));fireEvent.click(screen.getByRole('option',{name:'Live model · function calling'}));
  expect(run).toBeDisabled();fireEvent.change(screen.getByLabelText('Question about the selected task'),{target:{value:'Explain concentration'}});
- fireEvent.click(screen.getByRole('checkbox'));expect(run).not.toBeDisabled();fireEvent.click(run);
+ fireEvent.click(screen.getByRole('checkbox',{name:/Send this question/}));expect(run).not.toBeDisabled();fireEvent.click(run);
  await screen.findByText('Fixture stopped before provider.');
  expect(api.post).toHaveBeenCalledWith('/assistant/run',expect.objectContaining({mode:'llm',consent:true,question:'Explain concentration'}),expect.any(Object));
+});
+
+test('library search shows passage citations and sends only the public question',async()=>{
+ api.post.mockResolvedValue({data:{question:'How is turnover calculated?',mode:'workflow',status:'matches',evidence:[{id:'turnover',title:'Methods',version:'v1',locator:'Line 21',text:'Gross turnover formula.',url:'https://example.org/method#L21'}]}});
+ render(<Assistant/>);
+ fireEvent.change(screen.getByLabelText('Document question'),{target:{value:'How is turnover calculated?'}});
+ const search=screen.getByRole('button',{name:'Search sources'});
+ await waitFor(()=>expect(search).not.toBeDisabled());fireEvent.click(search);
+ expect(await screen.findByRole('link',{name:'Methods · v1 · Line 21'})).toHaveAttribute('href','https://example.org/method#L21');
+ expect(api.post).toHaveBeenCalledWith('/assistant/documents',{question:'How is turnover calculated?',mode:'workflow',consent:false});
 });

@@ -1,0 +1,227 @@
+[
+  {
+    "id": "m10",
+    "text": "Research uses complete monthly returns from a versioned daily stock-price snapshot, not live quotes. The active universe originated from a fixed list of 503 US stock symbols. It is not a point-in-time reconstruction of historical index membership. Retired or stale securities are excluded from current allocations, so selection and survivorship bias remain.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 10",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L10",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m11",
+    "text": "Data is downloaded from public Yahoo Finance chart history, with a separately identified public archive fallback where necessary. The importer records provider, price-adjustment basis, symbol identity, coverage and a file fingerprint. It rejects incomplete or inconsistent refreshes and does not fill missing closing prices. Public availability is not a redistribution licence; raw market files are not published in the code repository.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 11",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L11",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m12",
+    "text": "Each result shows the actual calibration dates and sample size. The monthly panel excludes the incomplete current month. A current quote does not update an old calculation. Adjusted prices are used according to the recorded provider basis; corporate actions and provider revisions can still affect the history. A fingerprint identifies data; it does not independently certify its accuracy.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 12",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L12",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m14",
+    "text": "The engine searches within your chosen stocks. Holdings must be non-negative, sum to 100% and respect your holding cap. Minimum variance uses estimated covariance only. The target-return method adds a return constraint, interpolated between the minimum-variance mean and the highest feasible mean at the same cap.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 14",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L14",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m15",
+    "text": "Minimize wᵀΣw subject to Σwᵢ = 1, 0 ≤ wᵢ ≤ holding cap and, when selected, μᵀw ≥ return target.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 15",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L15",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m16",
+    "text": "Why shrink estimates? Short histories make means and covariances noisy. We use Ledoit–Wolf covariance shrinkage toward a scaled identity matrix. Asset means shrink toward the cross-asset average according to an uncertainty heuristic. This reduces reliance on some noisy estimates; it does not turn historical returns into reliable forecasts.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 16",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L16",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m17",
+    "text": "Annual arithmetic means are 12 times monthly means. Annual covariance is 12 times monthly covariance; volatility is √(wᵀΣw). Effective holdings = 1 / Σwᵢ². A stock's share of variance = wᵢ(Σw)ᵢ / (wᵀΣw). More ticker names do not necessarily mean more independent risks.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 17",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L17",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m18",
+    "text": "The household ExtraTrees model estimates observed risky-asset ownership in the 2022 US Survey of Consumer Finances. It is a survey proxy, not an individual suitability assessment. It does not measure emergency reserves, investment horizon or capacity for loss. Its initial research preference can be changed; the output is not a recommended stock share.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 18",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L18",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m20",
+    "text": "The rolling evaluation uses the last 24 common monthly returns. Each month's weights use only preceding observations. Selected method, equal weights and minimum variance share the same stocks, dates and trading-cost assumptions. This separation prevents future returns from entering the fitting window, but today's stock selection and preferences still introduce bias.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 20",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L20",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m21",
+    "text": "Gross turnover = sum of absolute changes from drifted holdings to target weights. Net monthly return = (1 − turnover × fee bps / 10,000) × (1 + portfolio return) − 1.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 21",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L21",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m22",
+    "text": "Costs include initial entry and gross buys plus sells; there is no terminal liquidation, tax or market-impact model. CAGR compounds net returns. Drawdown uses monthly closes and can miss larger intramonth declines. Lower risk can come with lower returns. Twenty-four months are insufficient evidence of a persistent advantage.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 22",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L22",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m23",
+    "text": "Predeclared checks compare 0, 10, 25 and 50 bps plus your selected cost; 36, 60, 84 and 120 months plus your selected window; and 25%, 35% plus your selected holding cap. Unavailable or infeasible cases are labelled. None is chosen automatically because its result looks best.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 23",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L23",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m24",
+    "text": "Weight stability uses 128 joint circular block resamples, three-month blocks and a fixed seed. Each resample refits means, covariance and weights under the same policy. The middle 80% range describes sensitivity to this sample, not a confidence interval for future optimal weights.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 24",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L24",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m26",
+    "text": "Quick exploration resamples all assets together in three-month blocks. This preserves contemporaneous dependence and some short patterns. It uses empirical returns without mean shrinkage. Repeating an exceptional five-year period for decades can produce very high outcomes; more simulated paths do not validate that assumption.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 26",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L26",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m27",
+    "text": "Real wealth at year t = nominal wealth / (1 + inflation rate)^t. Goal fraction = number of paths ending at or above the real target / total paths.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 27",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L27",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m28",
+    "text": "A target of $10,000 in today's money means preserving that amount of purchasing power. It does not mean reaching $100,000. Results display the exact target and horizon alongside tail wealth, maximum investment drawdown and the fraction of paths that fall at least 30% from an earlier peak. A high terminal-goal fraction can coexist with large interim losses.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 28",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L28",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m29",
+    "text": "Baseline and ±1 percentage point mean cases are sensitivity comparisons, without assigned likelihood. Statistical and manual cases also scale volatility by 0.9 / 1.1. Wider historical-model checks subtract 10 or 20 annualized arithmetic percentage points from monthly means. These are deliberate stress assumptions, not predicted bear markets.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 29",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L29",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m30",
+    "text": "A separate mean-uncertainty experiment estimates one joint block-bootstrap mean per path and holds its difference from the original sample mean fixed throughout that path. It uses independent resampling and the same baseline market innovations. This is a simple conditional sensitivity experiment, not a calibrated predictive probability or an institutional forecasting model.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 30",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L30",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m31",
+    "text": "Fixed historical replays apply today's weights with monthly rebalancing during specified crisis windows. They exclude cash flows and costs. If any selected stock lacks the complete event history, the event is unavailable; no proxy is inserted. These are hindsight stress illustrations, not investable backtests.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 31",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L31",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m32",
+    "text": "Simulation fees and taxes are excluded. Cash flows occur at month end; fixed payments can increase after completed years. Normal models can generate returns below −100%, floored at total loss; lognormal models keep prices positive. GARCH captures fitted volatility clustering but its parameters can be uncertain in short samples. Wilson intervals describe finite simulation sampling error only.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 32",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L32",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m34",
+    "text": "Download a calculation record from the results. It contains normalized inputs, data identifiers, engine version, fitted parameters and diagnostic outputs. Allocation receipts include annual means and the covariance matrix in ticker order. Simulation receipts freeze the actual model, random seed, weights, horizon, cash flows, inflation and goal. Editing a form does not rewrite the record.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 34",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L34",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "m35",
+    "text": "Reproduction requires the same data and numerical dependencies. The identifier fingerprints the recorded inputs and calibration; it is not an external audit, security certificate or investment guarantee. Household profile fields and login credentials are excluded from this export.",
+    "title": "Rocky Finance methodology",
+    "version": "2026-10-29",
+    "locator": "Line 35",
+    "url": "https://github.com/CHEN-Ziyang-Rocky/ai-finadvisor/blob/d58826150a222d27d521a95a1c9961028fc7f389/frontend/public/methodology.html#L35",
+    "sha256": "a05985193ca8ee910e66bf6a87b8ac8a6ce9beb937cc0c6611b47747f58819f1"
+  },
+  {
+    "id": "treasury",
+    "text": "The Federal Reserve reported average daily net US Treasury securities in the System Open Market Account of USD 4,672,913 million in 2024 and USD 5,335,243 million in 2023.",
+    "title": "Federal Reserve Board Annual Report",
+    "version": "2024",
+    "locator": "Printed page 68 · Table 5.4 · average daily assets",
+    "url": "https://www.federalreserve.gov/publications/files/2024-annual-report.pdf#page=74",
+    "sha256": "fc5e7145447ad369398a7a8670967b5b29d26be589e74d13f5f6c573021857e9"
+  },
+  {
+    "id": "mbs",
+    "text": "The Federal Reserve reported average daily net agency and GSE mortgage-backed securities in the System Open Market Account of USD 2,385,935 million in 2024 and USD 2,593,972 million in 2023.",
+    "title": "Federal Reserve Board Annual Report",
+    "version": "2024",
+    "locator": "Printed page 68 · Table 5.4 · average daily assets",
+    "url": "https://www.federalreserve.gov/publications/files/2024-annual-report.pdf#page=74",
+    "sha256": "fc5e7145447ad369398a7a8670967b5b29d26be589e74d13f5f6c573021857e9"
+  },
+  {
+    "id": "total",
+    "text": "The Federal Reserve reported average daily total SOMA assets in the System Open Market Account of USD 7,079,724 million in 2024 and USD 7,954,464 million in 2023.",
+    "title": "Federal Reserve Board Annual Report",
+    "version": "2024",
+    "locator": "Printed page 68 · Table 5.4 · average daily assets",
+    "url": "https://www.federalreserve.gov/publications/files/2024-annual-report.pdf#page=74",
+    "sha256": "fc5e7145447ad369398a7a8670967b5b29d26be589e74d13f5f6c573021857e9"
+  }
+]
