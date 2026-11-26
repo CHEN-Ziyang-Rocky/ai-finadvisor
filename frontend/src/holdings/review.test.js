@@ -37,3 +37,86 @@ test("incomplete rows retain their source line and require review", () => {
   });
   expect(() => reviewHoldings(draft, eligible)).toThrow();
 });
+
+const positioned = (text, cells) => ({
+  text,
+  words: cells.map(([text, x]) => ({ text, x })),
+});
+const heading = positioned("Ticker Shares Price Market Value", [
+  ["Ticker", 0.04],
+  ["Shares", 0.29],
+  ["Price", 0.52],
+  ["Market Value", 0.76],
+]);
+test.each([
+  [
+    positioned("AAPL 5", [
+      ["AAPL", 0.04],
+      ["5", 0.29],
+    ]),
+    "5",
+    "",
+    "",
+  ],
+  [
+    positioned("AAPL 120 600", [
+      ["AAPL", 0.04],
+      ["120", 0.52],
+      ["600", 0.76],
+    ]),
+    "",
+    "120",
+    "600",
+  ],
+  [
+    positioned("AAPL 5", [
+      ["AAPL", 0.04],
+      ["5", 0.41],
+    ]),
+    "",
+    "",
+    "",
+  ],
+])(
+  "retains only clearly aligned values on an incomplete row",
+  (line, qty, price, value) => {
+    const draft = parsePage([heading, line]);
+    expect(draft.rows[0]).toMatchObject({
+      ticker: "AAPL",
+      qty,
+      price,
+      value,
+      needsReview: true,
+    });
+  },
+);
+test("ignores unrelated page totals and currencies on unsupported layouts", () => {
+  const draft = parse([
+    "July 31, 2015",
+    "Description Quantity Price per Unit Ending Market Value Cost Basis",
+    "EXAMPLE ORD USD 1.00",
+    "Total Stocks 9,500.00 300.00",
+  ]);
+  expect(draft).toMatchObject({
+    manualLayout: true,
+    rows: [],
+    currency: "",
+    total: "",
+  });
+});
+test.each([
+  ["Total 400.00 2.40"],
+  ["Total Common Stock 400"],
+  ["Total 400", "Grand Total 400"],
+])("ambiguous subtotals require manual entry", (...totals) => {
+  const draft = parse([...lines.slice(0, 4), ...totals]);
+  expect(draft.total).toBe("");
+  expect(() => reviewHoldings(draft, eligible)).toThrow(/subtotal/);
+});
+test("keeps separate holdings tables out of a single draft", () => {
+  expect(parse([...lines, ...lines])).toMatchObject({
+    manualLayout: true,
+    rows: [],
+    total: "",
+  });
+});

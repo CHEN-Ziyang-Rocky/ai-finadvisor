@@ -55,7 +55,7 @@ export default function HoldingsImport({ onUse }) {
     setConfirmed(false);
     setFocus(null);
     try {
-      const runtime = "/static/holdings-v1/reader.js";
+      const runtime = "/static/holdings-v1/reader.js?layout=2";
       const { readHoldingsPage } = await import(
         /* webpackIgnore: true */ runtime
       );
@@ -170,11 +170,39 @@ export default function HoldingsImport({ onUse }) {
               />
             )}
           </div>
-          <details>
+          {draft.manualLayout && (
+            <Alert severity="info">
+              This page needs manual column review. Select a source line below
+              to add a holding. Enter the statement date, currency and the
+              printed market-value subtotal for the same stock holdings. Pages
+              with short positions cannot be simulated as a long-only portfolio.
+            </Alert>
+          )}
+          <details key={page.pageNumber}>
             <summary>Recognized source text</summary>
-            <pre style={{ whiteSpace: "pre-wrap" }}>
-              {page.lines.map((l) => l.text).join("\n")}
-            </pre>
+            <ol style={{ paddingLeft: 32 }}>
+              {page.lines.map((l, i) => (
+                <li key={i} style={{ overflowWrap: "anywhere" }}>
+                  {l.text}{" "}
+                  <Button
+                    size="small"
+                    disabled={
+                      draft.rows.length >= 50 ||
+                      draft.rows.some((r) => r.line === i)
+                    }
+                    onClick={() => {
+                      edit({
+                        rows: [...draft.rows, { ...emptyRow(), line: i }],
+                      });
+                      setFocus(i);
+                    }}
+                    aria-label={"Add holding from line " + (i + 1)}
+                  >
+                    Use line {i + 1}
+                  </Button>
+                </li>
+              ))}
+            </ol>
           </details>
           <p>
             Check every stock row against the page. Exclude cash from the
@@ -231,6 +259,11 @@ export default function HoldingsImport({ onUse }) {
                   onChange={(e) => editRow(i, key, e.target.value)}
                 />
               ))}
+              {r.line !== null && r.needsReview && (
+                <small style={{ flexBasis: "100%" }}>
+                  Source line {r.line + 1} · {page.lines[r.line]?.text}
+                </small>
+              )}
               {r.line !== null && (
                 <Button onClick={() => setFocus(r.line)}>
                   {r.needsReview ? "Check source" : "Source"} · line{" "}

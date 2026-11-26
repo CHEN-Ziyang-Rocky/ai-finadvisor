@@ -82,6 +82,10 @@ async function recognize(canvas, signal) {
         p.lines.map((line) => ({
           text: line.text.trim(),
           confidence: line.confidence,
+          words: line.words.map((w) => ({
+            text: w.text.trim(),
+            x: w.bbox.x0 / canvas.width,
+          })),
           box: [
             line.bbox.x0 / canvas.width,
             line.bbox.y0 / canvas.height,
@@ -124,6 +128,7 @@ function pdfLines(items, viewport) {
         .sort((a, b) => a.x0 - b.x0)
         .map((w) => w.text)
         .join(" "),
+      words: words.map((w) => ({ text: w.text, x: w.x0 / viewport.width })),
       confidence: null,
       box: [
         Math.min(...words.map((w) => w.x0)) / viewport.width,
@@ -180,8 +185,8 @@ export async function readHoldingsPage(file, pageNumber = 1, signal) {
       lines = pdfLines(content.items, viewport);
       method = "PDF text";
       if (
-        !lines.some((l) => /ticker|symbol/i.test(l.text)) ||
-        lines.length < 3
+        lines.length < 3 ||
+        !lines.some((l) => /ticker|symbol|\d[\d,]*\.\d{2}/i.test(l.text))
       ) {
         method = "Scanned page OCR";
         lines = await recognize(canvas, signal);

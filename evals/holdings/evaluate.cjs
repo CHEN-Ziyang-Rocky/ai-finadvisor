@@ -15,7 +15,9 @@ const canon = (s) =>
     .trim();
 
 function score(lines, gold) {
-  const draft = parsePage(lines.map((text) => ({ text })));
+  const draft = parsePage(
+    lines.map((line) => (typeof line === "string" ? { text: line } : line)),
+  );
   const fields = [
     [draft.date, gold.date],
     [draft.currency, gold.currency === "USD" ? "USD" : ""],
@@ -77,7 +79,7 @@ function score(lines, gold) {
           const result = await readHoldingsPage(file);
           return {
             method: result.method,
-            lines: result.lines.map((l) => l.text),
+            lines: result.lines,
           };
         },
         { bytes, name: gold.file },

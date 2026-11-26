@@ -1,0 +1,665 @@
+{
+  "baselineCommit": "406b5b0",
+  "publicBefore": [
+    {
+      "file": "fa4-source-fidelity.pdf",
+      "sha256": "36a166a5a13e6d6d86b391233023f83f6f7b4d268a4a23fbae01cb81290e3b96",
+      "pageNumber": 7,
+      "method": "Scanned page OCR",
+      "sourceLines": 32,
+      "draftHoldings": 0,
+      "subtotalPrefilled": true,
+      "currencyPrefilled": true,
+      "manualLayout": false
+    },
+    {
+      "file": "fa4-source-2011.pdf",
+      "sha256": "1adfac7dfa21e754f51e936b6e8bf3a395355fd585899866153b51a5a24c26c1",
+      "pageNumber": 5,
+      "method": "PDF text",
+      "sourceLines": 20,
+      "draftHoldings": 0,
+      "subtotalPrefilled": false,
+      "currencyPrefilled": false,
+      "manualLayout": false
+    }
+  ],
+  "publicAfter": [
+    {
+      "file": "fa4-source-fidelity.pdf",
+      "sha256": "36a166a5a13e6d6d86b391233023f83f6f7b4d268a4a23fbae01cb81290e3b96",
+      "pageNumber": 7,
+      "method": "PDF text",
+      "sourceLines": 36,
+      "draftHoldings": 0,
+      "subtotalPrefilled": false,
+      "currencyPrefilled": false,
+      "manualLayout": true
+    },
+    {
+      "file": "fa4-source-2011.pdf",
+      "sha256": "1adfac7dfa21e754f51e936b6e8bf3a395355fd585899866153b51a5a24c26c1",
+      "pageNumber": 5,
+      "method": "PDF text",
+      "sourceLines": 20,
+      "draftHoldings": 0,
+      "subtotalPrefilled": false,
+      "currencyPrefilled": false,
+      "manualLayout": true
+    }
+  ],
+  "synthetic": [
+    {
+      "file": "text-pdf-standard.pdf",
+      "valid": true,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-value-only.pdf",
+      "valid": true,
+      "method": "PDF text",
+      "actual": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-reordered.pdf",
+      "valid": true,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-soft-focus.pdf",
+      "valid": true,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-duplicate.pdf",
+      "valid": false,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-wrong-total.pdf",
+      "valid": false,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-missing-price.pdf",
+      "valid": false,
+      "method": "PDF text",
+      "actual": {
+        "matches": 9,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 8,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-foreign-currency.pdf",
+      "valid": false,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "text-pdf-fractional.pdf",
+      "valid": true,
+      "method": "PDF text",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-standard.png",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-value-only.png",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-reordered.png",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-soft-focus.png",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-duplicate.png",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-wrong-total.png",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-missing-price.png",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 9,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 8,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-foreign-currency.png",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "png-fractional.png",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-standard.jpeg",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-value-only.jpeg",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-reordered.jpeg",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-soft-focus.jpeg",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-duplicate.jpeg",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-wrong-total.jpeg",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-missing-price.jpeg",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 9,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 8,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-foreign-currency.jpeg",
+      "valid": false,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "jpeg-fractional.jpeg",
+      "valid": true,
+      "method": "Image OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-standard.pdf",
+      "valid": true,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-value-only.pdf",
+      "valid": true,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 7,
+        "fields": 7,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-reordered.pdf",
+      "valid": true,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-soft-focus.pdf",
+      "valid": true,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-duplicate.pdf",
+      "valid": false,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-wrong-total.pdf",
+      "valid": false,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-missing-price.pdf",
+      "valid": false,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 9,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 8,
+        "fields": 9,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-foreign-currency.pdf",
+      "valid": false,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": false,
+        "wrongAmount": false
+      }
+    },
+    {
+      "file": "scan-pdf-fractional.pdf",
+      "valid": true,
+      "method": "Scanned page OCR",
+      "actual": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      },
+      "oracle": {
+        "matches": 11,
+        "fields": 11,
+        "accepted": true,
+        "wrongAmount": false
+      }
+    }
+  ]
+}
