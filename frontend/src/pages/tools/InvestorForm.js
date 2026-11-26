@@ -100,7 +100,7 @@ function WeightField({value,onChange,...props}) {
 
 export default function InvestorForm({ onPredictionComplete, initialPortfolio }) {
     const [formData, setFormData] = useState({
-        initial_amount: 10000,
+        initial_amount: initialPortfolio?.source === 'reviewed_import' ? Number(initialPortfolio.total.toFixed(2)) : 10000,
         goal_amount: 10000,
         random_seed: 42,
         num_simulations: 500,
@@ -285,7 +285,7 @@ export default function InvestorForm({ onPredictionComplete, initialPortfolio })
                 <AccordionSummary expandIcon={<span>+</span>}>How the simulation models differ</AccordionSummary>
                 <AccordionDetails><Typography variant="body2">Historical resamples joint blocks of past monthly returns. Statistical estimates asset-specific means, volatilities and correlations; GARCH additionally models changing volatility. Parameterized uses your assumed mean and volatility with independent assets. Outcomes are conditional scenarios, not forecasts.</Typography></AccordionDetails>
             </Accordion>
-            {initialPortfolio && <Alert severity="info" sx={{mb:2}}>Imported allocation dated {initialPortfolio.as_of}. Portfolio 1 = optimized, Portfolio 2 = equal weight, Portfolio 3 = editable comparison. All use the same market paths. Editing these weights does not update the saved allocation.</Alert>}
+            {initialPortfolio && <Alert severity="info" sx={{mb:2}}>Imported allocation dated {initialPortfolio.as_of}. Portfolio 1 = {initialPortfolio.source==='reviewed_import'?'reviewed holdings':'optimized'}, Portfolio 2 = equal weight, Portfolio 3 = editable comparison. All use the same market paths. Editing these weights does not update the saved allocation.</Alert>}
             <Typography variant="body2" color="text.secondary" sx={{mb:3}}>Compare up to three portfolios on identical market paths. Values are USD; the target is measured in today’s purchasing power.</Typography>
             <Grid container spacing={2} sx={{mb:2}}>
                 {[['goal_amount','Target wealth (today dollars)',0,1e12],['lookback_months','History window (months)',36,120],['num_simulations','Simulation paths',10,1000],['random_seed','Random seed',0,4294967295]].map(([key,label,min,max])=><Grid item xs={12} sm={6} key={key}><TextField fullWidth type="number" label={label} value={formData[key]} inputProps={{min,max,step:1}} onChange={e=>setFormData({...formData,[key]:Number(e.target.value)})}/></Grid>)}

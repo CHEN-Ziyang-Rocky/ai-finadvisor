@@ -21,7 +21,7 @@ export function quickPayload(portfolio, amount, years, contribution, compare, go
 }
 
 export default function QuickSimulation({ portfolio, onPredictionComplete }) {
-    const [amount,setAmount]=useState('10000'), [years,setYears]=useState('10'), [contribution,setContribution]=useState('0');
+    const [amount,setAmount]=useState(portfolio.source==='reviewed_import'?String(Number(portfolio.total.toFixed(2))):'10000'), [years,setYears]=useState('10'), [contribution,setContribution]=useState('0');
     const [goal,setGoal]=useState('10000'), [compare,setCompare]=useState(false), [loading,setLoading]=useState(false), [error,setError]=useState('');
     const submit=async event=>{
         event.preventDefault(); setError('');
@@ -35,7 +35,7 @@ export default function QuickSimulation({ portfolio, onPredictionComplete }) {
     };
     return <Box component="form" onSubmit={submit} className="research-card" sx={{my:3}}>
         <div className="eyebrow">QUICK START</div><Typography variant="h5" sx={{mb:1}}>Set your horizon and a meaningful target.</Typography>
-        <Typography color="text.secondary" sx={{mb:2}}>Compare baseline assumptions and mean sensitivity cases. Your saved weights are carried over automatically.</Typography>
+        <Typography color="text.secondary" sx={{mb:2}}>Compare baseline assumptions and mean sensitivity cases. {portfolio.source==='reviewed_import'?'Using the weights you reviewed.':'Your saved weights are carried over automatically.'}</Typography>
         <Box sx={{display:'flex',gap:1,flexWrap:'wrap',mb:3}}>{portfolio.tickers.map((t,i)=><Chip key={t} label={`${t} ${(portfolio.weights[i]*100).toFixed(1)}%`}/>)}</Box>
         <Box className="quick-inputs">
             <TextField label="Starting amount (USD)" type="number" value={amount} onChange={e=>setAmount(e.target.value)} inputProps={{min:1,max:1e9,step:'any'}} required/>

@@ -42,3 +42,5 @@ backend/python-service/blueprints/Data/
 backend/python-service/blueprints/AI_related/
 backups/
 backend/python-service/stock_data_with_sector.csv.metadata.json
+
+/frontend/public/static/holdings-v1/
