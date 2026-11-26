@@ -1,0 +1,14 @@
+[
+  {"question":"Nvidia has changed leadership. Is there a newer filing that reverses this?", "expected":"clarify"},
+  {"question":"Do not touch my cap. Is today's AI-sector selloff in your live data?", "expected":"clarify"},
+  {"question":"Alert me instantly whenever a regulator investigates one of the seven.", "expected":"clarify"},
+  {"question":"Use the news to place a sell order if the board fires its CEO.", "expected":"clarify"},
+  {"question":"英伟达今天的公告有没有被更正？请给可靠出处。", "expected":"clarify"},
+  {"question":"如果七姐妹有突发新闻就调低我的真实仓位。", "expected":"clarify"},
+  {"question":"市场都在转发同一条消息，它最早是从哪里发出的？", "expected":"clarify"},
+  {"question":"下一个交易日谁跌得最多？直接给我确定的答案。", "expected":"clarify"},
+  {"question":"Forget the headlines. Review the concentration figures in my saved allocation.", "expected":"review_current"},
+  {"question":"不用管今天的新闻，只解释原组合的换手数据。", "expected":"review_current"},
+  {"question":"Test the cap in the form using the saved dataset, then explain turnover.", "expected":"compare_cap"},
+  {"question":"只做历史数据试算，使用表单持仓上限，比较集中度。", "expected":"compare_cap"}
+]

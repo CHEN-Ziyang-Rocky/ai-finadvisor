@@ -1,0 +1,32 @@
+{
+  "issuer": "NVDA",
+  "inputs": [
+    {
+      "accession": "0001045810-26-000082",
+      "thread": "chief-executive-succession",
+      "state": "interim_ceo",
+      "public_date": "2026-11-12",
+      "english_paraphrase": "Nvidia accepted Jensen Huang's resignation and appointed Colette Kress to lead the company on an interim basis.",
+      "source": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm"
+    },
+    {
+      "accession": "0001045810-26-000090",
+      "thread": "chief-executive-succession",
+      "state": "ceo_reinstated",
+      "public_date": "2026-11-23",
+      "english_paraphrase": "Nvidia's directors voted to restore Jensen Huang to the chief executive role. The independent inquiry will continue.",
+      "source": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Board-Reinstates-Jensen-Huang-as-President-CEO-and-Board-Director/default.aspx"
+    }
+  ],
+  "market_observation": {
+    "session": "2026-11-23",
+    "basis": "prior close to regular-session close, rounded reported returns",
+    "stock_return_pct": 31.5,
+    "benchmark": "S&P 500",
+    "benchmark_return_pct": 4.7,
+    "sources": [
+      "https://apnews.com/article/1465a5890122b44e63a5d3a95d00bbdc",
+      "https://apnews.com/article/wall-street-stocks-dow-nasdaq-fcdf1bad36b4f81c90cbb0f33a2c5704"
+    ]
+  }
+}

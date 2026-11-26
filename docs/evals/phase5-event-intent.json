@@ -1,0 +1,173 @@
+{
+  "encoder": "Xenova/multilingual-e5-small@761b726dd34fb83930e26aab4e9ac3899aa1fa78",
+  "file_sha256": {
+    "model.onnx": "f80102d3f2a1229f387d3c81909990d8945513e347b0eab049f7de3c6f98c193",
+    "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39"
+  },
+  "labels": [
+    "review_current",
+    "compare_cap",
+    "clarify"
+  ],
+  "train_size": 42,
+  "trainable_parameters": 1155,
+  "elapsed_seconds": 1.73,
+  "results": {
+    "workflow": {
+      "correct": 12,
+      "total": 12,
+      "unrequested_trials": 0,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          8
+        ]
+      ]
+    },
+    "candidate": {
+      "correct": 7,
+      "total": 12,
+      "unrequested_trials": 2,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          3,
+          2,
+          3
+        ]
+      ]
+    },
+    "guarded": {
+      "correct": 9,
+      "total": 12,
+      "unrequested_trials": 0,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0
+        ],
+        [
+          3,
+          0,
+          5
+        ]
+      ]
+    }
+  },
+  "cases": [
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 1
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 2
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 3
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 4
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 5
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 6
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 7
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 8
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "review_current",
+      "guarded": "review_current",
+      "row": 9
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "review_current",
+      "guarded": "review_current",
+      "row": 10
+    },
+    {
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "compare_cap",
+      "guarded": "compare_cap",
+      "row": 11
+    },
+    {
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "compare_cap",
+      "guarded": "compare_cap",
+      "row": 12
+    }
+  ],
+  "evaluation_sha256": "181c10131cf87b54755f73b0dac2db27a958b380c89b7980dba5606575517ba9"
+}

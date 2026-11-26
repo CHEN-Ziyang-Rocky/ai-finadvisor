@@ -5,6 +5,7 @@ import json
 import subprocess
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 import numpy as np
@@ -62,13 +63,38 @@ def measure(rows, key):
             "confusion_actual_by_predicted":[[sum(r["expected"]==a and r[key]==b for r in rows) for b in LABELS] for a in LABELS]}
 
 
+def evaluation_rows(path, seen):
+    def key(text):
+        return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
+    reserved = {key(q) for q, _ in seen}
+    result = []
+    raw = json.loads(path.read_text())
+    if not isinstance(raw,list) or not raw:
+        raise ValueError("Provide a nonempty list of labelled questions")
+    for row in raw:
+        question = row.get("question") if isinstance(row,dict) else None
+        if not isinstance(question,str) or not 1 <= len(question.strip()) <= 500 or row.get("expected") not in LABELS:
+            raise ValueError("Each row requires a question and a supported expected label")
+        if key(question) in reserved:
+            raise ValueError("Duplicate question or overlap with previous evaluations")
+        reserved.add(key(question))
+        result.append((question.strip(),row["expected"]))
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("encoder", type=Path)
     parser.add_argument("--save-head", type=Path)
+    parser.add_argument("--evaluation", type=Path, help="Score a new labelled JSON batch; omit raw questions from its report")
     args = parser.parse_args()
     train = examples(json.loads(Path('evals/agent/cases.json').read_text()))
     test = examples(json.loads(Path('evals/intent/challenge.json').read_text()))
+    if args.evaluation:
+        previous = [json.loads(Path(f'evals/agent/{name}.json').read_text()) for name in ('cases','holdout')]
+        prior = examples(previous[1])
+        controls = [(q,"clarify") for data in previous for label in ("conflicting","infeasible") for q in data[label]]
+        test = evaluation_rows(args.evaluation, train + test + prior + controls)
     assert not ({q.casefold() for q,_ in train} & {q.casefold() for q,_ in test})
     started = time.perf_counter()
     # Encode splits separately so quantized inference batches cannot share test inputs with training.
@@ -87,6 +113,11 @@ def main():
               "labels":LABELS, "train_size":len(train), "trainable_parameters":weights.size + bias.size,
               "elapsed_seconds":round(time.perf_counter()-started,2),
               "results":{key:measure(rows,key) for key in ["workflow","candidate","guarded"]},"cases":rows}
+    if args.evaluation:
+        report["evaluation_sha256"] = hashlib.sha256(args.evaluation.read_bytes()).hexdigest()
+        for number,row in enumerate(rows,1):
+            row.pop("question")
+            row["row"] = number
     json.dump(report,sys.stdout,ensure_ascii=False,indent=2)
     print()
 

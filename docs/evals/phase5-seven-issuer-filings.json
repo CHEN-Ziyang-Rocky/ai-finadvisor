@@ -1,0 +1,218 @@
+{
+  "from_utc": "2026-11-01",
+  "through_utc": "2026-11-25",
+  "complete": true,
+  "issuers": {
+    "AAPL": {
+      "source": "https://data.sec.gov/submissions/CIK0000320193.json",
+      "checked_utc": "2026-11-26T13:44:55+00:00",
+      "count": 3,
+      "status": "ok"
+    },
+    "MSFT": {
+      "source": "https://data.sec.gov/submissions/CIK0000789019.json",
+      "checked_utc": "2026-11-26T13:44:56+00:00",
+      "count": 2,
+      "status": "ok"
+    },
+    "AMZN": {
+      "source": "https://data.sec.gov/submissions/CIK0001018724.json",
+      "checked_utc": "2026-11-26T13:44:56+00:00",
+      "count": 0,
+      "status": "ok"
+    },
+    "GOOGL": {
+      "source": "https://data.sec.gov/submissions/CIK0001652044.json",
+      "checked_utc": "2026-11-26T13:44:57+00:00",
+      "count": 2,
+      "status": "ok"
+    },
+    "META": {
+      "source": "https://data.sec.gov/submissions/CIK0001326801.json",
+      "checked_utc": "2026-11-26T13:44:57+00:00",
+      "count": 3,
+      "status": "ok"
+    },
+    "NVDA": {
+      "source": "https://data.sec.gov/submissions/CIK0001045810.json",
+      "checked_utc": "2026-11-26T13:44:58+00:00",
+      "count": 3,
+      "status": "ok"
+    },
+    "TSLA": {
+      "source": "https://data.sec.gov/submissions/CIK0001318605.json",
+      "checked_utc": "2026-11-26T13:44:58+00:00",
+      "count": 0,
+      "status": "ok"
+    }
+  },
+  "filings": [
+    {
+      "ticker": "GOOGL",
+      "accession": "0001193125-26-475973",
+      "form": "8-K",
+      "report_date": "2026-11-24",
+      "accepted_utc": "2026-11-24T21:49:44+00:00",
+      "item_codes": "8.01,9.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526475973/d91615d8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:57+00:00"
+    },
+    {
+      "ticker": "META",
+      "accession": "0001628280-26-075541",
+      "form": "8-K",
+      "report_date": "2026-11-18",
+      "accepted_utc": "2026-11-23T21:54:12+00:00",
+      "item_codes": "8.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026075541/meta-20261118.htm",
+      "first_seen_utc": "2026-11-26T13:44:57+00:00"
+    },
+    {
+      "ticker": "NVDA",
+      "accession": "0001045810-26-000090",
+      "form": "8-K",
+      "report_date": "2026-11-22",
+      "accepted_utc": "2026-11-23T13:57:54+00:00",
+      "item_codes": "5.02,9.01",
+      "categories": [
+        "officers, directors or compensation"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000090/nvda-20261122.htm",
+      "first_seen_utc": "2026-11-26T13:44:58+00:00"
+    },
+    {
+      "ticker": "NVDA",
+      "accession": "0001045810-26-000088",
+      "form": "8-K",
+      "report_date": "2026-11-17",
+      "accepted_utc": "2026-11-17T21:20:51+00:00",
+      "item_codes": "2.02,9.01",
+      "categories": [
+        "results of operations"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/nvda-20261117.htm",
+      "first_seen_utc": "2026-11-26T13:44:58+00:00"
+    },
+    {
+      "ticker": "META",
+      "accession": "0001193125-26-458525",
+      "form": "8-K",
+      "report_date": "2026-11-12",
+      "accepted_utc": "2026-11-12T21:27:49+00:00",
+      "item_codes": "8.01,9.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526458525/d177728d8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:57+00:00"
+    },
+    {
+      "ticker": "NVDA",
+      "accession": "0001045810-26-000082",
+      "form": "8-K",
+      "report_date": "2026-11-11",
+      "accepted_utc": "2026-11-12T13:52:41+00:00",
+      "item_codes": "5.02,9.01",
+      "categories": [
+        "officers, directors or compensation"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm",
+      "first_seen_utc": "2026-11-26T13:44:58+00:00"
+    },
+    {
+      "ticker": "AAPL",
+      "accession": "0001140361-26-042798",
+      "form": "8-K",
+      "report_date": "2026-11-05",
+      "accepted_utc": "2026-11-09T21:30:40+00:00",
+      "item_codes": "8.01,9.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/320193/000114036126042798/ef20085077_8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:55+00:00"
+    },
+    {
+      "ticker": "META",
+      "accession": "0001193125-26-450074",
+      "form": "8-K",
+      "report_date": "2026-11-03",
+      "accepted_utc": "2026-11-05T21:58:46+00:00",
+      "item_codes": "8.01,9.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526450074/d166273d8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:57+00:00"
+    },
+    {
+      "ticker": "GOOGL",
+      "accession": "0001193125-26-449835",
+      "form": "8-K",
+      "report_date": "2026-11-05",
+      "accepted_utc": "2026-11-05T21:10:44+00:00",
+      "item_codes": "8.01,9.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/1652044/000119312526449835/d174184d8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:57+00:00"
+    },
+    {
+      "ticker": "MSFT",
+      "accession": "0001193125-26-448357",
+      "form": "8-K",
+      "report_date": "2026-11-04",
+      "accepted_utc": "2026-11-05T11:01:52+00:00",
+      "item_codes": "5.02",
+      "categories": [
+        "officers, directors or compensation"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/789019/000119312526448357/d177209d8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:56+00:00"
+    },
+    {
+      "ticker": "MSFT",
+      "accession": "0001193125-26-447173",
+      "form": "8-K",
+      "report_date": "2026-10-29",
+      "accepted_utc": "2026-11-04T21:01:27+00:00",
+      "item_codes": "8.01,9.01",
+      "categories": [
+        "other events"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/789019/000119312526447173/d178557d8k.htm",
+      "first_seen_utc": "2026-11-26T13:44:56+00:00"
+    },
+    {
+      "ticker": "AAPL",
+      "accession": "0000320193-26-000026",
+      "form": "10-K",
+      "report_date": "2026-09-26",
+      "accepted_utc": "2026-11-03T13:05:15+00:00",
+      "item_codes": "",
+      "categories": [],
+      "source": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000026/aapl-20260926.htm",
+      "first_seen_utc": "2026-11-26T13:44:55+00:00"
+    },
+    {
+      "ticker": "AAPL",
+      "accession": "0000320193-26-000024",
+      "form": "8-K",
+      "report_date": "2026-11-02",
+      "accepted_utc": "2026-11-02T21:30:23+00:00",
+      "item_codes": "2.02,9.01",
+      "categories": [
+        "results of operations"
+      ],
+      "source": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000024/aapl-20261102.htm",
+      "first_seen_utc": "2026-11-26T13:44:55+00:00"
+    }
+  ]
+}

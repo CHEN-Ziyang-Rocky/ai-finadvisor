@@ -15,3 +15,13 @@ python evals/intent/train.py /tmp/finance-e5 --save-head /tmp/intent-head.npz > 
 ```
 
 The head is an optional local output. The inference inputs are the frozen encoder, saved training mean, weights, bias and label order. [Recorded results and failures](../../docs/evals/phase5-intent.json). A deployment decision requires independently labelled user-style questions, reliable detection of out-of-scope requests and lower unwanted trial counts. The existing web planner continues to enforce the read-only selection.
+
+### Testing new questions
+
+Supply a JSON list of objects with `question` and its independently chosen `expected` label (`review_current`, `compare_cap`, or `clarify`). Label the intended task before viewing model output. Keep any contributed questions in a private local file. The scorer rejects duplicates and normalized exact matches to the original training and challenge questions, and writes row numbers instead of the new question text. A confirmed unique string alone does not establish an independent author or subject.
+
+```sh
+python evals/intent/train.py /tmp/finance-e5 --evaluation evals/intent/event-requests.json
+```
+
+The included twelve bilingual questions were authored for this experiment. Eight ask for capabilities outside the existing portfolio assistant, two request a current review and two request a historical cap trial. The expected action on an unsupported request is clarification. This batch evaluates scope before any event feature is launched. The [results](../../docs/evals/phase5-event-intent.json) include per-row predictions and counts of unrequested trials. Evaluate separately submitted questions in another batch.

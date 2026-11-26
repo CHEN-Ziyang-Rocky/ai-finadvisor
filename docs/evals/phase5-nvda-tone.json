@@ -1,0 +1,33 @@
+{
+  "model": "Xenova/finbert@8f269abebfdd9009d7d9b5e96af7e5c6bfe50b20",
+  "model_sha256": "56cd19c7068ca5670c326816845bb7d7edda508b68a228697a1460d0e821ce76",
+  "input_type": "human-written English paraphrases of linked primary sources",
+  "chronological_states": [
+    {
+      "state": "interim_ceo",
+      "accession": "0001045810-26-000082",
+      "accepted_utc": "2026-11-12T13:52:41+00:00",
+      "first_seen_utc": "2026-11-26T13:44:58+00:00",
+      "text_label": "neutral",
+      "text_scores": {
+        "positive": 0.105402,
+        "negative": 0.06418,
+        "neutral": 0.830418
+      }
+    },
+    {
+      "state": "ceo_reinstated",
+      "accession": "0001045810-26-000090",
+      "accepted_utc": "2026-11-23T13:57:54+00:00",
+      "first_seen_utc": "2026-11-26T13:44:58+00:00",
+      "text_label": "neutral",
+      "text_scores": {
+        "positive": 0.114444,
+        "negative": 0.081228,
+        "neutral": 0.804328
+      }
+    }
+  ],
+  "observed_session": "2026-11-23",
+  "market_adjusted_return_pp": 26.8
+}
