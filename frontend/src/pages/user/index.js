@@ -44,7 +44,12 @@ export default function User() {
     };
     const allocate = async () => {
         setBusy('allocation');setError('');setReport(null);setExampleInfo(null);
-        try {setReport((await api.post('/allocate',{risk_tolerance:preference,stock_tickers:selected.map(s=>s.ticker),...policy,reference_weights:reference})).data);setSavedProfileChanged(false);}
+        try {
+            const {data} = await api.post('/allocate',{risk_tolerance:preference,stock_tickers:selected.map(s=>s.ticker),...policy,reference_weights:reference});
+            setReport(data);
+            setPrevious({tickers:data.stock_tickers,weights:data.allocations});
+            setSavedProfileChanged(false);
+        }
         catch(e){setError(e.response?.data?.details || e.response?.data?.error || 'Optimization failed.');}
         finally{setBusy('');}
     };

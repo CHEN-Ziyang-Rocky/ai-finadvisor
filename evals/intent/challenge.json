@@ -1,0 +1,32 @@
+{
+  "review_current": [
+    "Leave the allocation alone and walk me through its turnover.",
+    "I only want to understand the saved holding limit. Do not recompute it.",
+    "My report shows a backtest. What does that number on the existing report describe?",
+    "We already tried a tighter ceiling yesterday. Explain the weights on file.",
+    "保留我的持仓，解释权重为什么集中在一家公司。",
+    "我已经做过上限试算了，只想知道当前组合换手高是什么意思。",
+    "先别跑任何试算，我想看已经保存的历史比较。",
+    "如果不改任何参数，可以解释这份报告里的等权对照吗？"
+  ],
+  "compare_cap": [
+    "Run another allocation under the limit in the box and show the change in turnover.",
+    "Could you rerun diversification with the displayed ceiling instead?",
+    "Show how the backtest differs if the per-company maximum is the one I entered.",
+    "Please apply this cap to a trial allocation without saving it.",
+    "用框里填的单股比例再算一次，比较前后的集中度。",
+    "先做一次上限对照，结果只要告诉我换手差额。",
+    "如果每家公司最多只能占表单里的比例，历史回测会怎么变？",
+    "把仓位约束换成我输入的这个值，模拟一下持仓分布。"
+  ],
+  "clarify": [
+    "What would you do?",
+    "Change something and show me a comparison.",
+    "I want a return guarantee before I use the trial cap.",
+    "Alter the cap on my actual brokerage account now.",
+    "帮我执行真实账户的调仓。",
+    "这个数字怎么样？",
+    "帮我改一个设置，具体改什么你来决定。",
+    "下周收益最高的那只股票是哪只？"
+  ]
+}

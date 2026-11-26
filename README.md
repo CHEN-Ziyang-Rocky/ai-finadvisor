@@ -6,13 +6,15 @@ A full-stack research application combining survey-based risk profiling, constra
 
 ## Review the project in three minutes
 
-1. Open the [live application](https://finance.imrocky.com/user), create your own account and use fictional household inputs.
+1. Open the [public demo](https://finance.imrocky.com/demo) and select **Try Demo** to start with a fictional profile and saved results.
 2. Estimate the profile proxy, choose **Load Magnificent Seven**, then optimize and inspect the holding cap, equal-weight comparison and rolling historical evaluation.
-3. Continue to the simulator and compare baseline, optimistic and pessimistic outcomes using the same portfolio.
+3. Open the simulator to compare the baseline and two return-sensitivity scenarios. In Research Assistant, explain the saved allocation or explicitly enable a holding-cap trial and inspect its calculation receipt.
 
 The example selects AAPL, MSFT, AMZN, GOOGL, META, NVDA and TSLA. It includes one Alphabet share class and remains editable. Numerical constraints, dated data and model limitations are visible in the application.
 
 For verification without raw research data, install the core/data dependencies and run `python scripts/test-python.py`, plus the JavaScript tests below. This entry uses in-memory unit-test fixtures only; normal application startup still requires real research inputs. GitHub Actions verifies Node 24, Python 3.12, tests, the production build and runtime dependency advisories without production credentials.
+
+See the [current feature review](docs/FEATURE-REVIEW-2026-11-26.zh-CN.md) for workflow checks and the [offline intent experiment](evals/intent/README.md) for the first phase-five results.
 
 Read the [portfolio readiness review](docs/PORTFOLIO-READINESS-2026-10-29.zh-CN.md) for evidence and remaining limitations. The current build uses deprecated Create React App tooling, has known development-tool advisories and a roughly 693 kB gzip main bundle; runtime audit results do not mean a complete security assessment. The deployed market history and provenance are described in the [full CSV update report](docs/FULL-HISTORY-UPDATE-2026-10-29.zh-CN.md).
 

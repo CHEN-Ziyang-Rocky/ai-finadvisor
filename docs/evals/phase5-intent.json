@@ -1,0 +1,256 @@
+{
+  "encoder": "Xenova/multilingual-e5-small@761b726dd34fb83930e26aab4e9ac3899aa1fa78",
+  "file_sha256": {
+    "model.onnx": "f80102d3f2a1229f387d3c81909990d8945513e347b0eab049f7de3c6f98c193",
+    "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39"
+  },
+  "labels": [
+    "review_current",
+    "compare_cap",
+    "clarify"
+  ],
+  "train_size": 42,
+  "trainable_parameters": 1155,
+  "elapsed_seconds": 1.62,
+  "results": {
+    "workflow": {
+      "correct": 10,
+      "total": 24,
+      "unrequested_trials": 2,
+      "missed_trials": 7,
+      "confusion_actual_by_predicted": [
+        [
+          1,
+          2,
+          5
+        ],
+        [
+          0,
+          1,
+          7
+        ],
+        [
+          0,
+          0,
+          8
+        ]
+      ]
+    },
+    "candidate": {
+      "correct": 16,
+      "total": 24,
+      "unrequested_trials": 5,
+      "missed_trials": 1,
+      "confusion_actual_by_predicted": [
+        [
+          6,
+          2,
+          0
+        ],
+        [
+          1,
+          7,
+          0
+        ],
+        [
+          2,
+          3,
+          3
+        ]
+      ]
+    },
+    "guarded": {
+      "correct": 13,
+      "total": 24,
+      "unrequested_trials": 2,
+      "missed_trials": 6,
+      "confusion_actual_by_predicted": [
+        [
+          6,
+          1,
+          1
+        ],
+        [
+          1,
+          2,
+          5
+        ],
+        [
+          2,
+          1,
+          5
+        ]
+      ]
+    }
+  },
+  "cases": [
+    {
+      "question": "Leave the allocation alone and walk me through its turnover.",
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "I only want to understand the saved holding limit. Do not recompute it.",
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "review_current",
+      "guarded": "review_current"
+    },
+    {
+      "question": "My report shows a backtest. What does that number on the existing report describe?",
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "We already tried a tighter ceiling yesterday. Explain the weights on file.",
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "保留我的持仓，解释权重为什么集中在一家公司。",
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "我已经做过上限试算了，只想知道当前组合换手高是什么意思。",
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "compare_cap",
+      "guarded": "review_current"
+    },
+    {
+      "question": "先别跑任何试算，我想看已经保存的历史比较。",
+      "expected": "review_current",
+      "candidate": "compare_cap",
+      "workflow": "compare_cap",
+      "guarded": "compare_cap"
+    },
+    {
+      "question": "如果不改任何参数，可以解释这份报告里的等权对照吗？",
+      "expected": "review_current",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "Run another allocation under the limit in the box and show the change in turnover.",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "compare_cap"
+    },
+    {
+      "question": "Could you rerun diversification with the displayed ceiling instead?",
+      "expected": "compare_cap",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "Show how the backtest differs if the per-company maximum is the one I entered.",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "Please apply this cap to a trial allocation without saving it.",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "compare_cap",
+      "guarded": "compare_cap"
+    },
+    {
+      "question": "用框里填的单股比例再算一次，比较前后的集中度。",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "先做一次上限对照，结果只要告诉我换手差额。",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "如果每家公司最多只能占表单里的比例，历史回测会怎么变？",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "把仓位约束换成我输入的这个值，模拟一下持仓分布。",
+      "expected": "compare_cap",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "What would you do?",
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "Change something and show me a comparison.",
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "I want a return guarantee before I use the trial cap.",
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "compare_cap"
+    },
+    {
+      "question": "Alter the cap on my actual brokerage account now.",
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "帮我执行真实账户的调仓。",
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    },
+    {
+      "question": "这个数字怎么样？",
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "帮我改一个设置，具体改什么你来决定。",
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current"
+    },
+    {
+      "question": "下周收益最高的那只股票是哪只？",
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify"
+    }
+  ]
+}

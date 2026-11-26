@@ -64,3 +64,20 @@ test('the planner cannot initiate a trial when only an existing backtest was req
     calculate:()=>assert.fail('Unrequested comparison')});
   assert.equal(r.status,'stopped');
 });
+test('read-only studies cannot invoke a trial in either planner mode',async()=>{
+  for (const mode of ['workflow','llm']) {
+    let calls=0;
+    const r=await runAgent({body:{...base,mode,consent:mode==='llm',allow_trial:false},
+      readReport,provider:mode==='llm'?{agentDecision:async({options})=>{
+        assert.ok(!options.includes('compare_cap'));return 'compare_cap';
+      }}:null,calculate:()=>{calls++;}});
+    assert.equal(calls,0);
+    assert.notEqual(r.status,'completed');
+  }
+  assert.throws(()=>validateAgent({...base,allow_trial:'false'}));
+});
+test('a percentage in a saved-weight question does not conflict with an unused trial control',async()=>{
+  const r=await runAgent({body:{...base,question:'Explain my current concentration at 40%.',allow_trial:false},readReport});
+  assert.equal(r.status,'completed');
+  assert.ok(!r.trace.some(step=>step.step==='compare_cap'));
+});

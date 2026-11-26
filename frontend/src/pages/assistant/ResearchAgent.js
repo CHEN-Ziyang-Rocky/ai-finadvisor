@@ -3,8 +3,12 @@ import {Alert,Button,Checkbox,FormControlLabel,Paper,TextField} from '@mui/mater
 import api from '../../api';
 import {downloadCalculation} from '../../components/research/CalculationRecord';
 
+const reviewExample='Explain turnover in my current allocation.';
+const trialExample='Test the holding cap and explain the turnover trade-off.';
+
 export default function ResearchAgent({capabilities}) {
-  const [question,setQuestion]=useState('Test the holding cap and explain the turnover trade-off.');
+  const [question,setQuestion]=useState(reviewExample);
+  const [allowTrial,setAllowTrial]=useState(false);
   const [cap,setCap]=useState('35');
   const [live,setLive]=useState(false);
   const [busy,setBusy]=useState(false);
@@ -16,7 +20,7 @@ export default function ResearchAgent({capabilities}) {
     try {
       const consent=Boolean(capabilities?.live_enabled && live);
       const {data}=await api.post('/assistant/agent',{
-        question:question.trim(),cap_pct:Number(cap),consent,mode:consent?'llm':'workflow'
+        question:question.trim(),...(allowTrial?{cap_pct:Number(cap)}:{}),allow_trial:allowTrial,consent,mode:consent?'llm':'workflow'
       },{timeout:105000});
       setResult(data);
     } catch(e) {
@@ -29,16 +33,22 @@ export default function ResearchAgent({capabilities}) {
     <form onSubmit={submit}>
       <TextField fullWidth label="Research question" value={question} disabled={busy}
         inputProps={{maxLength:500}} onChange={e=>setQuestion(e.target.value)}/>
-      <TextField sx={{my:2}} label="Trial cap (%)" type="number" required value={cap} disabled={busy}
-        inputProps={{min:10,max:100,step:'any'}} onChange={e=>setCap(e.target.value)}/>
+      <FormControlLabel control={<Checkbox checked={allowTrial} disabled={busy} onChange={e=>{
+        const enabled=e.target.checked;
+        setAllowTrial(enabled);
+        if (question===(enabled?reviewExample:trialExample)) setQuestion(enabled?trialExample:reviewExample);
+      }}/>}
+        label="Allow a holding-cap simulation for this run"/>
+      {allowTrial && <TextField sx={{my:2}} label="Trial cap (%)" type="number" required value={cap} disabled={busy}
+        inputProps={{min:10,max:100,step:'any'}} onChange={e=>setCap(e.target.value)}/>}
       {capabilities?.live_enabled && <FormControlLabel control={<Checkbox checked={live} disabled={busy} onChange={e=>setLive(e.target.checked)}/>}
-        label={`Let ${capabilities.provider} plan the steps using this question, cap and computed portfolio metrics`}/>}
+        label={`Let ${capabilities.provider} plan the steps using this question and computed portfolio metrics`}/>}
       <div><Button variant="outlined" type="submit" disabled={!capabilities||busy||!question.trim()}>{busy?'Running study…':live?'Run with model planner':'Run with local workflow'}</Button></div>
     </form>
     {error && <Alert severity="error">{error}</Alert>}
     {result && <div aria-live="polite">
       <h3>{result.question}</h3>
-      <p>{result.model || 'Local workflow'} · Trial cap {result.cap_pct}% · {result.status}</p>
+      <p>{result.model || 'Local workflow'} · {result.status}{result.trace.some(step=>step.step==='compare_cap' && step.receipt) && ` · Simulated cap ${result.cap_pct}%`}</p>
       <Alert severity={result.status==='completed'?'success':'warning'}>{result.reason}</Alert>
       {result.context && <p>Estimation window {result.context.start} – {result.context.end} · {result.context.observations} monthly observations</p>}
       {result.comparison?.some(row=>row.label==='Evaluated annual growth') && <p>

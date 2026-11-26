@@ -4,16 +4,17 @@ const passages = require('../library/passages.json');
 
 const topics = {turnover:'m21', concentration:'m17', evaluation:'m20'};
 const actions = ['compare_cap','review_current','clarify'];
-const VERSION = 'research-agent-1';
+const VERSION = 'research-agent-2';
 
 function validateAgent(body) {
-  const keys = ['question','cap_pct','mode','consent'];
+  const keys = ['question','cap_pct','mode','consent','allow_trial'];
   if (!body || Object.keys(body).some(key=>!keys.includes(key)) ||
+      (body.allow_trial !== undefined && typeof body.allow_trial !== 'boolean') ||
       typeof body.question !== 'string' || !body.question.trim() || body.question.length>500 ||
-      !Number.isFinite(body.cap_pct) || body.cap_pct<10 || body.cap_pct>100 ||
+      ((body.allow_trial !== false || body.cap_pct != null) && (!Number.isFinite(body.cap_pct) || body.cap_pct<10 || body.cap_pct>100)) ||
       !['workflow','llm'].includes(body.mode) || typeof body.consent !== 'boolean' ||
       (body.mode==='llm' && !body.consent)) throw fail('Enter a research question, a cap from 10 to 100%, and confirm live mode if selected.');
-  return {...body,question:body.question.trim()};
+  return {...body,question:body.question.trim(),cap_pct:body.allow_trial === false ? null : body.cap_pct};
 }
 
 function localChoice(question,stage) {
@@ -48,7 +49,7 @@ async function runAgent({body,readReport,calculate,provider,assertActive=()=>{}}
   const start=performance.now();
   const trace=[];
   const result={run_id:randomUUID(),version:VERSION,mode:p.mode,model:provider?.model??null,
-    question:p.question,cap_pct:p.cap_pct,trace};
+    question:p.question,cap_pct:p.cap_pct,allow_trial:p.allow_trial ?? null,trace};
   function finish(status,reason,extra={}) {
     return {...result,...extra,status,reason,elapsed_ms:Math.round(performance.now()-start),usage:provider?.usage??null};
   }
@@ -68,14 +69,15 @@ async function runAgent({body,readReport,calculate,provider,assertActive=()=>{}}
     trace.push({step,receipt:report.calculation.calculation_id,dataset:report.data_context.dataset_id});
     step='plan';
     const statedCaps=[...p.question.matchAll(/(\d+(?:\.\d+)?)\s*[%％]/g)].map(match=>Number(match[1]));
-    if (statedCaps.some(value=>value!==p.cap_pct)) return finish('clarify','The percentage in your question differs from the trial cap. Align them and run again.');
+    if (p.allow_trial !== false && statedCaps.some(value=>value!==p.cap_pct)) return finish('clarify','The percentage in your question differs from the trial cap. Align them and run again.');
     // A planner may reduce work or request clarification, but it cannot initiate
     // a numerical trial without a cap/limit request in the user's brief.
     const mentionsTrial=/\b(?:cap|ceiling|limit|trial|what[- ]if)\b|上限|限额|试算|試算/iu.test(p.question);
     const declinesTrial=/do not (?:change|try|test|compare|recompute)|don.t (?:change|try|test|compare|recompute)|(?:不用|无需|不要|不必)(?:试算|调整|改动|重算)/iu.test(p.question);
     const requestsTrial=/\b(?:try|trial|test|compare|change|tighten|lower|raise|set|simulate|recompute|use|apply|under|with|if|changing|adjust)\b|试算|試算|调整|降低|提高|采用|假设|改成|如果|使用/iu.test(p.question);
-    const allowed=mentionsTrial && requestsTrial && !declinesTrial ? actions : ['review_current','clarify'];
+    const allowed=p.allow_trial !== false && mentionsTrial && requestsTrial && !declinesTrial ? actions : ['review_current','clarify'];
     const action=await choose(step,allowed,baseline.facts.map(({id,value})=>({id,value})));
+    if (action==='clarify' && p.allow_trial === false) return finish('clarify','This run is read-only. Ask about the saved allocation, or enable a holding-cap simulation and request the trial.');
     if (action==='clarify') return finish('clarify','Ask about the current allocation or a trial holding cap, then specify the aspect to examine.');
     let evidence=baseline;
     if (action==='compare_cap') {

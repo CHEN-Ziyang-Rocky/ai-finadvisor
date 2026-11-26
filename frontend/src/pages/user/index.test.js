@@ -63,3 +63,20 @@ test('retired saved selections must be removed before allocating', async () => {
     expect(await screen.findByText(/Remove stocks without current research history/)).toHaveTextContent('OLD');
     expect(screen.getByRole('button',{name:'Optimize & compare'})).toBeDisabled();
 });
+test('successive optimizations compare against the last successful weights',async()=>{
+ const tickers=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA'];
+ const weights=[.2,.2,.2,.1,.1,.1,.1];
+ api.post.mockResolvedValueOnce({data:{...savedReport,stock_tickers:tickers,allocations:weights}});
+ render(<User/>);
+ await waitFor(()=>expect(screen.getByRole('button',{name:'Estimate profile score'})).not.toBeDisabled());
+ fireEvent.click(screen.getByRole('button',{name:'Estimate profile score'}));
+ await screen.findByRole('slider');
+ fireEvent.click(screen.getByRole('button',{name:'Load Magnificent Seven'}));
+ fireEvent.click(screen.getByRole('button',{name:'Optimize & compare'}));
+ await screen.findByText('Your allocation');
+ fireEvent.change(screen.getByLabelText('Holding cap (%)'),{target:{value:'35'}});
+ fireEvent.click(screen.getByRole('button',{name:'Optimize & compare'}));
+ await waitFor(()=>expect(api.post).toHaveBeenCalledWith('/allocate',expect.objectContaining({
+    reference_weights:Object.fromEntries(tickers.map((t,i)=>[t,weights[i]])),max_weight:.35
+ })));
+});
