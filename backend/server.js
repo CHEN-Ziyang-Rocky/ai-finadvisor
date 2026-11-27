@@ -16,7 +16,7 @@ const userModel = require('./models/userModel');
 const helmet = require('helmet');
 const crypto = require('crypto');
 const { replaceAllocations } = require('./services/allocationService');
-const { readResearch, saveProfile, validateProfile } = require('./services/researchService');
+const { listSavedReports, findSavedReport, readResearch, saveProfile, validateProfile } = require('./services/researchService');
 const app = express();
 app.set('trust proxy', 'loopback');
 app.get('/health', async (req, res) => {
@@ -100,8 +100,18 @@ if (!PYTHON_SERVICE_URL) {
     process.exit(1);
 }
 const FMP_API_KEY = process.env.FWP_api_key;
+const {createHistoryRouter,reportFigures}=require('./assistant/reportHistory');
+app.use('/api/assistant/reports',createHistoryRouter({
+    list:req=>listSavedReports(pool,req.user.id),
+    find:async(req,receipt)=>{
+        const run=await findSavedReport(pool,req.user.id,receipt);
+        return run && reportFigures(run);
+    }
+}));
 app.use('/api/assistant', require('./assistant/router').createAssistantRouter({
-    getContext: async (req, documents) => ({owner:req.user.id, report:documents ? null : (await readResearch(pool,req.user.id)).latest_run?.report})
+    getContext: async (req, documents, receipt) => ({
+        owner:req.user.id, report:documents ? null : receipt ? (await findSavedReport(pool,req.user.id,receipt))?.report : (await readResearch(pool,req.user.id)).latest_run?.report
+    })
 }));
 // /api/assets no need to be authenticated
 app.get('/api/assets', async (req, res) => {

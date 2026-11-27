@@ -2,9 +2,11 @@ import React,{useEffect,useState} from 'react';
 import {Alert,Box,Button,Checkbox,FormControlLabel,LinearProgress,MenuItem,Paper,TextField,Typography,Chip} from '@mui/material';
 import api from '../../api';
 import ResearchAgent from './ResearchAgent';
+import SavedReportReader from './SavedReportReader';
 import DocumentSearch from './DocumentSearch';
 import {downloadCalculation} from '../../components/research/CalculationRecord';
 export default function ResearchAssistant(){
+ const [attachment,setAttachment]=useState(null);
  const [caps,setCaps]=useState(null),[skill,setSkill]=useState('allocation_review'),[mode,setMode]=useState('workflow');
  const [question,setQuestion]=useState(''),[cap,setCap]=useState('35'),[goal,setGoal]=useState('100000'),[years,setYears]=useState('10'),[consent,setConsent]=useState(false);
  const [result,setResult]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false);
@@ -44,7 +46,8 @@ export default function ResearchAssistant(){
    <details className="method-details"><summary>All evidence and exact calculation inputs</summary><Box component="pre" sx={{fontSize:12,overflowX:'auto',maxHeight:440}}>{JSON.stringify(result.evidence,null,2)}</Box></details>
    <Button variant="outlined" onClick={()=>downloadCalculation({...result,calculation:{kind:'assistant',calculation_id:result.run_id}})}>Download assistant evidence</Button>
   </Paper>}
-  <ResearchAgent capabilities={caps}/>
+  <SavedReportReader onContext={setAttachment}/>
+  <ResearchAgent key={attachment?`${attachment.receipt}-${attachment.metric}`:'current'} capabilities={caps} attachment={attachment}/>
   <DocumentSearch capabilities={caps}/>
  </div>;
 }

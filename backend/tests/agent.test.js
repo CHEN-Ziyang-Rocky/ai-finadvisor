@@ -81,3 +81,28 @@ test('a percentage in a saved-weight question does not conflict with an unused t
   assert.equal(r.status,'completed');
   assert.ok(!r.trace.some(step=>step.step==='compare_cap'));
 });
+
+test('an unresolved previous run cannot use the current control or ask the provider to guess',async()=>{
+  for (const question of [
+    '你能找到我上周试过的那个持仓上限设置吗？如果没有保存就直接告诉我。',
+    'Can you pull up the position limit I tested last week and compare it with my current portfolio?',
+    "Let's use the same position limit from last week, but update the analysis with the latest available market data.",
+  ]) {
+    for (const mode of ['workflow','llm']) {
+      const r=await runAgent({body:{...base,allow_trial:true,question,mode,consent:mode==='llm'},readReport,
+        provider:{agentDecision:()=>assert.fail('No model needed to identify a missing receipt')},
+        calculate:()=>assert.fail('Unresolved reference')});
+      assert.equal(r.status,'clarify');assert.equal(r.needs_saved_report,true);
+    }
+  }
+});
+
+test('pinned metric review uses its exact receipt, source and evaluation dates',async()=>{
+ const q={question:'How is this figure calculated?',saved_receipt:example.calculation.calculation_id,metric:'drawdown',allow_trial:false,mode:'workflow',consent:false};
+ const r=await runAgent({body:q,readReport,calculate:()=>assert.fail('read-only')});
+ assert.equal(r.status,'completed');assert.equal(r.focus.value,example.validation.metrics.optimized.max_drawdown);
+ assert.equal(r.focus.window.months,24);assert.equal(r.citation.id,'m22');
+ const missing=await runAgent({body:q,readReport:()=>null});assert.equal(missing.status,'clarify');assert.equal(missing.facts,undefined);
+ assert.throws(()=>validateAgent({...q,allow_trial:true,cap_pct:35}));
+ assert.throws(()=>validateAgent({...q,metric:'arbitrary code'}));
+});

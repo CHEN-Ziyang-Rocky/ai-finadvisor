@@ -67,3 +67,7 @@ python evals/intent/train.py /tmp/finance-e5 --evaluation evals/intent/synthetic
 ```
 
 Prioritize receipt lookup and metric context. Future evaluations should vary whether the requested previous receipt exists, whether its dataset matches, and whether the cap shown agrees with the request. Include directly executable cap trials in those tests. Keep this batch as a regression set and report participant-confirmed results separately when available.
+
+### Saved report context and explicit cap controls
+
+The [routing replay](../../docs/evals/phase5-receipt-routing.json) repeats the known synthetic, challenge and public batches after updating the production planner. The three predictions per row use the same frozen encoder and head training settings. The guard and the fixed workflow changed. The 60 synthetic responses and the original 24 challenge questions informed diagnosis. The additional [12 developer controls](receipt-controls.json) exercise affirmative, conflicting, unresolved and review requests using a 35% form value. These are regression tests; independent-participant evaluation is still pending. Reproduce each batch with its dataset path and recorded permission using the commands above. For the original 24-question challenge omit both options. Separate application tests check actual receipt ownership, evidence, window selection and read-only execution.

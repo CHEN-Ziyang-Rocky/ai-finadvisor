@@ -46,4 +46,16 @@ async function readResearch(pool,userId){
  const portfolio=run?{tickers:run.report.stock_tickers,weights:run.report.allocations,lookback_months:run.report.policy.lookback_months,as_of:run.report.data_context.end,dataset_id:run.report.data_context.dataset_id,source:'saved',created_at:run.created_at}:await readAllocation(pool,userId);
  return {profile,portfolio,latest_run:run};
 }
-module.exports={validateProfile,initializeResearch,saveProfile,readResearch};
+async function listSavedReports(pool,userId) {
+ const [rows]=await pool.query(`SELECT report->>'$.calculation.calculation_id' AS receipt,
+   created_at AS saved_at, report->>'$.policy.max_weight' AS cap, report->'$.stock_tickers' AS tickers
+   FROM portfolio_runs WHERE user_id=? AND report->>'$.calculation.calculation_id' IS NOT NULL
+   ORDER BY id DESC LIMIT 20`,[userId]);
+ return rows.map(r=>({...r,cap:r.cap==null?null:Number(r.cap),tickers:parse(r.tickers)}));
+}
+async function findSavedReport(pool,userId,receipt) {
+ const [rows]=await pool.query(`SELECT report,created_at FROM portfolio_runs
+   WHERE user_id=? AND report->>'$.calculation.calculation_id'=? ORDER BY id DESC LIMIT 1`,[userId,receipt]);
+ return rows[0] && {report:parse(rows[0].report),created_at:rows[0].created_at};
+}
+module.exports={listSavedReports,findSavedReport,validateProfile,initializeResearch,saveProfile,readResearch};

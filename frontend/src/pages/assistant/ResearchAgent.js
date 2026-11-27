@@ -6,8 +6,8 @@ import {downloadCalculation} from '../../components/research/CalculationRecord';
 const reviewExample='Explain turnover in my current allocation.';
 const trialExample='Test the holding cap and explain the turnover trade-off.';
 
-export default function ResearchAgent({capabilities}) {
-  const [question,setQuestion]=useState(reviewExample);
+export default function ResearchAgent({capabilities,attachment}) {
+  const [question,setQuestion]=useState(attachment?'How is this figure calculated?':reviewExample);
   const [allowTrial,setAllowTrial]=useState(false);
   const [cap,setCap]=useState('35');
   const [live,setLive]=useState(false);
@@ -20,7 +20,7 @@ export default function ResearchAgent({capabilities}) {
     try {
       const consent=Boolean(capabilities?.live_enabled && live);
       const {data}=await api.post('/assistant/agent',{
-        question:question.trim(),...(allowTrial?{cap_pct:Number(cap)}:{}),allow_trial:allowTrial,consent,mode:consent?'llm':'workflow'
+        question:question.trim(),...(attachment?{saved_receipt:attachment.receipt,metric:attachment.metric}:{}),...(allowTrial?{cap_pct:Number(cap)}:{}),allow_trial:allowTrial,consent,mode:consent?'llm':'workflow'
       },{timeout:105000});
       setResult(data);
     } catch(e) {
@@ -30,10 +30,11 @@ export default function ResearchAgent({capabilities}) {
   return <Paper className="research-card" component="section" id="portfolio-study" sx={{my:2}}>
     <h2>Portfolio research agent</h2>
     <p>Ask about your current allocation or test a holding cap. Each run includes the calculation evidence and a method reference.</p>
+    {attachment && <p>Attached calculation {attachment.receipt.slice(0,12)} · {attachment.metric}. To start a new trial, choose “Latest allocation” in the saved report reader.</p>}
     <form onSubmit={submit}>
       <TextField fullWidth label="Research question" value={question} disabled={busy}
         inputProps={{maxLength:500}} onChange={e=>setQuestion(e.target.value)}/>
-      <FormControlLabel control={<Checkbox checked={allowTrial} disabled={busy} onChange={e=>{
+      <FormControlLabel control={<Checkbox checked={allowTrial} disabled={busy||Boolean(attachment)} onChange={e=>{
         const enabled=e.target.checked;
         setAllowTrial(enabled);
         if (question===(enabled?reviewExample:trialExample)) setQuestion(enabled?trialExample:reviewExample);
@@ -50,6 +51,10 @@ export default function ResearchAgent({capabilities}) {
       <h3>{result.question}</h3>
       <p>{result.model || 'Local workflow'} · {result.status}{result.trace.some(step=>step.step==='compare_cap' && step.receipt) && ` · Simulated cap ${result.cap_pct}%`}</p>
       <Alert severity={result.status==='completed'?'success':'warning'}>{result.reason}</Alert>
+      {result.needs_saved_report && <a href="#saved-report">Open saved report reader</a>}
+      {result.focus && <div><strong>{result.focus.label} · {result.focus.unit==='percent'?(result.focus.value*100).toFixed(2)+'%':result.focus.value.toFixed(2)}</strong>
+        <p>{result.focus.explanation} {result.focus.window.start} – {result.focus.window.end} · {result.focus.window.months} months.</p>
+        <small>Attached calculation {result.saved_receipt.slice(0,12)} · {result.focus.path}</small></div>}
       {result.context && <p>Estimation window {result.context.start} – {result.context.end} · {result.context.observations} monthly observations</p>}
       {result.comparison?.some(row=>row.label==='Evaluated annual growth') && <p>
         In the rolling historical comparison, {result.comparison.filter(row=>['Evaluated annual growth','Evaluated annual volatility','Evaluated monthly turnover'].includes(row.label)).map(row=>

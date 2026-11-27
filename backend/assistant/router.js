@@ -19,7 +19,7 @@ function createAssistantRouter({getContext,upstream=axios,isDemo=false,providerF
    const agent=req.path==='/agent';
    const body=(agent?validateAgent:documents?validateDocument:validate)(isDemo?req.body:cleanTransport(req.body));
    if(isDemo&&body.mode==='llm')throw fail('Live model calls are disabled for anonymous demo sessions.',403);
-   const context=await getContext(req,documents),now=Date.now(),key=(isDemo?'demo:':'user:')+context.owner;
+   const context=await getContext(req,documents,agent ? body.saved_receipt : undefined),now=Date.now(),key=(isDemo?'demo:':'user:')+context.owner;
    for(const [k,v] of buckets)if(now-v[v.length-1]>=60000)buckets.delete(k);
    const hits=(buckets.get(key)||[]).filter(t=>now-t<60000);
    if(hits.length>=4||active>=2||buckets.size>=2000)throw fail('Research assistant is busy or the request limit was reached. Retry in a minute.',429);

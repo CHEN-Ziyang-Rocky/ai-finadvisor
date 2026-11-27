@@ -6,7 +6,12 @@ const example=require('./example.json');
 function createDemoRouter({upstream=axios,store=new DemoStore()}={}) {
  const router=express.Router();let computing=0;
  const concurrency=setting('DEMO_COMPUTE_CONCURRENCY',2),computeLimit=setting('DEMO_COMPUTE_PER_MINUTE',6);
- const seed=()=>structuredClone(example);
+ const {createHistoryRouter,reportFigures,describeRun,demoReviewCopy}=require('../assistant/reportHistory');
+ const seed=()=>{
+  const state=structuredClone(example);
+  state.savedReports=[demoReviewCopy(state.latest_run)];
+  return state;
+ };
  router.use((req,res,next)=>{
   res.set('Cache-Control','no-store');
   if(process.env.DEMO_ENABLED==='false')return res.status(503).json({error:'Demo temporarily unavailable'});
@@ -18,7 +23,11 @@ function createDemoRouter({upstream=axios,store=new DemoStore()}={}) {
   try { const s=store.create(req.get('Idempotency-Key'),req.socket.remoteAddress||'local',seed);res.json({token:s.token}); }catch(e){res.status(e.status||503).json({error:e.message});}
  });
  router.use((req,res,next)=>{try{req.demo=store.get(req.get('Authorization'));next();}catch(e){res.status(e.status||401).json({error:e.message});}});
- router.use('/assistant',require('../assistant/router').createAssistantRouter({isDemo:true,upstream,getContext:async req=>({owner:req.demo.token,report:req.demo.state.latest_run?.report,assertActive:()=>store.get(req.get('Authorization'))})}));
+ router.use('/assistant/reports',createHistoryRouter({
+  list:req=>req.demo.state.savedReports.map(describeRun),
+  find:(req,receipt)=>{const run=req.demo.state.savedReports.find(r=>r.report.calculation.calculation_id===receipt);return run && reportFigures(run);}
+ }));
+ router.use('/assistant',require('../assistant/router').createAssistantRouter({isDemo:true,upstream,getContext:async (req,documents,receipt)=>({owner:req.demo.token,report:receipt?req.demo.state.savedReports.find(r=>r.report.calculation.calculation_id===receipt)?.report:req.demo.state.latest_run?.report,assertActive:()=>store.get(req.get('Authorization'))})}));
  router.get('/me',(req,res)=>res.json({username:'Demo visitor',demo:true}));
  router.get('/assets',(req,res)=>res.json(example.assets));
  router.get('/overview',(req,res)=>{const {profile,portfolio,latest_run,example}=req.demo.state;res.json({profile,portfolio,latest_run,example});});
@@ -46,7 +55,10 @@ function createDemoRouter({upstream=axios,store=new DemoStore()}={}) {
   if(Object.keys(body).some(k=>!fields.includes(k)))throw new Error('Unsupported allocation field');
   if(!Array.isArray(body.stock_tickers)||body.stock_tickers.length>7)throw new Error('Use up to seven demo stocks');
   return body;
- },(state,report)=>{const at=new Date().toISOString();state.latest_run={id:'demo',report,created_at:at};state.portfolio={tickers:report.stock_tickers,weights:report.allocations,lookback_months:report.policy.lookback_months,as_of:report.data_context.end,dataset_id:report.data_context.dataset_id,source:'demo_calculation',created_at:at};state.example={precomputed:false,description:'Recalculated with the existing local engine and frozen historical sample.'};}));
+ },(state,report)=>{const at=new Date().toISOString();state.latest_run={id:'demo',report,created_at:at};
+  const saved=demoReviewCopy(state.latest_run);
+  state.savedReports=[saved,...state.savedReports.filter(r=>r.report.calculation.calculation_id!==report.calculation?.calculation_id)].slice(0,20);
+  state.portfolio={tickers:report.stock_tickers,weights:report.allocations,lookback_months:report.policy.lookback_months,as_of:report.data_context.end,dataset_id:report.data_context.dataset_id,source:'demo_calculation',created_at:at};state.example={precomputed:false,description:'Recalculated with the existing local engine and frozen historical sample.'};}));
  router.post('/simulator',compute('simulator',body=>{
   if(!Number.isInteger(body.num_simulations)||body.num_simulations<10||body.num_simulations>500||!Number.isInteger(body.investment_years)||body.investment_years<1||body.investment_years>20)throw new Error('Demo allows 10–500 paths and 1–20 years');
   if(!Array.isArray(body.portfolios)||body.portfolios.length>2)throw new Error('Use at most two demo portfolios');

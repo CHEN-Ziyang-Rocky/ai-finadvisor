@@ -1,0 +1,50 @@
+[
+  {
+    "question": "Please test the displayed 35% holding cap without saving the result.",
+    "expected": "compare_cap"
+  },
+  {
+    "question": "Try a 35% cap on each holding and show the difference in volatility.",
+    "expected": "compare_cap"
+  },
+  {
+    "question": "Run a what-if allocation using the 35% single-stock limit in the form.",
+    "expected": "compare_cap"
+  },
+  {
+    "question": "试算框中35%的持仓上限，比较年化波动。",
+    "expected": "compare_cap"
+  },
+  {
+    "question": "请把单股上限设为35%，重新计算这一组权重。",
+    "expected": "compare_cap"
+  },
+  {
+    "question": "用我刚填的35%仓位限制做一次模拟，不用保存。",
+    "expected": "compare_cap"
+  },
+  {
+    "question": "Test a 25% ceiling while the form shows 35%.",
+    "expected": "clarify"
+  },
+  {
+    "question": "可以把5%、10%和35%一起跑一遍吗？",
+    "expected": "clarify"
+  },
+  {
+    "question": "Use my previous cap again, whatever the box says.",
+    "expected": "clarify"
+  },
+  {
+    "question": "找出上周的单股上限再重算，不记得当时的数了。",
+    "expected": "clarify"
+  },
+  {
+    "question": "Show the volatility in my saved allocation and leave the cap alone.",
+    "expected": "review_current"
+  },
+  {
+    "question": "只分析当前组合有什么风险，先别调整上限。",
+    "expected": "review_current"
+  }
+]

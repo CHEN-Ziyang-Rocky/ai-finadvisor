@@ -53,3 +53,17 @@ test('multi-step study sends the displayed cap and offers correction after clari
  expect(api.post).toHaveBeenCalledWith('/assistant/agent',{question:'Test 25%',cap_pct:35,allow_trial:true,mode:'workflow',consent:false},expect.any(Object));
  expect(run).not.toBeDisabled();
 });
+
+test('opening a metric pins its receipt and shows its evaluation window without a planning call',async()=>{
+ const receipt='b'.repeat(64);
+ window.history.replaceState({},'',`/tools/assistant?receipt=${receipt}&metric=drawdown`);
+ try{
+  api.get.mockImplementation(async path=>({data:path.endsWith(receipt)?{receipt,figures:[
+   {id:'drawdown',label:'Backtested maximum drawdown',value:-.16,unit:'percent',explanation:'Monthly closes',window:{start:'2024-10-31',end:'2026-09-30',months:24},path:'validation.metrics.optimized.max_drawdown'}
+  ]}:path.endsWith('/reports')?{reports:[]}:{live_enabled:false,skills}}));
+  render(<Assistant/>);
+  expect(await screen.findByText('Backtested maximum drawdown · -16.00%')).toBeInTheDocument();
+  expect(screen.getByText(/2024-10-31 – 2026-09-30 · 24 months/)).toBeInTheDocument();
+  expect(api.post).not.toHaveBeenCalled();
+ }finally{window.history.replaceState({},'','/');}
+});

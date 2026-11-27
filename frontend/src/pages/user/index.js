@@ -15,7 +15,7 @@ const pct = value => value == null ? '—' : `${(value * 100).toFixed(1)}%`;
 export const MAGNIFICENT_SEVEN = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'NVDA', 'TSLA'];
 const labels = { reference:'Previous weights', optimized: 'Selected method', equal_weight: 'Equal weight', minimum_variance: 'Minimum variance' };
 const StepTitle = ({ number, title, description }) => <div className="step-heading"><span>{number}</span><div><Typography variant="h5">{title}</Typography><Typography variant="body2" color="text.secondary">{description}</Typography></div></div>;
-const Metric = ({ label, value, note }) => <div className="research-metric"><span>{label}</span><strong>{value}</strong><small>{note}</small></div>;
+const Metric = ({ label, value, note, children }) => <div className="research-metric"><span>{label}</span><strong>{value}</strong><small>{note}</small>{children}</div>;
 export default function User() {
     const navigate = useNavigate();
     const [features, setFeatures] = useState({age:30,income:100000,asset:200000,education_level:4,married:false,kids:0,occupation:1,risk:1});
@@ -63,6 +63,8 @@ export default function User() {
     const unavailableSelection = selected.filter(s=>!s.eligible);
     const staleReport = report && asOf && (report.data_context.end!==asOf || (dataset?.dataset_id && report.data_context.dataset_id!==dataset.dataset_id));
     const example = () => {if(missingExample.length)return;setSelected(exampleStocks);setReport(null);setError('');};
+    const explainMetric = (metric,label) => report?.calculation?.calculation_id && <Button size="small"
+        aria-label={`Explain ${label} from this report`} onClick={()=>navigate(`/tools/assistant?receipt=${encodeURIComponent(report.calculation.calculation_id)}&metric=${metric}#saved-report`)}>Explain</Button>;
     return <div className="research-page">
         <div className="research-hero"><div><div className="eyebrow">PORTFOLIO WORKSPACE</div><h1>From profile to portfolio.</h1><p>Explore a household risk proxy, compare allocations, and test the assumptions.</p></div><Chip label={asOf ? `Historical data · ${asOf}` : 'Loading dataset…'} variant="outlined" /></div>
         <ModelGuide />
@@ -122,7 +124,7 @@ export default function User() {
                 {staleReport && <Alert severity="info" sx={{mb:2}}>Saved calculation uses a different data version. Recalculate to use the current research history.</Alert>}
                 {savedProfileChanged && <Alert severity="info" sx={{mb:2}}>Your profile was edited after this saved calculation. Estimate your profile score again and review the allocation.</Alert>}
                 <StepTitle number="03" title="Your allocation" description={`${report.data_context.start} to ${report.data_context.end} · ${report.data_context.observations} monthly observations`} />
-                <div className="metric-grid"><Metric label="Estimated annual mean" value={pct(report.diagnostics.estimated_annual_return)} note="Historical estimate, not a forecast"/><Metric label="Estimated volatility" value={pct(report.diagnostics.estimated_annual_volatility)} note="Annualized standard deviation"/><Metric label="Effective holdings" value={report.diagnostics.effective_holdings.toFixed(1)} note="1 / sum of squared weights"/></div>
+                <div className="metric-grid"><Metric label="Estimated annual mean" value={pct(report.diagnostics.estimated_annual_return)} note="Historical estimate, not a forecast">{explainMetric('mean','estimated annual mean')}</Metric><Metric label="Estimated volatility" value={pct(report.diagnostics.estimated_annual_volatility)} note="Annualized standard deviation">{explainMetric('volatility','estimated volatility')}</Metric><Metric label="Effective holdings" value={report.diagnostics.effective_holdings.toFixed(1)} note="1 / sum of squared weights">{explainMetric('holdings','effective holdings')}</Metric></div>
                 {report.diagnostics.warnings.map(w=><Alert key={w} severity="warning" sx={{my:1}}>{w}</Alert>)}
                 <AllocationDonut tickers={report.stock_tickers} weights={report.allocations} industries={report.diagnostics.industry_weights}/>
                 <PortfolioComparison report={report}/>
@@ -137,7 +139,7 @@ export default function User() {
                 {!validation.available ? <Alert severity="info">{validation.reason}. No out-of-sample performance is claimed.</Alert> : <>
                     <Typography variant="body2">Last {validation.test_months} months; each allocation uses only its preceding {validation.lookback_months} months. Monthly rebalancing, {validation.cost_bps} bps on buys + sells, including first entry. Initial value = 100.</Typography>
                     <ResponsiveContainer width="100%" height={300}><LineChart data={validation.series} margin={{top:25,right:10,bottom:10,left:0}}><CartesianGrid vertical={false} stroke="#e8edf1"/><XAxis dataKey="date" tickFormatter={d=>d.slice(0,7)} minTickGap={45}/><YAxis domain={['auto','auto']}/><Tooltip formatter={v=>Number(v).toFixed(2)}/><Legend/>{[['optimized','#087f80'],['equal_weight','#9c751e'],['minimum_variance','#667caa'],...(validation.metrics.reference?[['reference','#97729d']]:[])].map(([key,color])=><Line key={key} dataKey={key} name={labels[key]} stroke={color} strokeWidth={2} dot={false}/>)}</LineChart></ResponsiveContainer>
-                    <Box sx={{overflowX:'auto'}}><Table size="small"><TableHead><TableRow><TableCell>Strategy</TableCell><TableCell>CAGR</TableCell><TableCell>Volatility</TableCell><TableCell>Max drawdown</TableCell><TableCell>Monthly turnover</TableCell></TableRow></TableHead><TableBody>{Object.entries(validation.metrics).map(([name,m])=><TableRow key={name}><TableCell>{labels[name]||name}</TableCell><TableCell>{pct(m.cagr)}</TableCell><TableCell>{pct(m.annual_volatility)}</TableCell><TableCell>{pct(m.max_drawdown)}</TableCell><TableCell>{pct(m.average_monthly_turnover)}</TableCell></TableRow>)}</TableBody></Table></Box>
+                    <Box sx={{overflowX:'auto'}}><Table size="small"><TableHead><TableRow><TableCell>Strategy</TableCell><TableCell>CAGR</TableCell><TableCell>Volatility</TableCell><TableCell>Max drawdown</TableCell><TableCell>Monthly turnover</TableCell></TableRow></TableHead><TableBody>{Object.entries(validation.metrics).map(([name,m])=><TableRow key={name}><TableCell>{labels[name]||name}</TableCell><TableCell>{pct(m.cagr)} {name==='optimized' && explainMetric('growth','annual growth')}</TableCell><TableCell>{pct(m.annual_volatility)}</TableCell><TableCell>{pct(m.max_drawdown)} {name==='optimized' && explainMetric('drawdown','maximum drawdown')}</TableCell><TableCell>{pct(m.average_monthly_turnover)}</TableCell></TableRow>)}</TableBody></Table></Box>
                     <Typography variant="body2" color="text.secondary" sx={{mt:2}}>Fixed stocks and preference chosen today: selection and survivorship bias remain. A better result here does not establish future outperformance.</Typography>
                 </>}
             </Paper>
