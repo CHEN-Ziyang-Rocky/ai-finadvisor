@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex">
+<title>助手问法试用 · Rocky Finance</title><link rel="icon" href="/brand-icon.svg">
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;background:#f4f7f8;color:#143240;margin:0;line-height:1.65}main{max-width:720px;margin:3rem auto;padding:0 1.1rem}header{display:flex;align-items:center;gap:.7rem;font-weight:700}section{background:white;border:1px solid #d9e5e8;padding:clamp(1.1rem,4vw,2rem);border-radius:14px;margin:1rem 0}h1{font-size:clamp(1.5rem,4vw,2.1rem)}h2{font-size:1.15rem}textarea{display:block;resize:vertical;width:100%;min-height:5.5rem;padding:.7rem;font:inherit;border:1px solid #78909b;border-radius:.4rem}button{font:inherit;padding:.65rem 1.2rem;border-radius:.4rem;border:1px solid #087779;cursor:pointer}button[type=submit]{background:#076d70;color:white}label{display:block;margin:.5rem 0}fieldset{border:0;padding:0;margin:1rem 0}legend{font-weight:650}blockquote{margin:1rem 0;padding:.3rem 1rem;border-left:3px solid #add4d3;white-space:pre-wrap;overflow-wrap:anywhere}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #278c86;outline-offset:3px}
+</style></head>
+<body><main><header><img src="/brand-icon.svg" alt="" width="32" height="32"> Rocky Finance</header>
+<h1>你会怎么问组合研究助手？</h1>
+<p>假设你正在查看一份虚构的股票组合报告。请用平常说话的方式提问，可以用中文或英文。请勿填写姓名、账户信息或真实持仓。</p>
+<form id="words"><div id="prompts"></div><button type="submit">下一步：说明我的本意</button></form>
+<form id="meaning" hidden><h2>你希望助手做什么？</h2><div id="labels"></div>
+<label><input type="checkbox" id="consent" required> 我同意将我选择交回的答卷用于本项目的本地评测。</label>
+<p>答卷只在当前浏览器里生成，不会自动发送。下载后可把文件交给邀请你试用的人；关闭本页会清除未下载的内容。</p>
+<button type="button" id="back">返回修改原话</button> <button type="submit">下载我的答卷</button></form>
+<p id="status" role="status"></p>
+<script>
+const tasks=[
+  ['negation','你正在看已保存的组合，有一件事你不希望助手替你做。你会怎么提出自己的要求？'],
+  ['past_trial','上周你试过另一个单股持仓上限，今天又打开这份报告。你会怎么接着问？'],
+  ['ambiguous','你看到一项拿不准的结果。写下你最初想问的一句话。']
+];
+const choices=[['review_current','解释已有组合或上次的结果'],['compare_cap','按我选择的持仓上限重新算一次'],['clarify','先向我问清楚，或我想做的是其他事']];
+const words=document.querySelector('#words'), meaning=document.querySelector('#meaning');
+const status=document.querySelector('#status');
+function element(tag,text){const node=document.createElement(tag);node.textContent=text;return node;}
+for(const [id,prompt] of tasks){
+  const card=element('section',''),label=element('label',prompt),input=element('textarea','');
+  label.htmlFor=id;input.id=id;input.required=true;input.maxLength=500;input.autocomplete='off';
+  card.append(label,input);document.querySelector('#prompts').append(card);
+}
+words.addEventListener('submit',event=>{
+  event.preventDefault();
+  const host=document.querySelector('#labels');host.replaceChildren();
+  for(const [id] of tasks){
+    const input=document.getElementById(id);
+    if(!input.value.trim()){input.value='';input.reportValidity();return;}
+    const card=element('section',''),quote=element('blockquote',input.value.trim()),group=element('fieldset','');
+    group.append(element('legend','这句话的本意是'));
+    for(const [value,title] of choices){
+      const label=element('label',''),radio=element('input','');
+      radio.type='radio';radio.name=id;radio.value=value;radio.required=true;
+      label.append(radio,document.createTextNode(' '+title));group.append(label);
+    }
+    card.append(quote,group);host.append(card);
+  }
+  words.hidden=true;meaning.hidden=false;status.textContent='';document.querySelector('#consent').checked=false;
+  meaning.querySelector('input').focus();
+});
+document.querySelector('#back').onclick=()=>{meaning.hidden=true;words.hidden=false;status.textContent='';words.querySelector('textarea').focus();};
+meaning.addEventListener('submit',event=>{
+  event.preventDefault();
+  const data=new FormData(meaning);
+  const rows=tasks.map(([slice])=>({question:document.getElementById(slice).value.trim(),expected:data.get(slice),slice,label_source:'participant',local_evaluation_consent:true}));
+  const url=URL.createObjectURL(new Blob([JSON.stringify(rows,null,2)],{type:'application/json'}));
+  const a=element('a','');a.href=url;a.download='finadvisor-feedback.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  status.textContent='答卷已生成。你可以检查文件内容后再决定是否交回。';
+});
+</script></main></body></html>

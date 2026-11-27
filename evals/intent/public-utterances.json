@@ -1,0 +1,152 @@
+[
+  {
+    "question": "So I don't want to accept it unless I know by how much it's off.",
+    "expected": "clarify",
+    "slice": "negation",
+    "source": "https://money.stackexchange.com/questions/56069/how-do-you-calculate-the-annualised-return-of-your-portfolio-from-the-annualised",
+    "author": "Kartick Vaddadi",
+    "author_url": "https://money.stackexchange.com/users/29143/kartick-vaddadi",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "without having to enter every movement that the robo-advisor did.",
+    "expected": "clarify",
+    "slice": "negation",
+    "source": "https://money.stackexchange.com/questions/156941/how-to-calculate-portfolio-performance-without-tracking-each-individual-transact",
+    "author": "Hilikus",
+    "author_url": "https://money.stackexchange.com/users/123160/hilikus",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  {
+    "question": "I wouldn't want a full description of them, just some keywords to search",
+    "expected": "clarify",
+    "slice": "negation",
+    "source": "https://quant.stackexchange.com/questions/7266/what-different-methods-of-pairs-selection-exists-for-pairs-trading",
+    "author": "Good Guy Mike",
+    "author_url": "https://quant.stackexchange.com/users/4709/good-guy-mike",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "How do i find the basket with the highest sharpe, without having to calculate the sharpe for every possible portfolio?",
+    "expected": "clarify",
+    "slice": "negation",
+    "source": "https://quant.stackexchange.com/questions/9791/how-to-choose-top-n-assets",
+    "author": "user847663",
+    "author_url": "https://quant.stackexchange.com/users/6392/user847663",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "I would like to build a portfolio (of funds) which I don't need to manage often.",
+    "expected": "clarify",
+    "slice": "negation",
+    "source": "https://money.stackexchange.com/questions/149345/analyze-the-probability-of-a-porfolio-increasing-or-decreasing-by-certain-amou",
+    "author": "user115620",
+    "author_url": "https://money.stackexchange.com/users/115620/user115620",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  {
+    "question": "I tried ' torturing ' my returns, by pretending that I always buy at the day's high and sell at the day's low",
+    "expected": "clarify",
+    "slice": "past_trial",
+    "source": "https://quant.stackexchange.com/questions/1264/how-to-simulate-slippage",
+    "author": "Zach",
+    "author_url": "https://quant.stackexchange.com/users/500/zach",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "most of the time when I did backtest in the past I used the so called rolling-window approach",
+    "expected": "clarify",
+    "slice": "past_trial",
+    "source": "https://quant.stackexchange.com/questions/50806/backtest-overfitting-in-sample-vs-out-of-sample",
+    "author": "Metod Jazbec",
+    "author_url": "https://quant.stackexchange.com/users/34781/metod-jazbec",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  {
+    "question": "I have 10 years of backtested simulated performance of some trading strategy (using historical prices), and N months of actual trading performance.",
+    "expected": "clarify",
+    "slice": "past_trial",
+    "source": "https://quant.stackexchange.com/questions/1378/comparing-backtesting-returns-with-real-trading-returns",
+    "author": "Nestor",
+    "author_url": "https://quant.stackexchange.com/users/683/nestor",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "I am working with mean variance optimization (MVO) and as such after \"training\" my model I test the results on a test dataset.",
+    "expected": "clarify",
+    "slice": "past_trial",
+    "source": "https://money.stackexchange.com/questions/151155/what-is-the-real-return-of-a-portfolio-markowitz-vs-real-return",
+    "author": "Ventura",
+    "author_url": "https://money.stackexchange.com/users/117376/ventura",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  {
+    "question": "Out of curiosity I tried to compute the portfolio weights of a maximum certainty equivalent allocation, however, by incorporating (quadratic) transaction costs.",
+    "expected": "clarify",
+    "slice": "past_trial",
+    "source": "https://quant.stackexchange.com/questions/30549/maximum-certainty-equivalent-portfolio-with-transaction-costs",
+    "author": "Stefan Voigt",
+    "author_url": "https://quant.stackexchange.com/users/16249/stefan-voigt",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "Does this make sense?",
+    "expected": "clarify",
+    "slice": "ambiguous",
+    "source": "https://quant.stackexchange.com/questions/3357/how-to-measure-investors-experienced-volatility",
+    "author": "SRKX",
+    "author_url": "https://quant.stackexchange.com/users/467/srkx",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "any suggestions on the approach to the subject?",
+    "expected": "clarify",
+    "slice": "ambiguous",
+    "source": "https://quant.stackexchange.com/questions/16358/on-learning-the-bayesian-approach-to-portfolio-optimization",
+    "author": "Monolite",
+    "author_url": "https://quant.stackexchange.com/users/15188/monolite",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "Any suggestions on how to optimise this?",
+    "expected": "clarify",
+    "slice": "ambiguous",
+    "source": "https://quant.stackexchange.com/questions/16818/stochastic-control-hjb-for-wealth-process-involving-stopping-times",
+    "author": "Richard",
+    "author_url": "https://quant.stackexchange.com/users/13654/richard",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "Any ideas on how to approach this problem?",
+    "expected": "clarify",
+    "slice": "ambiguous",
+    "source": "https://quant.stackexchange.com/questions/1824/how-to-shift-amongst-asset-classes-in-response-to-relative-value-views",
+    "author": "Tal Fishman",
+    "author_url": "https://quant.stackexchange.com/users/1106/tal-fishman",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  {
+    "question": "Would anyone have any thoughts on this issue?",
+    "expected": "clarify",
+    "slice": "ambiguous",
+    "source": "https://quant.stackexchange.com/questions/8757/testing-valuation-size-and-momentum-proprietary-factors-from-1988-2013-no-ev",
+    "author": "Mayou",
+    "author_url": "https://quant.stackexchange.com/users/5896/mayou",
+    "license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  }
+]

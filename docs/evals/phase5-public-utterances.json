@@ -1,0 +1,194 @@
+{
+  "encoder": "Xenova/multilingual-e5-small@761b726dd34fb83930e26aab4e9ac3899aa1fa78",
+  "file_sha256": {
+    "model.onnx": "f80102d3f2a1229f387d3c81909990d8945513e347b0eab049f7de3c6f98c193",
+    "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39"
+  },
+  "labels": [
+    "review_current",
+    "compare_cap",
+    "clarify"
+  ],
+  "train_size": 42,
+  "trainable_parameters": 1155,
+  "elapsed_seconds": 2.26,
+  "results": {
+    "workflow": {
+      "correct": 15,
+      "total": 15,
+      "unrequested_trials": 0,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          15
+        ]
+      ]
+    },
+    "candidate": {
+      "correct": 1,
+      "total": 15,
+      "unrequested_trials": 3,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          11,
+          3,
+          1
+        ]
+      ]
+    },
+    "guarded": {
+      "correct": 4,
+      "total": 15,
+      "unrequested_trials": 0,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          11,
+          0,
+          4
+        ]
+      ]
+    }
+  },
+  "cases": [
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 1
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 2
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 3
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 4
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 5
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 6
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 7
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 8
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 9
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 10
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 11
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 12
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 13
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 14
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 15
+    }
+  ],
+  "evaluation_sha256": "f302c1ce39c979ea7b0f0a9491ca052a03d73d1f3c5ee75941dfc88da18c495f"
+}
