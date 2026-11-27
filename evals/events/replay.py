@@ -8,11 +8,11 @@ import numpy as np
 import onnxruntime as ort
 from tokenizers import Tokenizer
 
+from timeline import visible_filings
 
-def replay(model, snapshot, case):
-    if not snapshot["complete"]:
-        raise ValueError("Incomplete seven-issuer capture")
-    filings = {r["accession"]:r for r in snapshot["filings"] if r["ticker"] == case["issuer"]}
+
+def replay(model, snapshot, case, as_of=None, clock="observed"):
+    eligible = visible_filings(snapshot, case, as_of, clock)
     ids = json.loads((model/"config.json").read_text())["id2label"]
     if set(ids.values()) != {"positive","negative","neutral"}:
         raise ValueError("Unexpected model labels")
@@ -22,10 +22,7 @@ def replay(model, snapshot, case):
     with file.open("rb") as handle:
         model_sha = hashlib.file_digest(handle,"sha256").hexdigest()
     states = []
-    for event in sorted(case["inputs"],key=lambda e:filings[e["accession"]]["accepted_utc"]):
-        entry = filings[event["accession"]]
-        if entry["accepted_utc"][:10] != event["public_date"]:
-            raise ValueError("Check source timing")
+    for event, entry in eligible:
         encoding = tokenizer.encode(event["english_paraphrase"])
         x = np.array([encoding.ids],dtype=np.int64)
         inputs = {"input_ids":x,"attention_mask":np.ones_like(x),"token_type_ids":np.zeros_like(x)}
@@ -36,16 +33,27 @@ def replay(model, snapshot, case):
                        "first_seen_utc":entry["first_seen_utc"],"text_label":max(probs,key=probs.get),
                        "text_scores":probs})
     obs = case["market_observation"]
-    return {"model":"Xenova/finbert@8f269abebfdd9009d7d9b5e96af7e5c6bfe50b20","model_sha256":model_sha,
+    report = {"model":"Xenova/finbert@8f269abebfdd9009d7d9b5e96af7e5c6bfe50b20","model_sha256":model_sha,
             "input_type":"human-written English paraphrases of linked primary sources",
-            "chronological_states":states,"observed_session":obs["session"],
-            "market_adjusted_return_pp":round(obs["stock_return_pct"]-obs["benchmark_return_pct"],1)}
+            "chronological_states":states}
+    if as_of is None:
+        report.update(observed_session=obs["session"],
+                      market_adjusted_return_pp=round(obs["stock_return_pct"]-obs["benchmark_return_pct"],1))
+    else:
+        report.update(as_of=as_of, clock=clock,
+                      latest_case_state=states[-1]["state"] if states else None,
+                      outcome_status="withheld: no verified timestamp for first observation of closing returns")
+    return report
 
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("model",type=Path)
     parser.add_argument("snapshot",type=Path)
+    parser.add_argument("--as-of",help="Time with UTC offset. Show only case sources available by that instant.")
+    parser.add_argument("--clock",choices=("observed","sec"),help="Default for cutoff queries: first observed by this capture")
     args = parser.parse_args()
+    if args.clock and not args.as_of:
+        parser.error("--clock requires --as-of")
     case = json.loads(Path(__file__).with_name("nvda-case.json").read_text())
-    print(json.dumps(replay(args.model,json.loads(args.snapshot.read_text()),case),indent=2))
+    print(json.dumps(replay(args.model,json.loads(args.snapshot.read_text()),case,args.as_of,args.clock or "observed"),indent=2))

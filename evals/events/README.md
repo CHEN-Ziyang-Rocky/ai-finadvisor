@@ -30,3 +30,12 @@ The case file contains human-written English paraphrases checked against primary
 - [Seven-issuer capture](../../docs/evals/phase5-seven-issuer-filings.json) covers 1–25 November 2026 UTC. All seven endpoints responded. Counts were Apple 3, Microsoft 2, Amazon 0, Alphabet 2, Meta 3, Nvidia 3 and Tesla 0.
 - [Case inputs and sources](nvda-case.json) and [replay outputs](../../docs/evals/phase5-nvda-tone.json) show the 12 November succession disclosure and the 23 November reinstatement. The capture first observed both on 26 November. Reconstructing a filing timeline does not establish historical alert delivery times.
 - The calculator subtracts the rounded S&P 500 session return from the rounded NVDA session return. This descriptive spread includes industry, macroeconomic and company-specific effects. It is neither a beta-adjusted event-study estimate nor attribution to the announcement. The benchmark itself includes Nvidia.
+
+## What was knowable at a given time?
+
+```sh
+python evals/events/replay.py /tmp/event-finbert docs/evals/phase5-seven-issuer-filings.json --as-of 2026-11-23T13:57:54Z --clock sec
+python evals/events/replay.py /tmp/event-finbert docs/evals/phase5-seven-issuer-filings.json --as-of 2026-11-23T13:57:54Z --clock observed
+```
+
+At that instant the SEC acceptance clock includes both reviewed filings and the newer one concerns reinstatement. The observed clock returns zero filings because our first capture was on November 26. A one-second earlier SEC cutoff admits only the succession filing. Cutoff queries omit closing returns: the retrospective price inputs have session dates but no verified first-observation timestamps. These clocks evaluate disclosure availability. Event meanings are manually reviewed after the fact. Neither clock establishes delivered alerts or real-time model decisions. [Six recorded cutoff queries](../../docs/evals/phase5-nvda-asof.json)

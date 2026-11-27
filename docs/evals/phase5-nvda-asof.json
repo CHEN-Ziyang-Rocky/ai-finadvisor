@@ -1,0 +1,54 @@
+[
+  {
+    "as_of": "2026-11-12T13:52:40Z",
+    "clock": "sec",
+    "latest_case_state": null,
+    "outcome_status": "withheld: no verified timestamp for first observation of closing returns",
+    "eligible_filings": []
+  },
+  {
+    "as_of": "2026-11-12T13:52:41Z",
+    "clock": "sec",
+    "latest_case_state": "interim_ceo",
+    "outcome_status": "withheld: no verified timestamp for first observation of closing returns",
+    "eligible_filings": [
+      "0001045810-26-000082"
+    ]
+  },
+  {
+    "as_of": "2026-11-23T13:57:53Z",
+    "clock": "sec",
+    "latest_case_state": "interim_ceo",
+    "outcome_status": "withheld: no verified timestamp for first observation of closing returns",
+    "eligible_filings": [
+      "0001045810-26-000082"
+    ]
+  },
+  {
+    "as_of": "2026-11-23T13:57:54Z",
+    "clock": "sec",
+    "latest_case_state": "ceo_reinstated",
+    "outcome_status": "withheld: no verified timestamp for first observation of closing returns",
+    "eligible_filings": [
+      "0001045810-26-000082",
+      "0001045810-26-000090"
+    ]
+  },
+  {
+    "as_of": "2026-11-23T13:57:54Z",
+    "clock": "observed",
+    "latest_case_state": null,
+    "outcome_status": "withheld: no verified timestamp for first observation of closing returns",
+    "eligible_filings": []
+  },
+  {
+    "as_of": "2026-11-26T13:44:58Z",
+    "clock": "observed",
+    "latest_case_state": "ceo_reinstated",
+    "outcome_status": "withheld: no verified timestamp for first observation of closing returns",
+    "eligible_filings": [
+      "0001045810-26-000082",
+      "0001045810-26-000090"
+    ]
+  }
+]
