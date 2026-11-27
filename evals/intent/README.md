@@ -45,3 +45,25 @@ See [per-row scores](../../docs/evals/phase5-public-utterances.json); row number
 [The voluntary study](https://finance.imrocky.com/intent-study.html) provides three fictional contexts. Participants type their own words first. On the second screen they identify what they wanted, can correct their words, and may download and share the resulting JSON for local evaluation. No responses are transmitted by the page. Keep returned files outside Git, score them locally with the existing `--evaluation` option, and evaluate independently of the public corpus. Keep one participant entirely within one split. For ambiguous requests, review both what the author meant and whether asking for clarification was reasonable given the words alone.
 
 **Decision before further training.** Compare all three systems on identical contributor-held-out questions. Report unnecessary trials among non-trial requests, missed trials among requested trials, correct explanations and appropriate clarifications, with their actual denominators. A consistent, learnable error across independent speakers could justify a small isolated LoRA comparison against the existing head and rules. Extra unsolicited simulations or a gain confined to the developer-authored set would weigh against deployment. The current 15-source contrast set supports retaining the explicit tool permission. A model-level decision beyond the current deferral awaits participants' responses.
+
+### Synthetic response sets from the portfolio study prompts
+
+The contributor supplied [20 fictional sets](synthetic-response-sets.json) covering the three prompts in order. Groups 1–15 are in Chinese and 16–20 in English. Group IDs preserve which three responses were supplied together. The 60 utterances were reserved for testing. The project evaluator assigned each a user need, a feasible first action and an individual rationale before scoring (dataset Git blob `dd9b64ddc6590f05c52867ff299d5953d23757b5`). These are evaluator judgments on synthetic examples. No participant supplied or confirmed the labels.
+
+Each test starts independently with the same saved demo receipt. The prior week's trial, previous market snapshot, and any UI-selected metric are unavailable. A generic or unsupported question can need clarification or redirection to the research library. A request grounded in the saved portfolio can start with its receipt. The second-stage explanation, downstream calculations, handling of privacy preferences, and memory retrieval are outside this first-action test. Four utterances explicitly ask to rerun with previous parameters (groups 2, 5, 9, 18, prompt 2); a displayed 35% cap does not establish those parameters. Group 19 asks for several caps. The expected executable-action distribution is 13 current reviews, 47 clarifications and zero immediate single-cap trials. Consequently the missed-trial rate is undefined in this batch. The numeric missed-trial count in the JSON is zero.
+
+| Browser control | Correct first actions (rules / raw head / guarded head) | Trial selections without sufficient grounding (same order) |
+|---|---|---|
+| Default read-only | 44 / 13 / 33 out of 60 | 0 / 23 / 0 |
+| Allowed, cap set to 35% | 42 / 13 / 33 out of 60 | 2 / 23 / 1 |
+
+The raw head only receives text, so its 23 trial predictions are identical across permissions and never execute by themselves. For the enabled workflow, the two incorrect trial selections concerned looking up a previous cap (16-Q2) and rerunning a previous limit on newer data (18-Q2). The guarded head selected a new trial when asked to find last week's stored cap (14-Q2). On the 13 requests for a current review, the rules recognized zero and the guarded head recognized ten. The combined score therefore conceals a practical cost to asking for clarification too often.
+
+Reproduce from the repo root with the existing pinned encoder. [Read-only results](../../docs/evals/phase5-synthetic-read-only.json) and [enabled results](../../docs/evals/phase5-synthetic-enabled.json) follow source order.
+
+```sh
+python evals/intent/train.py /tmp/finance-e5 --evaluation evals/intent/synthetic-response-sets.json --trial-permission read-only
+python evals/intent/train.py /tmp/finance-e5 --evaluation evals/intent/synthetic-response-sets.json --trial-permission enabled
+```
+
+Prioritize receipt lookup and metric context. Future evaluations should vary whether the requested previous receipt exists, whether its dataset matches, and whether the cap shown agrees with the request. Include directly executable cap trials in those tests. Keep this batch as a regression set and report participant-confirmed results separately when available.

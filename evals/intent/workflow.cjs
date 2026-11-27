@@ -2,13 +2,18 @@
 const fs = require('node:fs');
 const {runAgent} = require('../../backend/assistant/agent');
 const report = require('../../backend/demo/example.json').latest_run.report;
+const permission = process.argv[2];
+if (permission && !['read-only', 'enabled'].includes(permission)) throw Error('Unknown trial permission');
+const controls = permission === 'read-only' ? {allow_trial:false} : {cap_pct:35};
+if (permission === 'enabled') controls.allow_trial = true;
+
 async function route(question, candidate) {
   const simulatedProvider = candidate ? {
     agentDecision: async ({stage,options}) => stage === 'method' ? 'evaluation' :
       options.includes(candidate) ? candidate : 'clarify'
   } : null;
   const result = await runAgent({
-    body:{question,cap_pct:35,mode:candidate?'llm':'workflow',consent:Boolean(candidate)},
+    body:{question,...controls,mode:candidate?'llm':'workflow',consent:Boolean(candidate)},
     readReport:()=>report,provider:simulatedProvider,
     // Stop after observing the plan, before allocation. The route is already in the trace.
     calculate:async()=>{throw Error('Offline planner measurement');}

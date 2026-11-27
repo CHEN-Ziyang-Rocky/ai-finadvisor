@@ -87,6 +87,8 @@ def main():
     parser.add_argument("encoder", type=Path)
     parser.add_argument("--save-head", type=Path)
     parser.add_argument("--evaluation", type=Path, help="Score a new labelled JSON batch; omit raw questions from its report")
+    parser.add_argument("--trial-permission", choices=["read-only", "enabled"],
+                        help="Use the browser's explicit permission setting; omit to replay legacy requests")
     args = parser.parse_args()
     train = examples(json.loads(Path('evals/agent/cases.json').read_text()))
     test = examples(json.loads(Path('evals/intent/challenge.json').read_text()))
@@ -105,7 +107,10 @@ def main():
     xt = embeddings(args.encoder, [q for q,_ in test])
     predictions = ((xt - mean) @ weights + bias).argmax(axis=1)
     rows = [dict(question=q, expected=label, candidate=LABELS[p]) for (q,label),p in zip(test,predictions)]
-    planned = json.loads(subprocess.check_output(["node","evals/intent/workflow.cjs"],input=json.dumps(rows).encode()))
+    command = ["node", "evals/intent/workflow.cjs"]
+    if args.trial_permission:
+        command.append(args.trial_permission)
+    planned = json.loads(subprocess.check_output(command, input=json.dumps(rows).encode()))
     for row, plan in zip(rows, planned, strict=True):
         row.update(plan)
     report = {"encoder":"Xenova/multilingual-e5-small@761b726dd34fb83930e26aab4e9ac3899aa1fa78",
@@ -113,6 +118,8 @@ def main():
               "labels":LABELS, "train_size":len(train), "trainable_parameters":weights.size + bias.size,
               "elapsed_seconds":round(time.perf_counter()-started,2),
               "results":{key:measure(rows,key) for key in ["workflow","candidate","guarded"]},"cases":rows}
+    if args.trial_permission:
+        report["trial_permission"] = args.trial_permission
     if args.evaluation:
         report["evaluation_sha256"] = hashlib.sha256(args.evaluation.read_bytes()).hexdigest()
         for number,row in enumerate(rows,1):

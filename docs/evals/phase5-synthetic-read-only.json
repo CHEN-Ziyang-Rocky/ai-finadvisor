@@ -1,0 +1,510 @@
+{
+  "encoder": "Xenova/multilingual-e5-small@761b726dd34fb83930e26aab4e9ac3899aa1fa78",
+  "file_sha256": {
+    "model.onnx": "f80102d3f2a1229f387d3c81909990d8945513e347b0eab049f7de3c6f98c193",
+    "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39"
+  },
+  "labels": [
+    "review_current",
+    "compare_cap",
+    "clarify"
+  ],
+  "train_size": 42,
+  "trainable_parameters": 1155,
+  "elapsed_seconds": 2.15,
+  "results": {
+    "workflow": {
+      "correct": 44,
+      "total": 60,
+      "unrequested_trials": 0,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          0,
+          0,
+          13
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          44
+        ]
+      ]
+    },
+    "candidate": {
+      "correct": 13,
+      "total": 60,
+      "unrequested_trials": 23,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          10,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          24,
+          20,
+          3
+        ]
+      ]
+    },
+    "guarded": {
+      "correct": 33,
+      "total": 60,
+      "unrequested_trials": 0,
+      "missed_trials": 0,
+      "confusion_actual_by_predicted": [
+        [
+          10,
+          0,
+          3
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          24,
+          0,
+          23
+        ]
+      ]
+    }
+  },
+  "cases": [
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 1
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 2
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 3
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 4
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 5
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 6
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 7
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 8
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 9
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 10
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 11
+    },
+    {
+      "expected": "review_current",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 12
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 13
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 14
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 15
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 16
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 17
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 18
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 19
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 20
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 21
+    },
+    {
+      "expected": "review_current",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 22
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 23
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 24
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 25
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 26
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 27
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 28
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 29
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 30
+    },
+    {
+      "expected": "review_current",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 31
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "review_current",
+      "guarded": "clarify",
+      "row": 32
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 33
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 34
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 35
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 36
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 37
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 38
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 39
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 40
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 41
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 42
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 43
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 44
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 45
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 46
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 47
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 48
+    },
+    {
+      "expected": "clarify",
+      "candidate": "clarify",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 49
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 50
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 51
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 52
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 53
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 54
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 55
+    },
+    {
+      "expected": "clarify",
+      "candidate": "compare_cap",
+      "workflow": "clarify",
+      "guarded": "clarify",
+      "row": 56
+    },
+    {
+      "expected": "review_current",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 57
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "review_current",
+      "guarded": "review_current",
+      "row": 58
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "review_current",
+      "guarded": "review_current",
+      "row": 59
+    },
+    {
+      "expected": "clarify",
+      "candidate": "review_current",
+      "workflow": "clarify",
+      "guarded": "review_current",
+      "row": 60
+    }
+  ],
+  "trial_permission": "read-only",
+  "evaluation_sha256": "9f8135919188475ae02d5ad36e2fde0e308412294932abd575d9b10c2844f2b0"
+}

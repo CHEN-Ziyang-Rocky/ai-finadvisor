@@ -1,0 +1,542 @@
+[
+  {
+    "group": 1,
+    "prompt": 1,
+    "language": "zh",
+    "question": "你帮我看看这个组合有什么风险就行，先别改我的持仓。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "当前风险，可查看已有组合的指标。"
+  },
+  {
+    "group": 1,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上周不是试过10%的持仓上限吗？帮我看看当时的结果和现在有什么区别。",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需要那次试算的回执，仅给出上限无法还原结果。"
+  },
+  {
+    "group": 1,
+    "prompt": 3,
+    "language": "zh",
+    "question": "这个收益率是怎么算出来的？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需确定是估计均值还是回测复合增长率。"
+  },
+  {
+    "group": 2,
+    "prompt": 1,
+    "language": "zh",
+    "question": "不要自动帮我买入或者卖出任何股票，有什么想法先告诉我。",
+    "need": "boundary",
+    "expected": "clarify",
+    "rationale": "表达交易边界，未指定要解释的结果。"
+  },
+  {
+    "group": 2,
+    "prompt": 2,
+    "language": "zh",
+    "question": "还记得我上周设置的单股仓位限制吗？用那个设置再跑一次分析。",
+    "need": "rerun",
+    "expected": "clarify",
+    "rationale": "需要先确认过去的上限。"
+  },
+  {
+    "group": 2,
+    "prompt": 3,
+    "language": "zh",
+    "question": "你这个数据是最新的吗？",
+    "need": "data",
+    "expected": "clarify",
+    "rationale": "当前回执可显示版本，但判断最新还需指定数据和比较日期。"
+  },
+  {
+    "group": 3,
+    "prompt": 1,
+    "language": "zh",
+    "question": "只分析我现在的投资组合，不要帮我重新分配资金。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "明确只读看当前组合。"
+  },
+  {
+    "group": 3,
+    "prompt": 2,
+    "language": "zh",
+    "question": "帮我找一下上次把单股持仓上限改成5%之后的报告，我想和原来的比较一下。",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "找以前的报告，不应按5%启动新试算。"
+  },
+  {
+    "group": 3,
+    "prompt": 3,
+    "language": "zh",
+    "question": "为什么持仓更分散了，风险反而变高了？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需要知道比较的是哪两个组合和哪个风险指标。"
+  },
+  {
+    "group": 4,
+    "prompt": 1,
+    "language": "zh",
+    "question": "可以给我一些调仓方案，但不要直接覆盖我保存的组合。",
+    "need": "scenario",
+    "expected": "clarify",
+    "rationale": "允许讨论方案，未指定新上限或方案。"
+  },
+  {
+    "group": 4,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上周那个方案的收益和最大回撤分别是多少？和现在这个放在一起看看。",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需要上周方案的回执。"
+  },
+  {
+    "group": 4,
+    "prompt": 3,
+    "language": "zh",
+    "question": "这个最大回撤是根据多长时间的数据算的？",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "可从已有回测的评估窗口开始解释。"
+  },
+  {
+    "group": 5,
+    "prompt": 1,
+    "language": "zh",
+    "question": "先不要推荐新的股票，我只想知道目前这些股票放在一起有没有什么问题。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "明确询问当前组合风险。"
+  },
+  {
+    "group": 5,
+    "prompt": 2,
+    "language": "zh",
+    "question": "按照上次的单股持仓上限，再用今天的数据帮我分析一下。",
+    "need": "rerun",
+    "expected": "clarify",
+    "rationale": "需要上次上限及今天数据的可用版本。"
+  },
+  {
+    "group": 5,
+    "prompt": 3,
+    "language": "zh",
+    "question": "为什么你说我的组合过于集中？",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "可从当前最大仓位及有效持仓解释。"
+  },
+  {
+    "group": 6,
+    "prompt": 1,
+    "language": "zh",
+    "question": "我不希望你自动调整我的投资目标或者风险偏好，按照我原来的设置分析就好。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "以已保存的配置做只读分析。"
+  },
+  {
+    "group": 6,
+    "prompt": 2,
+    "language": "zh",
+    "question": "我有点忘记上周设置的是多少了，你能帮我找一下吗？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "要找旧设置，当前回执无法识别。"
+  },
+  {
+    "group": 6,
+    "prompt": 3,
+    "language": "zh",
+    "question": "你是根据什么判断我的风险承受能力的？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "应转画像方法说明，路由器的当前组合回顾不包含该任务。"
+  },
+  {
+    "group": 7,
+    "prompt": 1,
+    "language": "zh",
+    "question": "不要把这次模拟的调整保存到原来的组合里面，我只是想试试看。",
+    "need": "scenario",
+    "expected": "clarify",
+    "rationale": "只授权临时模拟，未明确要试哪个约束。"
+  },
+  {
+    "group": 7,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上次那个限制单股不超过15%的方案还在吗？我想继续调整。",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "想延续旧方案，先定位旧记录并确认新约束。"
+  },
+  {
+    "group": 7,
+    "prompt": 3,
+    "language": "zh",
+    "question": "这个结果是模拟出来的，还是真实的历史表现？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "请指明结果来自回测还是模拟页面。"
+  },
+  {
+    "group": 8,
+    "prompt": 1,
+    "language": "zh",
+    "question": "你可以指出哪些股票超过了我的持仓限制，但是不用帮我减仓。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "先读取当前已保存组合的持仓上限和权重。"
+  },
+  {
+    "group": 8,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上周我把持仓上限调低了，当时有哪些股票受到了影响？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需要上周试算前后的记录。"
+  },
+  {
+    "group": 8,
+    "prompt": 3,
+    "language": "zh",
+    "question": "为什么减少这只股票的持仓会让整个组合的预期收益下降这么多？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "归因需要识别具体股票、调整前后的权重和收益估计。"
+  },
+  {
+    "group": 9,
+    "prompt": 1,
+    "language": "zh",
+    "question": "如果你发现数据有缺失，直接告诉我，不要自己猜一个数字填进去。",
+    "need": "boundary",
+    "expected": "clarify",
+    "rationale": "规定缺失值处理边界，没有指定数据或计算。"
+  },
+  {
+    "group": 9,
+    "prompt": 2,
+    "language": "zh",
+    "question": "用上周相同的参数再算一次，我想看看这几天市场变化带来的影响。",
+    "need": "rerun",
+    "expected": "clarify",
+    "rationale": "过去的完整参数和两次数据版本均未给出。"
+  },
+  {
+    "group": 9,
+    "prompt": 3,
+    "language": "zh",
+    "question": "如果有几只股票的历史数据不完整，你是怎么处理的？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需查数据处理方法，不需改变上限。"
+  },
+  {
+    "group": 10,
+    "prompt": 1,
+    "language": "zh",
+    "question": "别帮我决定买什么或者卖什么，把不同方案的优缺点列出来，我自己判断。",
+    "need": "scenario",
+    "expected": "clarify",
+    "rationale": "需要先指定要比较的方案。"
+  },
+  {
+    "group": 10,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上周那个方案看起来风险比较低，但是收益少了多少来着？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需要识别上次的方案和比较对象。"
+  },
+  {
+    "group": 10,
+    "prompt": 3,
+    "language": "zh",
+    "question": "这个预期收益率有多大概率能够实现？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需要明确期限、收益定义和概率模型。"
+  },
+  {
+    "group": 11,
+    "prompt": 1,
+    "language": "zh",
+    "question": "先不要重新计算或者刷新这份报告，我想看看之前保存的原始结果。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "只读查看当前已保存的原始报告。"
+  },
+  {
+    "group": 11,
+    "prompt": 2,
+    "language": "zh",
+    "question": "能不能把我上次测试的持仓上限和当前设置都显示出来？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "可以解释当前配置，仍缺上次试算记录。"
+  },
+  {
+    "group": 11,
+    "prompt": 3,
+    "language": "zh",
+    "question": "为什么今天的报告和我之前看到的不一样？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "定位变化需要两个版本。"
+  },
+  {
+    "group": 12,
+    "prompt": 1,
+    "language": "zh",
+    "question": "我有几只股票是准备长期持有的，不要默认把它们从组合中移除。",
+    "need": "boundary",
+    "expected": "clarify",
+    "rationale": "表达保留持仓偏好，未指定操作。"
+  },
+  {
+    "group": 12,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上次测试单股仓位限制的时候，有没有考虑我不打算卖掉的那些股票？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需旧试算的约束和股票清单。"
+  },
+  {
+    "group": 12,
+    "prompt": 3,
+    "language": "zh",
+    "question": "你的计算里面有没有考虑交易手续费和税费？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "回测和模拟的成本口径不同，需先确定是哪项结果。"
+  },
+  {
+    "group": 13,
+    "prompt": 1,
+    "language": "zh",
+    "question": "我只是想让你解释这份报告，不需要给我任何买卖建议。",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "只读解释当前报告。"
+  },
+  {
+    "group": 13,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上次那个单股持仓限制到底有没有改善组合的风险表现？",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需要之前试算的风险指标。"
+  },
+  {
+    "group": 13,
+    "prompt": 3,
+    "language": "zh",
+    "question": "夏普比率高就一定代表这个组合更好吗？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "是指标解释，应转方法说明。"
+  },
+  {
+    "group": 14,
+    "prompt": 1,
+    "language": "zh",
+    "question": "不要把我的持仓信息分享给其他服务，也不要用这些信息做与本次分析无关的事情。",
+    "need": "boundary",
+    "expected": "clarify",
+    "rationale": "表达数据用途限制，不能据此启动试算或向外部服务发送持仓。"
+  },
+  {
+    "group": 14,
+    "prompt": 2,
+    "language": "zh",
+    "question": "你能找到我上周试过的那个持仓上限设置吗？如果没有保存就直接告诉我。",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "不能用当前上限代替历史设置。"
+  },
+  {
+    "group": 14,
+    "prompt": 3,
+    "language": "zh",
+    "question": "你分析这些股票的时候用的是什么数据源？",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "明确问当前分析的数据出处，可先读取回执的数据上下文。"
+  },
+  {
+    "group": 15,
+    "prompt": 1,
+    "language": "zh",
+    "question": "先不要改任何设置，我想知道如果市场突然下跌，我这个组合大概会受到什么影响。",
+    "need": "stress",
+    "expected": "clarify",
+    "rationale": "需要压力情景和幅度，不应启动仓位上限试算。"
+  },
+  {
+    "group": 15,
+    "prompt": 2,
+    "language": "zh",
+    "question": "上周试的那个持仓限制，如果放到2022年那种市场环境下，表现会怎么样？",
+    "need": "stress",
+    "expected": "clarify",
+    "rationale": "需要旧上限、压力情景和适用方法。"
+  },
+  {
+    "group": 15,
+    "prompt": 3,
+    "language": "zh",
+    "question": "这个压力测试是不是假设所有股票同时下跌？",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需要知道引用的具体压力情景。"
+  },
+  {
+    "group": 16,
+    "prompt": 1,
+    "language": "en",
+    "question": "Just review my portfolio. Don't make any changes to the actual holdings.",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "明确只读回顾当前组合。"
+  },
+  {
+    "group": 16,
+    "prompt": 2,
+    "language": "en",
+    "question": "Can you pull up the position limit I tested last week and compare it with my current portfolio?",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "需要上次的试算记录。"
+  },
+  {
+    "group": 16,
+    "prompt": 3,
+    "language": "en",
+    "question": "How did you calculate this number?",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "没有指出具体数字。"
+  },
+  {
+    "group": 17,
+    "prompt": 1,
+    "language": "en",
+    "question": "Please don't save any changes unless I explicitly ask you to.",
+    "need": "boundary",
+    "expected": "clarify",
+    "rationale": "只说明保存偏好。"
+  },
+  {
+    "group": 17,
+    "prompt": 2,
+    "language": "en",
+    "question": "What happened when we lowered the single-stock cap last time? I can't remember the exact results.",
+    "need": "past",
+    "expected": "clarify",
+    "rationale": "索取之前的结果。"
+  },
+  {
+    "group": 17,
+    "prompt": 3,
+    "language": "en",
+    "question": "Is this based on historical returns or a forecast?",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需要指明当前看到的输出。"
+  },
+  {
+    "group": 18,
+    "prompt": 1,
+    "language": "en",
+    "question": "I want to see the risks, not a list of stocks you think I should buy or sell.",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "要求查看当前组合风险。"
+  },
+  {
+    "group": 18,
+    "prompt": 2,
+    "language": "en",
+    "question": "Let's use the same position limit from last week, but update the analysis with the latest available market data.",
+    "need": "rerun",
+    "expected": "clarify",
+    "rationale": "需要上次参数和最新可得的数据版本。"
+  },
+  {
+    "group": 18,
+    "prompt": 3,
+    "language": "en",
+    "question": "Are dividends and trading costs included in these returns?",
+    "need": "method",
+    "expected": "clarify",
+    "rationale": "需先确认收益序列和成本口径。"
+  },
+  {
+    "group": 19,
+    "prompt": 1,
+    "language": "en",
+    "question": "Don't rebalance anything automatically. Show me what the proposed changes would look like first.",
+    "need": "scenario",
+    "expected": "clarify",
+    "rationale": "要预览方案，未给出具体方案。"
+  },
+  {
+    "group": 19,
+    "prompt": 2,
+    "language": "en",
+    "question": "Can we compare the 5%, 10%, and 15% single-stock caps, including the one I tried last week?",
+    "need": "multi",
+    "expected": "clarify",
+    "rationale": "请求多个上限，单一35%控件无法执行。"
+  },
+  {
+    "group": 19,
+    "prompt": 3,
+    "language": "en",
+    "question": "Why does the portfolio still have a high concentration risk even though no individual stock exceeds the limit?",
+    "need": "review",
+    "expected": "review_current",
+    "rationale": "可检查本次最大仓位和有效持仓，解释单股上限与总体集中度。"
+  },
+  {
+    "group": 20,
+    "prompt": 1,
+    "language": "en",
+    "question": "Keep my existing portfolio and investment preferences unchanged. Any new scenario should be separate from the saved version.",
+    "need": "boundary",
+    "expected": "clarify",
+    "rationale": "只说明新情景的保存边界。"
+  },
+  {
+    "group": 20,
+    "prompt": 2,
+    "language": "en",
+    "question": "Pick up where we left off last week. I'd like to see whether the previous position limit still makes sense under current market conditions.",
+    "need": "past_assess",
+    "expected": "clarify",
+    "rationale": "需要找回旧参数，并确认是定性评估还是重新计算。"
+  },
+  {
+    "group": 20,
+    "prompt": 3,
+    "language": "en",
+    "question": "How sensitive is this result to the assumptions you're using? Could a small change in those assumptions lead to a completely different conclusion?",
+    "need": "stress",
+    "expected": "clarify",
+    "rationale": "未指定结果和要扰动的参数。"
+  }
+]
