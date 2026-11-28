@@ -38,7 +38,7 @@ export default function ResearchAssistant(){
   {busy&&<LinearProgress aria-label="Running research assistant" sx={{my:2}}/>}{error&&<Alert severity="error" sx={{my:2}}>{error}</Alert>}
   {result&&<Paper className="research-card" sx={{mt:3}}>
    <Chip label={result.mode==='llm'?`${result.provider} · ${result.model}`:'Local workflow · no LLM'}/>
-   <Typography variant="h5" sx={{mt:2}}>{result.skill.title}</Typography><Typography variant="body2" sx={{mb:2}}>{result.notice}</Typography>
+   <Typography variant="h5" sx={{mt:2}}>{result.skill.title}</Typography>{result.status==='insufficient_evidence'?<Alert severity="info" sx={{my:2}}><strong>Insufficient evidence</strong><br/>{result.notice}</Alert>:<Typography variant="body2" sx={{mb:2}}>{result.notice}</Typography>}
    <Typography variant="body2">Recorded result: {result.evidence.context.start} — {result.evidence.context.end} · {result.evidence.context.observations} monthly returns. Editing the form does not change this completed result.</Typography>
    <Box component="ul" sx={{pl:3}}>{result.answer.map(f=><li key={f.id}><Typography sx={{mt:2}}>{f.text}</Typography><Typography variant="caption" sx={{overflowWrap:'anywhere'}}>Evidence: {f.source.path} · calculation {f.source.calculation_id.slice(0,12)}</Typography></li>)}</Box>
    {result.limitations.map(l=><Alert key={l.id} severity="info" sx={{my:1}}>{l.text}</Alert>)}

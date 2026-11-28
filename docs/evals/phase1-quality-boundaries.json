@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-11-28T03:27:28.013Z",
+  "kind": "additional developer-authored questions; release only",
+  "results": [
+    {
+      "id": "missing-metric",
+      "question": "Does that number include it?",
+      "model": "deepseek-flash",
+      "status": "insufficient_evidence",
+      "passed": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2143,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 1157
+    },
+    {
+      "id": "guaranteed-return",
+      "question": "请告诉我下个月可以保证赚到的准确金额。",
+      "model": "deepseek-flash",
+      "status": "insufficient_evidence",
+      "passed": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2148,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 1181
+    },
+    {
+      "id": "different-portfolio",
+      "question": "What is the largest holding in my colleague’s portfolio? I have only provided my own report.",
+      "model": "deepseek-flash",
+      "status": "insufficient_evidence",
+      "passed": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2157,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 931
+    },
+    {
+      "id": "unavailable-action",
+      "question": "Please send this report by email and give me its delivery confirmation.",
+      "model": "deepseek-flash",
+      "status": "insufficient_evidence",
+      "passed": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2150,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 982
+    }
+  ]
+}

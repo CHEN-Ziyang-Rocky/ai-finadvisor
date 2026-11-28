@@ -63,6 +63,8 @@ test('real provider adapter validates both protocol steps with no personal profi
  const transport={post:async(url,p,opts)=>{calls.push({url,p,opts});return {data:{choices:[{finish_reason:calls.length===1?'tool_calls':'stop',message:calls.length===1?{tool_calls:[{id:'call1',function:{name:'inspect_allocation',arguments:'{}'}}]}:{content:'{"fact_ids":["estimated_mean"]}'}}],usage:{prompt_tokens:10,completion_tokens:5}}};}};
  const provider=createProvider({env,transport});const r=await runAssistant({body:{...body(),mode:'llm',consent:true,question:'Explain concentration'},readReport:async()=>baseline(),calculate:calculateNever,provider});
  assert.equal(calls.length,2);assert.equal(r.usage.input_tokens,20);assert.equal(calls[0].url,'https://api.deepseek.com/chat/completions');assert.equal(calls[0].opts.maxRedirects,0);
+ assert.ok(!JSON.stringify(calls[0].p.messages).includes('Explain concentration'));
+ assert.ok(JSON.stringify(calls[1].p.messages).includes('Explain concentration'));
  assert.equal(calls[0].p.thinking.type,'disabled');assert.equal(calls[1].p.messages[3].role,'tool');
  assert.ok(!JSON.stringify(calls.map(x=>x.p)).includes('income'));assert.ok(!JSON.stringify(status(env)).includes('synthetic-test-only'));
 });
@@ -90,4 +92,16 @@ test('provider billing failure is actionable without exposing upstream details',
  const env={FINANCE_AI_ENABLED:'true',FINANCE_AI_PROVIDER:'deepseek',FINANCE_AI_KEY:'synthetic-test-only',FINANCE_AI_MODEL:'test-model'};
  const provider=createProvider({env,transport:{post:async()=>{throw Object.assign(Error('private provider payload'),{response:{status:402}});}}});
  await assert.rejects(provider.choose(skills[0],{question:''}),e=>e.status===503&&e.message.includes('balance')&&!e.message.includes('private'));
+});
+
+test('an unsupported question produces an explicit abstention and no substitute figures',async()=>{
+ const provider={name:'fixture',model:'fixture',choose:async()=>({name:'inspect_allocation',arguments:{}}),select:async()=>[]};
+ const args={body:{...body(),mode:'llm',consent:true,question:'What was my personal income tax?'},provider,readReport:async()=>baseline(),calculate:calculateNever};
+ const result=await runAssistant(args);
+ assert.equal(result.status,'insufficient_evidence');assert.deepEqual(result.answer,[]);
+ assert.equal(result.trace.at(-1).status,'insufficient_evidence');assert.ok(result.evidence.facts.length>0);
+ for(const invalid of [null,{},['invented'],['estimated_mean','estimated_mean']]){
+  await assert.rejects(runAssistant({...args,provider:{...provider,select:async()=>invalid}}),{status:502});
+ }
+ await assert.rejects(runAssistant({...args,body:{...args.body,question:''}}),{status:502});
 });

@@ -1,7 +1,7 @@
 const crypto=require('node:crypto');
 const {isDeepStrictEqual}=require('node:util');
 const skills=require('./skills.json');
-const VERSION='2026-11-23-assistant-1';
+const VERSION='2026-11-28-assistant-3';
 const limits={historical:'Historical comparisons contain selection and survivorship bias and do not establish future outperformance.',suitability:'This workflow does not assess your full financial situation or place trades.',tradeoff:'A lower holding cap can change return, variance and turnover in either direction. The trial does not replace your saved allocation.',conditional:'A goal fraction counts simulated paths under stated assumptions; it is not a calibrated real-world probability.',costs:'Simulation excludes fees and taxes. Drawdowns use monthly closes; larger intramonth losses are possible.'};
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
 function validate(body){
@@ -70,12 +70,20 @@ async function runAssistant({body,readReport,calculate,provider}){
  let selected=evidence.facts.map(x=>x.id);
  if(p.mode==='llm'){
   selected=await provider.select(invocation,evidence,p);
-  if(!Array.isArray(selected)||!selected.length||new Set(selected).size!==selected.length||selected.some(id=>typeof id!=='string'||!evidence.facts.some(f=>f.id===id)))throw fail('Model citations failed validation. Unverified answer withheld.',502);
+  if(!Array.isArray(selected)||(!selected.length&&!p.question.trim())||new Set(selected).size!==selected.length||selected.some(id=>typeof id!=='string'||!evidence.facts.some(f=>f.id===id)))throw fail('Model citations failed validation. Unverified answer withheld.',502);
  }
- trace.push({step:'verify_evidence',status:'passed',detail:'Every displayed claim is rendered from a verified metric and source path. Mandatory limitations cannot be removed by the model.'});
- // Comparisons and downside must not disappear when a model selects only flattering facts.
+ const insufficient=selected.length===0;
+ trace.push({step:'verify_evidence',status:insufficient?'insufficient_evidence':'passed',
+  detail:insufficient?'No recorded figures were selected to answer this question.':'Displayed figures come from the calculation receipt. Required risk and comparison figures are retained.'});
  const mandatory=evidence.facts.filter(f=>skill.id!=='allocation_review'||/optimized_|equal_weight_|largest_holding/.test(f.id)).map(f=>f.id);
- selected=[...new Set([...selected,...mandatory])];
- return {run_id:crypto.randomUUID(),version:VERSION,mode:p.mode,provider:p.mode==='llm'?provider.name:null,model:p.mode==='llm'?provider.model:null,skill:{id:skill.id,version:skill.version,title:skill.title},answer:evidence.facts.filter(x=>selected.includes(x.id)),evidence,trace,elapsed_ms:Math.round(performance.now()-start),usage:provider?.usage??null,limitations:evidence.limitations,notice:p.mode==='llm'?'The model chose a permitted tool and evidence IDs. Numerical wording is rendered by the server; arbitrary model prose is not displayed.':'Local deterministic workflow. This run used no LLM and is not evidence of model reasoning quality.'};
+ const byId=new Map(evidence.facts.map(f=>[f.id,f]));
+ const displayed=insufficient?[]:[...new Set([...selected,...mandatory])];
+ const notice=insufficient
+  ? 'The available calculation does not provide enough evidence to answer this question. Check the selected task and the measures recorded in its receipt.'
+  : p.mode==='llm'?'The selected figures come first, followed by required risk and comparison figures from the same calculation.':'Local deterministic workflow. This run used no LLM and is not evidence of model reasoning quality.';
+ return {run_id:crypto.randomUUID(),version:VERSION,status:insufficient?'insufficient_evidence':'answered',
+  mode:p.mode,provider:p.mode==='llm'?provider.name:null,model:p.mode==='llm'?provider.model:null,
+  skill:{id:skill.id,version:skill.version,title:skill.title},answer:displayed.map(id=>byId.get(id)),evidence,trace,
+  elapsed_ms:Math.round(performance.now()-start),usage:provider?.usage??null,limitations:evidence.limitations,notice};
 }
 module.exports={validate,execute,runAssistant,skills,fail,VERSION};

@@ -1,0 +1,1056 @@
+{
+  "recorded_at": "2026-11-28T03:26:59.001Z",
+  "service_version": "2026-11-28-assistant-3",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "suite_sha256": "0997a927c4b3ce638585b0e3d10403a40abfc6918e9e570555e52b65c064a214",
+  "baseline_receipt": "c4e41286b28b8a80829d06b0a5458139a9ae375dc1aeac96fe8827bb2bbb1689",
+  "dataset_id": "694d4a65ce670bffc183fe0113e2c418466832e17b8233cfcec10c72767b1871",
+  "planned": 36,
+  "results": [
+    {
+      "id": "allocation_review-01",
+      "expected": "answer",
+      "displayed": [
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "largest_holding"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2132,
+        "output_tokens": 29
+      },
+      "elapsed_ms": 1583
+    },
+    {
+      "id": "allocation_review-02",
+      "expected": "answer",
+      "displayed": [
+        "effective_holdings",
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "effective_holdings"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2134,
+        "output_tokens": 29
+      },
+      "elapsed_ms": 1174
+    },
+    {
+      "id": "allocation_review-03",
+      "expected": "answer",
+      "displayed": [
+        "estimated_mean",
+        "estimated_volatility",
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "estimated_mean",
+        "estimated_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2135,
+        "output_tokens": 32
+      },
+      "elapsed_ms": 1915
+    },
+    {
+      "id": "allocation_review-04",
+      "expected": "answer",
+      "displayed": [
+        "optimized_cagr",
+        "equal_weight_cagr",
+        "largest_holding",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "optimized_cagr",
+        "equal_weight_cagr"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2137,
+        "output_tokens": 36
+      },
+      "elapsed_ms": 1179
+    },
+    {
+      "id": "allocation_review-05",
+      "expected": "answer",
+      "displayed": [
+        "optimized_max_drawdown",
+        "equal_weight_max_drawdown",
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_annual_volatility",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "optimized_max_drawdown",
+        "equal_weight_max_drawdown"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2135,
+        "output_tokens": 38
+      },
+      "elapsed_ms": 1249
+    },
+    {
+      "id": "allocation_review-06",
+      "expected": "answer",
+      "displayed": [
+        "optimized_average_monthly_turnover",
+        "equal_weight_average_monthly_turnover",
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "optimized_average_monthly_turnover",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2141,
+        "output_tokens": 44
+      },
+      "elapsed_ms": 1131
+    },
+    {
+      "id": "allocation_review-07",
+      "expected": "answer",
+      "displayed": [
+        "optimized_annual_volatility",
+        "equal_weight_annual_volatility",
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "optimized_annual_volatility",
+        "equal_weight_annual_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2137,
+        "output_tokens": 40
+      },
+      "elapsed_ms": 1290
+    },
+    {
+      "id": "allocation_review-08",
+      "expected": "answer",
+      "displayed": [
+        "estimated_volatility",
+        "optimized_annual_volatility",
+        "largest_holding",
+        "optimized_cagr",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "estimated_volatility",
+        "optimized_annual_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2140,
+        "output_tokens": 37
+      },
+      "elapsed_ms": 1077
+    },
+    {
+      "id": "allocation_review-09",
+      "expected": "answer",
+      "displayed": [
+        "largest_holding",
+        "effective_holdings",
+        "optimized_cagr",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "largest_holding",
+        "effective_holdings"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2136,
+        "output_tokens": 34
+      },
+      "elapsed_ms": 1040
+    },
+    {
+      "id": "allocation_review-10",
+      "expected": "answer",
+      "displayed": [
+        "estimated_mean",
+        "optimized_cagr",
+        "largest_holding",
+        "optimized_annual_volatility",
+        "optimized_max_drawdown",
+        "optimized_average_monthly_turnover",
+        "equal_weight_cagr",
+        "equal_weight_annual_volatility",
+        "equal_weight_max_drawdown",
+        "equal_weight_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "estimated_mean",
+        "optimized_cagr"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2141,
+        "output_tokens": 33
+      },
+      "elapsed_ms": 1792
+    },
+    {
+      "id": "allocation_review-11",
+      "expected": "insufficient",
+      "displayed": [],
+      "outcome": "insufficient",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2140,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 1683
+    },
+    {
+      "id": "allocation_review-12",
+      "expected": "insufficient",
+      "displayed": [],
+      "outcome": "insufficient",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2137,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 1292
+    },
+    {
+      "id": "cap_comparison-01",
+      "expected": "answer",
+      "displayed": [
+        "baseline_cap",
+        "trial_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_volatility",
+        "trial_effective",
+        "trial_cagr",
+        "trial_annual_volatility",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_cap",
+        "trial_cap"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2156,
+        "output_tokens": 35
+      },
+      "elapsed_ms": 1765
+    },
+    {
+      "id": "cap_comparison-02",
+      "expected": "answer",
+      "displayed": [
+        "baseline_volatility",
+        "trial_volatility",
+        "baseline_cap",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_cap",
+        "trial_effective",
+        "trial_cagr",
+        "trial_annual_volatility",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_volatility",
+        "trial_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2120,
+        "output_tokens": 37
+      },
+      "elapsed_ms": 1567
+    },
+    {
+      "id": "cap_comparison-03",
+      "expected": "answer",
+      "displayed": [
+        "baseline_effective",
+        "trial_effective",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_cap",
+        "trial_volatility",
+        "trial_cagr",
+        "trial_annual_volatility",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_effective",
+        "trial_effective"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2149,
+        "output_tokens": 35
+      },
+      "elapsed_ms": 1496
+    },
+    {
+      "id": "cap_comparison-04",
+      "expected": "answer",
+      "displayed": [
+        "baseline_cagr",
+        "trial_cagr",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_cap",
+        "trial_volatility",
+        "trial_effective",
+        "trial_annual_volatility",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_cagr",
+        "trial_cagr"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2160,
+        "output_tokens": 37
+      },
+      "elapsed_ms": 2491
+    },
+    {
+      "id": "cap_comparison-05",
+      "expected": "answer",
+      "displayed": [
+        "baseline_annual_volatility",
+        "trial_annual_volatility",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_average_monthly_turnover",
+        "trial_cap",
+        "trial_volatility",
+        "trial_effective",
+        "trial_cagr",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_annual_volatility",
+        "trial_annual_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2121,
+        "output_tokens": 41
+      },
+      "elapsed_ms": 2379
+    },
+    {
+      "id": "cap_comparison-06",
+      "expected": "answer",
+      "displayed": [
+        "baseline_average_monthly_turnover",
+        "trial_average_monthly_turnover",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "trial_cap",
+        "trial_volatility",
+        "trial_effective",
+        "trial_cagr",
+        "trial_annual_volatility"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_average_monthly_turnover",
+        "trial_average_monthly_turnover"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2148,
+        "output_tokens": 45
+      },
+      "elapsed_ms": 2000
+    },
+    {
+      "id": "cap_comparison-07",
+      "expected": "answer",
+      "displayed": [
+        "trial_cap",
+        "trial_effective",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_volatility",
+        "trial_cagr",
+        "trial_annual_volatility",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "trial_cap",
+        "trial_effective"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2159,
+        "output_tokens": 35
+      },
+      "elapsed_ms": 2242
+    },
+    {
+      "id": "cap_comparison-08",
+      "expected": "answer",
+      "displayed": [
+        "trial_cap",
+        "trial_volatility",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_effective",
+        "trial_cagr",
+        "trial_annual_volatility",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "trial_cap",
+        "trial_volatility",
+        "baseline_cap",
+        "baseline_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2128,
+        "output_tokens": 47
+      },
+      "elapsed_ms": 1934
+    },
+    {
+      "id": "cap_comparison-09",
+      "expected": "answer",
+      "displayed": [
+        "trial_volatility",
+        "trial_annual_volatility",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_cagr",
+        "baseline_annual_volatility",
+        "baseline_average_monthly_turnover",
+        "trial_cap",
+        "trial_effective",
+        "trial_cagr",
+        "trial_average_monthly_turnover"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "trial_volatility",
+        "trial_annual_volatility"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2150,
+        "output_tokens": 39
+      },
+      "elapsed_ms": 2053
+    },
+    {
+      "id": "cap_comparison-10",
+      "expected": "answer",
+      "displayed": [
+        "baseline_cagr",
+        "baseline_average_monthly_turnover",
+        "trial_cagr",
+        "trial_average_monthly_turnover",
+        "baseline_cap",
+        "baseline_volatility",
+        "baseline_effective",
+        "baseline_annual_volatility",
+        "trial_cap",
+        "trial_volatility",
+        "trial_effective",
+        "trial_annual_volatility"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "baseline_cagr",
+        "baseline_average_monthly_turnover",
+        "trial_cagr",
+        "trial_average_monthly_turnover"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2166,
+        "output_tokens": 57
+      },
+      "elapsed_ms": 1956
+    },
+    {
+      "id": "cap_comparison-11",
+      "expected": "insufficient",
+      "displayed": [],
+      "outcome": "insufficient",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2126,
+        "output_tokens": 25
+      },
+      "elapsed_ms": 2055
+    },
+    {
+      "id": "cap_comparison-12",
+      "expected": "insufficient",
+      "displayed": [],
+      "outcome": "insufficient",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 2149,
+        "output_tokens": 25
+      },
+      "elapsed_ms": 1955
+    },
+    {
+      "id": "goal_check-01",
+      "expected": "answer",
+      "displayed": [
+        "probability_goal_met_real",
+        "goal_amount",
+        "goal_years",
+        "median_real_final",
+        "terminal_real_wealth_p5",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "probability_goal_met_real",
+        "goal_amount"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1402,
+        "output_tokens": 34
+      },
+      "elapsed_ms": 1133
+    },
+    {
+      "id": "goal_check-02",
+      "expected": "answer",
+      "displayed": [
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "median_real_final",
+        "terminal_real_wealth_p5",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "goal_amount",
+        "goal_years"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1398,
+        "output_tokens": 31
+      },
+      "elapsed_ms": 1324
+    },
+    {
+      "id": "goal_check-03",
+      "expected": "answer",
+      "displayed": [
+        "median_real_final",
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "terminal_real_wealth_p5",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "median_real_final"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1419,
+        "output_tokens": 29
+      },
+      "elapsed_ms": 1119
+    },
+    {
+      "id": "goal_check-04",
+      "expected": "answer",
+      "displayed": [
+        "terminal_real_wealth_p5",
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "median_real_final",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "terminal_real_wealth_p5"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1427,
+        "output_tokens": 31
+      },
+      "elapsed_ms": 2789
+    },
+    {
+      "id": "goal_check-05",
+      "expected": "answer",
+      "displayed": [
+        "avg_investment_max_drawdown",
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "median_real_final",
+        "terminal_real_wealth_p5"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "avg_investment_max_drawdown"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1362,
+        "output_tokens": 33
+      },
+      "elapsed_ms": 926
+    },
+    {
+      "id": "goal_check-06",
+      "expected": "answer",
+      "displayed": [
+        "probability_goal_met_real",
+        "avg_investment_max_drawdown",
+        "goal_amount",
+        "goal_years",
+        "median_real_final",
+        "terminal_real_wealth_p5"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "probability_goal_met_real",
+        "avg_investment_max_drawdown"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1424,
+        "output_tokens": 40
+      },
+      "elapsed_ms": 1234
+    },
+    {
+      "id": "goal_check-07",
+      "expected": "answer",
+      "displayed": [
+        "median_real_final",
+        "terminal_real_wealth_p5",
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "median_real_final",
+        "terminal_real_wealth_p5"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1413,
+        "output_tokens": 36
+      },
+      "elapsed_ms": 1079
+    },
+    {
+      "id": "goal_check-08",
+      "expected": "answer",
+      "displayed": [
+        "goal_years",
+        "goal_amount",
+        "probability_goal_met_real",
+        "median_real_final",
+        "terminal_real_wealth_p5",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "goal_years",
+        "goal_amount",
+        "probability_goal_met_real"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1408,
+        "output_tokens": 38
+      },
+      "elapsed_ms": 1315
+    },
+    {
+      "id": "goal_check-09",
+      "expected": "answer",
+      "displayed": [
+        "avg_investment_max_drawdown",
+        "terminal_real_wealth_p5",
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "median_real_final"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "avg_investment_max_drawdown",
+        "terminal_real_wealth_p5"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1431,
+        "output_tokens": 40
+      },
+      "elapsed_ms": 1149
+    },
+    {
+      "id": "goal_check-10",
+      "expected": "answer",
+      "displayed": [
+        "median_real_final",
+        "goal_amount",
+        "goal_years",
+        "probability_goal_met_real",
+        "terminal_real_wealth_p5",
+        "avg_investment_max_drawdown"
+      ],
+      "outcome": "answer",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [
+        "median_real_final",
+        "goal_amount"
+      ],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1407,
+        "output_tokens": 32
+      },
+      "elapsed_ms": 1452
+    },
+    {
+      "id": "goal_check-11",
+      "expected": "insufficient",
+      "displayed": [],
+      "outcome": "insufficient",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1398,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 973
+    },
+    {
+      "id": "goal_check-12",
+      "expected": "insufficient",
+      "displayed": [],
+      "outcome": "insufficient",
+      "verified": true,
+      "controls_preserved": true,
+      "missing_displayed": [],
+      "passed": true,
+      "model_selected": [],
+      "selection_complete": true,
+      "usage": {
+        "requests": 2,
+        "input_tokens": 1403,
+        "output_tokens": 24
+      },
+      "elapsed_ms": 1053
+    }
+  ]
+}

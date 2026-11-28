@@ -67,3 +67,13 @@ test('opening a metric pins its receipt and shows its evaluation window without 
   expect(api.post).not.toHaveBeenCalled();
  }finally{window.history.replaceState({},'','/');}
 });
+
+test('an insufficient-evidence response explains why there are no answer figures',async()=>{
+ api.post.mockResolvedValue({data:{status:'insufficient_evidence',mode:'llm',provider:'fixture',model:'fixture',skill:skills[0],
+  notice:'No recorded figure answers this question.',evidence:{context:{start:'2025-01',end:'2026-01',observations:12}},
+  answer:[],limitations:[],trace:[],version:'fixture',elapsed_ms:1}});
+ render(<Assistant/>);const run=screen.getByRole('button',{name:'Run research task'});
+ await waitFor(()=>expect(run).not.toBeDisabled());fireEvent.click(run);
+ expect(await screen.findByText('Insufficient evidence')).toBeInTheDocument();
+ expect(screen.getByText('No recorded figure answers this question.')).toBeInTheDocument();
+});

@@ -1,0 +1,452 @@
+[
+  {
+    "id": "allocation_review-01",
+    "body": {
+      "skill": "allocation_review",
+      "question": "How large is my largest position?"
+    },
+    "required": [
+      "largest_holding"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-02",
+    "body": {
+      "skill": "allocation_review",
+      "question": "这组权重相当于几只等权股票？"
+    },
+    "required": [
+      "effective_holdings"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-03",
+    "body": {
+      "skill": "allocation_review",
+      "question": "What are the fitted annual arithmetic return and volatility?"
+    },
+    "required": [
+      "estimated_mean",
+      "estimated_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-04",
+    "body": {
+      "skill": "allocation_review",
+      "question": "比较所选策略和等权策略的年化复合增长率。"
+    },
+    "required": [
+      "optimized_cagr",
+      "equal_weight_cagr"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-05",
+    "body": {
+      "skill": "allocation_review",
+      "question": "Show the worst historical drawdown for both strategies."
+    },
+    "required": [
+      "optimized_max_drawdown",
+      "equal_weight_max_drawdown"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-06",
+    "body": {
+      "skill": "allocation_review",
+      "question": "所选策略比等权策略每月交易多少？请给出双方换手。"
+    },
+    "required": [
+      "optimized_average_monthly_turnover",
+      "equal_weight_average_monthly_turnover"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-07",
+    "body": {
+      "skill": "allocation_review",
+      "question": "Compare realized annual volatility for the selected and equal-weight strategies."
+    },
+    "required": [
+      "optimized_annual_volatility",
+      "equal_weight_annual_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-08",
+    "body": {
+      "skill": "allocation_review",
+      "question": "把拟合的波动率和所选策略回测的实际波动率分开给我。"
+    },
+    "required": [
+      "estimated_volatility",
+      "optimized_annual_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-09",
+    "body": {
+      "skill": "allocation_review",
+      "question": "Show concentration using both the largest weight and effective holdings."
+    },
+    "required": [
+      "largest_holding",
+      "effective_holdings"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-10",
+    "body": {
+      "skill": "allocation_review",
+      "question": "给我看已保存组合的算术收益估计和它在评估期的复合增长。"
+    },
+    "required": [
+      "estimated_mean",
+      "optimized_cagr"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "allocation_review-11",
+    "body": {
+      "skill": "allocation_review",
+      "question": "What was the exact dollar tax I personally paid last year on these shares?"
+    },
+    "required": [],
+    "expected": "insufficient"
+  },
+  {
+    "id": "allocation_review-12",
+    "body": {
+      "skill": "allocation_review",
+      "question": "只告诉我每只股票今天开盘后的实时成交额。"
+    },
+    "required": [],
+    "expected": "insufficient"
+  },
+  {
+    "id": "cap_comparison-01",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "Show the original and trial holding caps.",
+      "cap_pct": 25
+    },
+    "required": [
+      "baseline_cap",
+      "trial_cap"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-02",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "两组配置的估计波动率分别是多少？",
+      "cap_pct": 35
+    },
+    "required": [
+      "baseline_volatility",
+      "trial_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-03",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "How many effective holdings are there before and after the cap change?",
+      "cap_pct": 40
+    },
+    "required": [
+      "baseline_effective",
+      "trial_effective"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-04",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "请给出变更上限前后的回测年化复合增长率。",
+      "cap_pct": 25
+    },
+    "required": [
+      "baseline_cagr",
+      "trial_cagr"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-05",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "Compare realized annual volatility on the shared evaluation months.",
+      "cap_pct": 35
+    },
+    "required": [
+      "baseline_annual_volatility",
+      "trial_annual_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-06",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "我想看新旧配置在评估期的月均换手。",
+      "cap_pct": 40
+    },
+    "required": [
+      "baseline_average_monthly_turnover",
+      "trial_average_monthly_turnover"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-07",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "Give the new cap and the new effective holdings together.",
+      "cap_pct": 25
+    },
+    "required": [
+      "trial_cap",
+      "trial_effective"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-08",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "给我两个上限和相应的估计波动率，不要用回测波动率代替。",
+      "cap_pct": 35
+    },
+    "required": [
+      "baseline_cap",
+      "trial_cap",
+      "baseline_volatility",
+      "trial_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-09",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "At the trial cap, show both fitted and backtested volatility.",
+      "cap_pct": 40
+    },
+    "required": [
+      "trial_volatility",
+      "trial_annual_volatility"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-10",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "请展示原方案和试算方案的年化增长以及各自的月均换手。",
+      "cap_pct": 25
+    },
+    "required": [
+      "baseline_cagr",
+      "trial_cagr",
+      "baseline_average_monthly_turnover",
+      "trial_average_monthly_turnover"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "cap_comparison-11",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "What exact brokerage commission in dollars did my broker charge for implementing this trial?",
+      "cap_pct": 35
+    },
+    "required": [],
+    "expected": "insufficient"
+  },
+  {
+    "id": "cap_comparison-12",
+    "body": {
+      "skill": "cap_comparison",
+      "question": "请给出这个试算上限下明天收盘时的准确价格。",
+      "cap_pct": 40
+    },
+    "required": [],
+    "expected": "insufficient"
+  },
+  {
+    "id": "goal_check-01",
+    "body": {
+      "skill": "goal_check",
+      "question": "What fraction of paths reached the target, and what is the target in today’s dollars?",
+      "goal_amount": 15000,
+      "years": 3
+    },
+    "required": [
+      "probability_goal_met_real",
+      "goal_amount"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-02",
+    "body": {
+      "skill": "goal_check",
+      "question": "这次模拟设定的目标金额和期限是多少？",
+      "goal_amount": 50000,
+      "years": 7
+    },
+    "required": [
+      "goal_amount",
+      "goal_years"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-03",
+    "body": {
+      "skill": "goal_check",
+      "question": "What is median ending wealth in today’s purchasing power?",
+      "goal_amount": 100000,
+      "years": 10
+    },
+    "required": [
+      "median_real_final"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-04",
+    "body": {
+      "skill": "goal_check",
+      "question": "看最差一端，最终实际财富的第5百分位是多少？",
+      "goal_amount": 15000,
+      "years": 5
+    },
+    "required": [
+      "terminal_real_wealth_p5"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-05",
+    "body": {
+      "skill": "goal_check",
+      "question": "Show average maximum investment drawdown across paths.",
+      "goal_amount": 50000,
+      "years": 3
+    },
+    "required": [
+      "avg_investment_max_drawdown"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-06",
+    "body": {
+      "skill": "goal_check",
+      "question": "同时给出达标比例和中途平均最大回撤。",
+      "goal_amount": 100000,
+      "years": 7
+    },
+    "required": [
+      "probability_goal_met_real",
+      "avg_investment_max_drawdown"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-07",
+    "body": {
+      "skill": "goal_check",
+      "question": "Give both median and fifth-percentile terminal real wealth.",
+      "goal_amount": 15000,
+      "years": 10
+    },
+    "required": [
+      "median_real_final",
+      "terminal_real_wealth_p5"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-08",
+    "body": {
+      "skill": "goal_check",
+      "question": "请把试算年数、目标和达标比例放在一起。",
+      "goal_amount": 50000,
+      "years": 5
+    },
+    "required": [
+      "goal_years",
+      "goal_amount",
+      "probability_goal_met_real"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-09",
+    "body": {
+      "skill": "goal_check",
+      "question": "How deep is the average maximum drawdown, and where is the fifth percentile of final real wealth?",
+      "goal_amount": 100000,
+      "years": 3
+    },
+    "required": [
+      "avg_investment_max_drawdown",
+      "terminal_real_wealth_p5"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-10",
+    "body": {
+      "skill": "goal_check",
+      "question": "告诉我终值购买力中位数和实际目标金额。",
+      "goal_amount": 15000,
+      "years": 7
+    },
+    "required": [
+      "median_real_final",
+      "goal_amount"
+    ],
+    "expected": "answer"
+  },
+  {
+    "id": "goal_check-11",
+    "body": {
+      "skill": "goal_check",
+      "question": "Which exact calendar day will my portfolio hit this goal for the first time?",
+      "goal_amount": 50000,
+      "years": 10
+    },
+    "required": [],
+    "expected": "insufficient"
+  },
+  {
+    "id": "goal_check-12",
+    "body": {
+      "skill": "goal_check",
+      "question": "这项模拟中，终值财富的第99百分位精确是多少？",
+      "goal_amount": 100000,
+      "years": 5
+    },
+    "required": [],
+    "expected": "insufficient"
+  }
+]
